@@ -2,7 +2,7 @@
 
 _ = require 'underscore'
 express = require 'express.io'
-partials = require 'express-partials'
+multer = require 'multer'
 util = require 'util'
 
 app = express()
@@ -11,14 +11,18 @@ app.http().io()
 app.use require("connect-assets")()
 app.use express.cookieParser()
 app.use express.session secret:'thisismysupersecret'
-app.use express.json()
 app.use express.urlencoded()
+
+#TODO maybe use limits and rename options (https://github.com/expressjs/multer)
+app.use multer dest: './uploads/'
 
 app.configure ->
   app.set 'view engine', 'hamlc'
   app.set 'layout', 'layout'
 
 app.use express.static __dirname + '/assets'
+
+ROOT_URL = process.env.ROOT_URL
 
 ###### Mongo
 mongoHostname = process.env.MONGO_URL || 'mongodb://localhost/test'
@@ -65,7 +69,7 @@ app.get '/calls/make', (req, res) ->
   call =
     to: "+16155197142"
     from: "+16159135926"
-    url: "http://3ada188b.ngrok.com/messages"
+    url: "#{ ROOT_URL }/messages"
 
   twilio.makeCall call, (err, data) ->
     if err
@@ -74,7 +78,14 @@ app.get '/calls/make', (req, res) ->
       console.log data
   res.send 200
 
-#TODO: create media upload route
+app.post '/media', (req, res) ->
+  #TODO: process & immediately delete file from server
+  res.send 422 if Object.keys(req.files).length > 1
+  for key, file of req.files
+    # we just want the first file, so we immediately return
+    console.log "File uploaded to #{ file.path }"
+    return res.json
+      path: "#{ ROOT_URL}/#{ file.path }"
 
 app.post '/messages/new', (req, res) ->
   #TODO: authenticate & validate user
@@ -91,7 +102,7 @@ app.post '/messages/new', (req, res) ->
 
 app.post '/messages', (req, res) ->
   resp = new Twilio.TwimlResponse()
-  resp.play 'http://3ada188b.ngrok.com/fixtures/second_call.mp3'
+  resp.play '#{ ROOT_URL }/fixtures/second_call.mp3'
   res.header('Content-Type','text/xml').send resp.toString()
 
 ######
