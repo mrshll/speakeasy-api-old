@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 futurephone. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
+
 #import <UIKit/UIKit.h>
 
-@interface FPMViewController : UIViewController
+@interface FPMRecordViewController : UIViewController <AVAudioRecorderDelegate>
 
 @end
