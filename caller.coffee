@@ -1,17 +1,12 @@
-###### WEBSERVER
-
-express = require 'express.io'
-app = express()
-app.http().io()
-
-app.post '/twilio/callback', (req, res) ->
-  resp = new Twilio.TwimlResponse()
-  resp.play "#{ ROOT_URL }/fixtures/second_call.mp3"
-  res.header('Content-Type','text/xml').send resp.toString()
-
+helpers = require './helpers'
 ###### TWILIO
 Twilio = require 'twilio'
 twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
+
+# Query db for notifications to dispatch
+mongoose = require './db'
+Message = require './models/message'
+User = require './models/user'
 
 ##### QUEUE
 NSQClient = require 'nsq-client'
@@ -32,21 +27,28 @@ channel = OS.hostname()
 # Subscribe to topics defined on stdin
 console.log "Subscribing to #{ TOPIC } / #{ channel }"
 subscriber = nsq.subscribe TOPIC, channel, ephemeral: true
-subscriber.on "message", (message) ->
-  console.log message
+subscriber.on "message", (item) ->
+  message = item.data.message
+  user = message._user
+  Message.findByIdAndUpdate message._id, { $set: { in_progress: true } }, (err, updatedMessage) ->
+    handleError err if err
+    console.log 'updatedMessage' + updatedMessage
+    console.log "initiating call to #{ user.phone_number }"
+    params = "message_id=#{ updatedMessage._id }"
+    call =
+      to: user.phone_number
+      from: "+16159135926"
+      url: "#{ helpers.ROOT_URL }/twilio/callback?#{ params }"
 
-  call =
-    to: message.user.phone_number
-    from: "+16159135926"
-    url: "#{ ROOT_URL }/twilio/callback"
+    twilio.makeCall call, (err, data) ->
+      if err
+        console.log err
+        updatedMessage.in_progress = false
+        updatedMessage.save()
+      else
+        console.log data
 
-  twilio.makeCall call, (err, data) ->
-    if err
-      helpers.debug err
-    else
-      helpers.debug data
-
-  message.finish()
+      item.finish()
 
 # Close connections on exit
 process.once "SIGINT", ->

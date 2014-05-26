@@ -15,7 +15,8 @@
     "request-mocha": "^0.2.0",
     "request": "^2.36.0",
     "nsq": "0.0.2",
-    "nsq-client": "^1.0.0"
+    "nsq-client": "^1.0.0",
+    "async": "^0.9.0"
   },
   "main": "server.coffee",
   "devDependencies": {
