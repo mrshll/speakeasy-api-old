@@ -17,8 +17,8 @@
 
 @interface FPMRecordViewController ()
 
-@property (nonatomic) AVAudioRecorder *recorder;
-@property (nonatomic, weak) IBOutlet UIButton *recordButton;
+@property (nonatomic) AVAudioRecorder* recorder;
+@property (nonatomic, weak) IBOutlet UIButton* recordButton;
 
 @end
 
@@ -43,7 +43,7 @@
   NSLog(@"record pressed");
   
   if (!self.recorder.recording) {
-    AVAudioSession *session = [AVAudioSession sharedInstance];
+    AVAudioSession* session = [AVAudioSession sharedInstance];
     [session setActive:YES error:nil];
     
     // Start recording
@@ -60,7 +60,7 @@
 
 #pragma mark - AVAudioRecorder Delegate
 
-- (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)success{
+- (void) audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)success{
   [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
   
   if (success) {
@@ -74,16 +74,16 @@
 #pragma mark - Helpers
 
 - (void)uploadMediaAtURL:(NSURL*)fileURL {
-  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MEDIA_URL_STRING parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MEDIA_URL_STRING parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
     [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
   } error:nil];
   
-  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   operation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSDictionary* response = (NSDictionary *)responseObject;
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
+    NSDictionary* response = (NSDictionary*)responseObject;
     [self createMessageForMediaAtUrl: [response objectForKey:@"media_uri"]];
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+  } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
     NSLog(@"Fail");
   }];
 
@@ -91,24 +91,24 @@
 }
 
 - (void)createMessageForMediaAtUrl:(NSURL*)mediaURL {
-  NSDictionary *params = @{
+  NSDictionary* params = @{
     @"delivery_unit": @"seconds",
     @"delivery_magnitude": @10,
     @"media_uri": mediaURL,
     @"user_id": @"5383bb4491d059000013c4b1"
   };
 
-//  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params error:nil];
-  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+//  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params error:nil];
+  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
   } error:nil];
   
-  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  operation.responseSerializer = [AFJSONResponseSerializer serializer];
+  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  operation.responseSerializer = [AFHTTPResponseSerializer serializer];
   
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSDictionary* response = (NSDictionary *)responseObject;
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
+    NSDictionary* response = (NSDictionary*)responseObject;
     NSLog(@"Success %@", response);
-  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+  } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
     NSLog(@"Fail %@", error);
   }];
   
