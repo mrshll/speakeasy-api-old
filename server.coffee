@@ -98,11 +98,6 @@ app.post '/messages', (req, res) ->
       helpers.debug 'created: ' + message
       res.send 201
 
-app.post '/twilio/callback', (req, res) ->
-  resp = new Twilio.TwimlResponse()
-  resp.play "#{ ROOT_URL }/fixtures/second_call.mp3"
-  res.header('Content-Type','text/xml').send resp.toString()
-
 ######
 
 appPort = process.env.PORT or 7076
