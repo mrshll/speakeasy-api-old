@@ -31,10 +31,31 @@
                     </view>
                     <connections>
                         <outlet property="recordButton" destination="YmX-0N-I0d" id="2WF-Js-KcG"/>
+                        <segue destination="8R5-tn-Zzv" kind="push" id="Oab-6h-1MW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="154" y="50"/>
+        </scene>
+        <!--Dispatch Message View Controller-->
+        <scene sceneID="m2a-ho-Kxu">
+            <objects>
+                <viewController id="8R5-tn-Zzv" customClass="FPMDispatchMessageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="KbS-n0-Oth"/>
+                        <viewControllerLayoutGuide type="bottom" id="TSe-2j-S81"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4PY-Iv-u0M">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="um0-rU-P5p"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vQP-8R-JKr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="580" y="50"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

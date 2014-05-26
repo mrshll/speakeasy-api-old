@@ -23,6 +23,7 @@ app.configure ->
   app.set 'layout', 'layout'
 
 app.use express.static __dirname + '/assets'
+app.use '/uploads', express.static __dirname + '/uploads'
 
 ###### MODELS
 mongoose = require './db'
@@ -65,7 +66,7 @@ app.post '/twilio/callback', (req, res) ->
       res.send 500
     else
       resp = new Twilio.TwimlResponse()
-      resp.play "#{ helpers.ROOT_URL }/#{ message.media_uri }"
+      resp.play message.media_uri
 
       message.completed_at = moment()._d
       message.in_progress = false
@@ -120,13 +121,17 @@ app.post '/media', (req, res) ->
     return res.json
       media_uri: "#{ helpers.ROOT_URL}/#{ file.path }"
 
+#TODO: authenticate & validate user
 app.post '/messages', (req, res) ->
-  #TODO: authenticate & validate user
-  deliver_at = helpers.calculateFutureDelivery req.body.delivery
+  params = req.body
+  return res.send 422 unless params.delivery_unit and
+    params.delivery_magnitude and params.media_uri and params.user_id
+
+  deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
   messageParams =
     deliver_at: deliver_at._d
-    media_uri: req.body.media_uri
-    _user: req.body.user_id
+    media_uri: params.media_uri
+    _user: params.user_id
 
   message = new Message messageParams
   message.save (err, message) ->

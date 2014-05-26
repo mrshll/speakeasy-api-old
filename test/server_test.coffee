@@ -67,9 +67,8 @@ describe '/twilio/callback', ->
 describe '/messages', ->
   context 'POST with valid params', ->
     params =
-      delivery:
-        unit: 'days'
-        magnitude: 6
+      delivery_unit: 'days'
+      delivery_magnitude: 6
       media_uri: 'abc/asdf/wer.mp3'
 
     beforeEach (done) ->

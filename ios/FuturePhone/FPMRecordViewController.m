@@ -6,11 +6,14 @@
 //  Copyright (c) 2014 futurephone. All rights reserved.
 //
 
-#import "FPMRecordViewController.h"
 #import <AFNetworking/AFNetworking.h>
+
+#import "FPMRecordViewController.h"
 
 #define FPM_MEDIA_URL_STRING (@"http://localhost:7076/media")
 #define FPM_MEDIA_URL ([NSURL URLWithString:@"http://localhost:7076/media"])
+#define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
+#define FPM_MESSAGES_URL ([NSURL URLWithString:@"http://localhost:7076/messages"])
 
 @interface FPMRecordViewController ()
 
@@ -71,24 +74,45 @@
 #pragma mark - Helpers
 
 - (void)uploadMediaAtURL:(NSURL*)fileURL {
-  NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
-  AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MEDIA_URL_STRING parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
+  } error:nil];
   
-  NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:FPM_MEDIA_URL];
-  [request setHTTPMethod:@"POST"];
-  
-//  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MEDIA_URL_STRING parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//    [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
-//  } error:nil];
-  
-  NSURLSessionUploadTask* uploadTask = [manager uploadTaskWithRequest:request fromFile:fileURL progress:nil completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-    if (error) {
-      NSLog(@"Upload Media Error: %@", error);
-    } else {
-      NSLog(@"Upload Media Success: %@ %@", response, responseObject);
-    }
+  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  operation.responseSerializer = [AFJSONResponseSerializer serializer];
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary* response = (NSDictionary *)responseObject;
+    [self createMessageForMediaAtUrl: [response objectForKey:@"media_uri"]];
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Fail");
   }];
-  [uploadTask resume];
+
+  [operation start];
+}
+
+- (void)createMessageForMediaAtUrl:(NSURL*)mediaURL {
+  NSDictionary *params = @{
+    @"delivery_unit": @"seconds",
+    @"delivery_magnitude": @10,
+    @"media_uri": mediaURL,
+    @"user_id": @"5383bb4491d059000013c4b1"
+  };
+
+//  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params error:nil];
+  NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+  } error:nil];
+  
+  AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  operation.responseSerializer = [AFJSONResponseSerializer serializer];
+  
+  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary* response = (NSDictionary *)responseObject;
+    NSLog(@"Success %@", response);
+  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    NSLog(@"Fail %@", error);
+  }];
+  
+  [operation start];
 }
 
 - (AVAudioRecorder*)createAudioRecorder {
