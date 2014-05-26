@@ -118,8 +118,7 @@ describe '/media', ->
 describe 'helpers', ->
   describe '#calculateFutureDelivery', ->
     it 'should return a date in the future', (done) ->
-      delivery = unit: 'days', magnitude: 6
       now = moment()
-      future_date = helpers.calculateFutureDelivery delivery
+      future_date = helpers.calculateFutureDelivery 'days', 6
       future_date.isAfter(now).should.equal true
       done()
