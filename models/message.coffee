@@ -2,12 +2,13 @@ mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
 messageSchema = mongoose.Schema
-  id: Schema.Types.ObjectId
+  # user:
+  #   type: Schema.Types.ObjectId
+  #   ref: 'User'
   created_at:
     type: Date
     default: Date.now
   deliver_at: Date
-  user_id: Schema.Types.ObjectId
-  media_url: String
+  media_uri: String
 
 module.exports = mongoose.model 'Message', messageSchema

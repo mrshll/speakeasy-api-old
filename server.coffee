@@ -1,9 +1,9 @@
 ###### EXPRESS
-
 _ = require 'underscore'
 express = require 'express.io'
 multer = require 'multer'
 util = require 'util'
+moment = require 'moment'
 
 app = express()
 app.http().io()
@@ -11,6 +11,8 @@ app.http().io()
 app.use require("connect-assets")()
 app.use express.cookieParser()
 app.use express.session secret:'thisismysupersecret'
+app.use express.urlencoded()
+app.use express.json()
 app.use express.urlencoded()
 
 #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
@@ -22,28 +24,20 @@ app.configure ->
 
 app.use express.static __dirname + '/assets'
 
-ROOT_URL = process.env.ROOT_URL
-
-###### Mongo
-mongoHostname = process.env.MONGO_URL || 'mongodb://localhost/test'
-mongoose = require 'mongoose'
-console.log "Connecting to MongoDB: #{mongoHostname}"
-
-mongoose.connect mongoHostname
-db = mongoose.connection
-db.on "error", console.error.bind(console, "connection error:")
-db.once "open", callback = ->
-  console.log 'connected to mongodb'
+ROOT_URL = process.env.ROOT_URL || 'http://localhost:7076'
 
 ###### MODELS
+mongoose = require './db'
 Message = require './models/message'
 User = require './models/user'
 
 ###### TWILIO
-Twilio = require('twilio')
+Twilio = require 'twilio'
 twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
 
 ###### ROUTES
+helpers = require './helpers'
+
 app.get '/seed', (req, res) ->
   userDatas = [{
       phone_number: '16155197142'
@@ -60,49 +54,53 @@ app.get '/seed', (req, res) ->
       if err
         console.error err
       else
-        console.log 'seeded database with user: ' + user
+        helpers.debug 'seeded database with user: ' + user
   res.send 200
 
 app.get '/calls/make', (req, res) ->
-  #TODO: use environment variable for absolute url
   #TODO: use automatic from number
   call =
     to: "+16155197142"
     from: "+16159135926"
-    url: "#{ ROOT_URL }/messages"
+    url: "#{ ROOT_URL }/twilio/callback"
 
   twilio.makeCall call, (err, data) ->
     if err
-      console.log err
+      helpers.debug err
     else
-      console.log data
+      helpers.debug data
   res.send 200
 
 app.post '/media', (req, res) ->
   #TODO: process & immediately delete file from server
-  res.send 422 if Object.keys(req.files).length > 1
+  return res.send 422 unless Object.keys(req.files).length is 1
   for key, file of req.files
     # we just want the first file, so we immediately return
-    console.log "File uploaded to #{ file.path }"
+    helpers.debug "File uploaded to #{ file.path }"
     return res.json
-      path: "#{ ROOT_URL}/#{ file.path }"
+      media_uri: "#{ ROOT_URL}/#{ file.path }"
 
-app.post '/messages/new', (req, res) ->
+# we have to be non-restful because twilio is posting when we expect it to be
+# a GET
+app.post '/messages', (req, res) ->
   #TODO: authenticate & validate user
-  #TODO: deliver_at converts epoch to timestamp
-  #TODO: validate deliver_at time is in the future
-  messageParams = _.pick req.body, 'deliver_at', 'user_id', 'media_url'
+  deliver_at = helpers.calculateFutureDelivery req.body.delivery
+  messageParams =
+    deliver_at: deliver_at._d
+    media_uri: req.body.media_uri
+
   message = new Message messageParams
   message.save (err, message) ->
     if err
       console.error err
+      res.send 500
     else
-      console.log 'created: ' + message
-  res.send 200
+      helpers.debug 'created: ' + message
+      res.send 201
 
-app.post '/messages', (req, res) ->
+app.post '/twilio/callback', (req, res) ->
   resp = new Twilio.TwimlResponse()
-  resp.play '#{ ROOT_URL }/fixtures/second_call.mp3'
+  resp.play "#{ ROOT_URL }/fixtures/second_call.mp3"
   res.header('Content-Type','text/xml').send resp.toString()
 
 ######
@@ -110,3 +108,5 @@ app.post '/messages', (req, res) ->
 appPort = process.env.PORT or 7076
 server = app.listen appPort, ->
   console.log 'Listening on port %d', server.address().port
+
+module.exports = app

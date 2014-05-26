@@ -4,15 +4,24 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "express.io": "x",
-    "express-partials": "x",
-    "twitter": "x",
-    "haml-coffee": "x",
-    "passport": "x",
-    "passport-twitter": "x"
+    "express": "^4.3.1",
+    "underscore": "^1.6.0",
+    "multer": "0.0.7",
+    "connect-assets": "^3.0.1",
+    "supertest": "^0.13.0",
+    "mongodb": "^1.4.5",
+    "mocha-mongoose": "^1.0.1",
+    "moment": "^2.6.0",
+    "request-mocha": "^0.2.0",
+    "request": "^2.36.0",
+    "nsq": "0.0.2",
+    "nsq-client": "^1.0.0"
   },
   "main": "server.coffee",
-  "devDependencies": {},
+  "devDependencies": {
+    "should": "^3.3.2",
+    "mocha": "^1.19.0"
+  },
   "scripts": {
     "start": "node_modules/.bin/coffee server.coffee"
   },
