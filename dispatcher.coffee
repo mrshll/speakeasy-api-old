@@ -3,7 +3,9 @@ moment = require 'moment'
 NSQClient = require 'nsq-client'
 Util = require "util"
 
-nsq = new NSQClient debug: true
+helpers = require './helpers'
+
+nsq = new NSQClient debug: helpers.DEBUG
 
 nsq.on "error", (err) ->
   console.log "ERROR " + Util.inspect(err)

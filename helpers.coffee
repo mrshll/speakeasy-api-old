@@ -2,6 +2,7 @@ moment = require 'moment'
 
 helpers =
   ROOT_URL: process.env.ROOT_URL || 'http://localhost:7076'
+  DEBUG: process.env.APP_ENV is 'debug'
 
   calculateFutureDelivery: (delivery) ->
     moment().add delivery.unit, delivery.magnitude

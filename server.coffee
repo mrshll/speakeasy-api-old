@@ -120,8 +120,6 @@ app.post '/media', (req, res) ->
     return res.json
       media_uri: "#{ helpers.ROOT_URL}/#{ file.path }"
 
-# we have to be non-restful because twilio is posting when we expect it to be
-# a GET
 app.post '/messages', (req, res) ->
   #TODO: authenticate & validate user
   deliver_at = helpers.calculateFutureDelivery req.body.delivery

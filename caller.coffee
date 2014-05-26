@@ -13,7 +13,7 @@ NSQClient = require 'nsq-client'
 Util = require 'util'
 OS = require 'os'
 
-nsq = new NSQClient debug: true
+nsq = new NSQClient helpers.DEBUG
 
 nsq.on "error", (err) ->
   console.log "ERROR " + Util.inspect(err)
