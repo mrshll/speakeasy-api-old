@@ -11,9 +11,7 @@
 #import "FPMRecordViewController.h"
 
 #define FPM_MEDIA_URL_STRING (@"http://localhost:7076/media")
-#define FPM_MEDIA_URL ([NSURL URLWithString:@"http://localhost:7076/media"])
 #define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
-#define FPM_MESSAGES_URL ([NSURL URLWithString:@"http://localhost:7076/messages"])
 
 @interface FPMRecordViewController ()
 
@@ -64,7 +62,7 @@
   [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
   
   if (success) {
-    NSLog(@"sucess! url: %@", recorder.url);
+    NSLog(@"success! url: %@", recorder.url);
     [self uploadMediaAtURL:recorder.url];
   } else {
     NSLog(@"recording audio failed");
@@ -74,6 +72,7 @@
 #pragma mark - Helpers
 
 - (void)uploadMediaAtURL:(NSURL*)fileURL {
+  NSLog(@"uploading media");
   NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MEDIA_URL_STRING parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
     [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
   } error:nil];
@@ -91,6 +90,7 @@
 }
 
 - (void)createMessageForMediaAtUrl:(NSURL*)mediaURL {
+  NSLog(@"creating message");
   NSDictionary* params = @{
     @"delivery_unit": @"seconds",
     @"delivery_magnitude": @10,
