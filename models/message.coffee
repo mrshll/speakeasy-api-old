@@ -12,6 +12,7 @@ messageSchema = mongoose.Schema
   in_progress:
     type: Boolean
     default: false
+  original_media_path: String
   media_uri: String
   _user:
     type: Schema.Types.ObjectId

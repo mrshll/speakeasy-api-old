@@ -21,12 +21,12 @@ nsq.on "error", (err) ->
 nsq.on "debug", (event) ->
   console.log "DEBUG " + Util.inspect(event)
 
-TOPIC = process.env.NSQ_MESSAGE_TOPIC
+MESSAGE_TOPIC = process.env.NSQ_MESSAGE_TOPIC
 channel = OS.hostname()
 
 # Subscribe to topics defined on stdin
-console.log "Subscribing to #{ TOPIC } / #{ channel }"
-subscriber = nsq.subscribe TOPIC, channel, ephemeral: true
+console.log "Subscribing to #{ MESSAGE_TOPIC } / #{ channel }"
+subscriber = nsq.subscribe MESSAGE_TOPIC, channel, ephemeral: true
 subscriber.on "message", (item) ->
   message = item.data.message
   user = message._user

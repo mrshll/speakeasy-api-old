@@ -25,10 +25,20 @@ app.configure ->
 app.use express.static __dirname + '/assets'
 app.use '/uploads', express.static __dirname + '/uploads'
 
+helpers = require './helpers'
+helpers.debug 'debug mode enabled'
+
+
 ###### MODELS
 mongoose = require './db'
 Message = require './models/message'
 User = require './models/user'
+
+###### NSQ
+NSQClient = require 'nsq-client'
+Util = require "util"
+nsq = new NSQClient debug: helpers.DEBUG
+CONVERTER_TOPIC = process.env.NSQ_CONVERTER_TOPIC
 
 # Custom middleware to output route in debug mode
 app.use (req, res, next) ->
@@ -75,9 +85,6 @@ app.post '/twilio/callback', (req, res) ->
         res.header('Content-Type','text/xml').send resp.toString()
 
 ###### ROUTES
-helpers = require './helpers'
-helpers.debug 'debug mode enabled'
-
 app.get '/seed', (req, res) ->
   userDatas = [{
       phone_number: '16155197142'
@@ -127,13 +134,12 @@ app.post '/messages', (req, res) ->
   for key, file of req.files
     # we just want the first file, so we immediately return
     helpers.debug "File uploaded to #{ file.path }"
-    media_uri = "#{ helpers.ROOT_URL}/#{ file.path }"
     #TODO enqueu the media into a topic for conversion
 
   deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
   messageParams =
     deliver_at: deliver_at._d
-    media_uri: media_uri
+    original_media_path: file.path
     _user: params.user_id
 
   message = new Message messageParams
@@ -143,6 +149,8 @@ app.post '/messages', (req, res) ->
       res.send 500
     else
       helpers.debug 'created: ' + message
+      nsq.publish CONVERTER_TOPIC,
+        message: message
       res.send 201
 
 ######

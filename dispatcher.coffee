@@ -2,9 +2,7 @@ _ = require 'underscore'
 moment = require 'moment'
 NSQClient = require 'nsq-client'
 Util = require "util"
-
 helpers = require './helpers'
-
 nsq = new NSQClient debug: helpers.DEBUG
 
 nsq.on "error", (err) ->
@@ -13,7 +11,7 @@ nsq.on "error", (err) ->
 nsq.on "debug", (event) ->
   console.log "DEBUG " + Util.inspect(event)
 
-TOPIC = process.env.NSQ_MESSAGE_TOPIC
+MESSAGE_TOPIC = process.env.NSQ_MESSAGE_TOPIC
 
 # Query db for notifications to dispatch
 mongoose = require './db'
@@ -31,7 +29,7 @@ setInterval (->
     if messages.length
       console.log "Dispatching #{ messages.length } messages"
       _.each messages, (message) ->
-        nsq.publish TOPIC,
+        nsq.publish MESSAGE_TOPIC,
           message: message
     else
       console.log 'No messages to enqueue'

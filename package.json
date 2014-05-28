@@ -20,7 +20,8 @@
     "request-mocha": "^0.2.0",
     "supertest": "^0.13.0",
     "twilio": "^1.6.0",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "fluent-ffmpeg": "^1.7.1"
   },
   "main": "server.coffee",
   "devDependencies": {

@@ -94,7 +94,7 @@ describe '/messages', ->
             message.should.have.property('_user')
             message.should.have.property('in_progress')
             message.should.have.property('deliver_at')
-            message.should.have.property('media_uri')
+            message.should.have.property('original_media_path')
 
             # Check user relation
             message.should.have.property('_user')
