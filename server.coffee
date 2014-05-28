@@ -133,7 +133,7 @@ app.post '/messages', (req, res) ->
   deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
   messageParams =
     deliver_at: deliver_at._d
-    media_uri: params.media_uri
+    media_uri: media_uri
     _user: params.user_id
 
   message = new Message messageParams

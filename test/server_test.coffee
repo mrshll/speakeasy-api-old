@@ -91,7 +91,10 @@ describe '/messages', ->
           Message.find {}, (err, messages) =>
             messages.length.should.equal 1
             message = messages[0]
+            message.should.have.property('_user')
+            message.should.have.property('in_progress')
             message.should.have.property('deliver_at')
+            message.should.have.property('media_uri')
 
             # Check user relation
             message.should.have.property('_user')
