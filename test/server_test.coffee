@@ -65,37 +65,8 @@ describe '/twilio/callback', ->
             done()
 
 describe '/messages', ->
-  context 'POST with valid params', ->
-    params =
-      delivery_unit: 'days'
-      delivery_magnitude: 6
-      media_uri: 'abc/asdf/wer.mp3'
-
-    beforeEach (done) ->
-      createUser (err, @user) =>
-        _.extend params, user_id: @user._id
-        @req = request.post('/messages').send(params)
-        done()
-
-    it 'should create a message', (done) ->
-      @req.expect(201).end (err, res) =>
-        throw err if err
-        Message.find {}, (err, messages) =>
-          messages.length.should.equal 1
-          message = messages[0]
-          message.should.have.property('media_uri').and.equal params.media_uri
-          message.should.have.property('deliver_at')
-
-          # Check user relation
-          message.should.have.property('_user')
-          message._user.toString().should.equal @user._id.toString()
-
-          moment(message.deliver_at).isAfter(moment()).should.equal true
-        done()
-
-describe '/media', ->
-  describe 'POST', ->
-    context 'no file attached', ->
+  context 'POST', ->
+    context 'with no file attached', ->
       beforeEach (done) ->
         @req = request.post '/media'
         done()
@@ -104,15 +75,29 @@ describe '/media', ->
         @req.end (err, res) ->
           done()
 
-    context 'file attached', ->
+    context 'with valid params', ->
       beforeEach (done) ->
-        @req = request.post('/media').attach('media', 'assets/fixtures/first_call.mp3')
-        done()
+        createUser (err, @user) =>
+          @req = request.post('/messages')
+            .field('delivery_unit', 'days')
+            .field('delivery_magnitude', 6)
+            .field('user_id', @user._id.toString())
+            .attach('media', 'assets/fixtures/first_call.mp3')
+          done()
 
-      it 'should upload the file', (done) ->
-        @req.end (err, res) ->
+      it 'should create a message', (done) ->
+        @req.expect(201).end (err, res) =>
           throw err if err
-          res.body.media_uri.match(/http:\/\/.*\/uploads\/.*\.mp3/).should.have.lengthOf 1
+          Message.find {}, (err, messages) =>
+            messages.length.should.equal 1
+            message = messages[0]
+            message.should.have.property('deliver_at')
+
+            # Check user relation
+            message.should.have.property('_user')
+            message._user.toString().should.equal @user._id.toString()
+
+            moment(message.deliver_at).isAfter(moment()).should.equal true
           done()
 
 describe 'helpers', ->

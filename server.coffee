@@ -116,20 +116,19 @@ app.get '/user_id', (req, res) ->
   User.findOne {}, (err, user) ->
     res.json user_id: user._id
 
-app.post '/media', (req, res) ->
-  #TODO: process & immediately delete file from server
-  return res.send 422 unless Object.keys(req.files).length is 1
-  for key, file of req.files
-    # we just want the first file, so we immediately return
-    helpers.debug "File uploaded to #{ file.path }"
-    return res.json
-      media_uri: "#{ helpers.ROOT_URL}/#{ file.path }"
-
 #TODO: authenticate & validate user
 app.post '/messages', (req, res) ->
   params = req.body
   return res.send 422 unless params.delivery_unit and
-    params.delivery_magnitude and params.media_uri and params.user_id
+    params.delivery_magnitude and
+    params.user_id and
+    Object.keys(req.files).length is 1
+
+  for key, file of req.files
+    # we just want the first file, so we immediately return
+    helpers.debug "File uploaded to #{ file.path }"
+    media_uri = "#{ helpers.ROOT_URL}/#{ file.path }"
+    #TODO enqueu the media into a topic for conversion
 
   deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
   messageParams =
