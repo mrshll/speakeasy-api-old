@@ -13,7 +13,9 @@ messageSchema = mongoose.Schema
     type: Boolean
     default: false
   original_media_path: String
-  media_uri: String
+  media_uri:
+    type: String
+    default: null
   _user:
     type: Schema.Types.ObjectId
     ref: 'User'

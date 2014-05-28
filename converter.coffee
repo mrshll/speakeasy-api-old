@@ -21,8 +21,8 @@ nsq.on "debug", (event) ->
   console.log "DEBUG " + Util.inspect(event)
 
 updateMessageWithConvertedFile = (message, path) ->
-  media_uri = "#{ helpers.ROOT_URL}/#{ path }"
-  Message.findByIdAndUpdate message._id, { $set: { media_uri: path }}, (err, updatedMessage) ->
+  media_uri = "#{ helpers.ROOT_URL }/#{ path }"
+  Message.findByIdAndUpdate message._id, { $set: { media_uri: media_uri }}, (err, updatedMessage) ->
     handleError err if err
     console.log 'updatedMessage' + updatedMessage
 
@@ -33,21 +33,23 @@ subscriber.on "message", (item) ->
   message = item.data.message
 
   destination = message.original_media_path.replace /\.m4a$/, '.mp3'
-  command = new FFmpeg { source: message.original_media_path }
-            .withNoVideo()
-            .withAudioBitrate '128k'
-            .withAudioChannels 2
-            .withAudioFrequency 44100
-            .withAudioQuality 5
-            .fromFormat 'm4a'
-            .toFormat 'mp3'
-            .saveToFile destination
-            .on 'error', (err) ->
-              #TODO do something real with erros
-              console.log err
-            .on 'end', ->
-              updateMessageWithConvertedFile(message, destination)
-              item.finish()
+  console.log "converting #{ message.original_media_path } to #{ destination }"
+  new FFmpeg { source: message.original_media_path }
+    .withNoVideo()
+    .withAudioBitrate '128k'
+    .withAudioChannels 2
+    .withAudioFrequency 44100
+    .withAudioQuality 5
+    .fromFormat 'm4a'
+    .toFormat 'mp3'
+    .on 'error', (err) ->
+      #TODO do something real with erros
+      console.log err
+    .on 'end', ->
+      console.log 'conversion complete'
+      updateMessageWithConvertedFile(message, destination)
+      item.finish()
+    .saveToFile destination
 
 # Close connections on exit
 process.once "SIGINT", ->

@@ -25,6 +25,9 @@ setInterval (->
       '$lte': moment()._d
     'completed_at': null
     'in_progress': false
+    'media_uri':
+      '$ne': null
+
   query.populate('_user').exec (err, messages) ->
     if messages.length
       console.log "Dispatching #{ messages.length } messages"

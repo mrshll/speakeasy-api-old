@@ -105,7 +105,7 @@ app.get '/seed', (req, res) ->
 
     messageDatas = [{
       deliver_at: moment()._d
-      media_uri: 'fixtures/first_call.mp3'
+      original_media_path: 'fixtures/first_call.mp3'
       _user: user._id
     }]
 
