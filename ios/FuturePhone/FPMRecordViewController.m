@@ -10,13 +10,14 @@
 
 #import "FPMRecordViewController.h"
 
-#define FPM_MEDIA_URL_STRING (@"http://localhost:7076/media")
 #define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
+#define FPM_USER_ID_URL_STRING (@"http://localhost:7076/user_id")
 
 @interface FPMRecordViewController ()
 
 @property (nonatomic) AVAudioRecorder* recorder;
 @property (nonatomic, weak) IBOutlet UIButton* recordButton;
+@property (nonatomic, copy) NSString* userId;
 
 @end
 
@@ -27,6 +28,13 @@
   [super viewDidLoad];
   
   self.recorder = [self createAudioRecorder];
+
+  // TEMP: Get a user id from the server 
+  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+  [manager GET:FPM_USER_ID_URL_STRING parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSDictionary* response = (NSDictionary*)responseObject;
+    self.userId = response[@"user_id"];
+  } failure:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,12 +66,12 @@
 
 #pragma mark - AVAudioRecorder Delegate
 
-- (void) audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)success{
+- (void) audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)success {
   [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
   
   if (success) {
     NSLog(@"success! url: %@", recorder.url);
-    [self uploadMediaAtURL:recorder.url];
+    [self createMessageWithMediaAtURL:recorder.url];
   } else {
     NSLog(@"recording audio failed");
   }
@@ -71,47 +79,27 @@
 
 #pragma mark - Helpers
 
-- (void)uploadMediaAtURL:(NSURL*)fileURL {
-  NSLog(@"uploading media");
-  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MEDIA_URL_STRING parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+- (void)createMessageWithMediaAtURL:(NSURL*)fileURL {
+  NSLog(@"uploading and creating message");
+
+  NSDictionary* params = @{
+    @"delivery_unit": @"seconds",
+    @"delivery_magnitude": @10,
+    @"user_id": self.userId
+  };
+
+  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
     [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
   } error:nil];
   
   AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  operation.responseSerializer = [AFJSONResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
-    NSDictionary* response = (NSDictionary*)responseObject;
-    [self createMessageForMediaAtUrl: [response objectForKey:@"media_uri"]];
-  } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
-    NSLog(@"Fail");
-  }];
-
-  [operation start];
-}
-
-- (void)createMessageForMediaAtUrl:(NSURL*)mediaURL {
-  NSLog(@"creating message");
-  NSDictionary* params = @{
-    @"delivery_unit": @"seconds",
-    @"delivery_magnitude": @10,
-    @"media_uri": mediaURL,
-    @"user_id": @"5383bb4491d059000013c4b1"
-  };
-
-//  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params error:nil];
-  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-  } error:nil];
-  
-  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-  
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
-    NSDictionary* response = (NSDictionary*)responseObject;
-    NSLog(@"Success %@", response);
+    NSLog(@"Create message success");
   } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
-    NSLog(@"Fail %@", error);
+    NSLog(@"Create message failed");
   }];
-  
+
   [operation start];
 }
 

@@ -112,6 +112,10 @@ app.get '/seed', (req, res) ->
 
   res.send 200
 
+app.get '/user_id', (req, res) ->
+  User.findOne {}, (err, user) ->
+    res.json user_id: user._id
+
 app.post '/media', (req, res) ->
   #TODO: process & immediately delete file from server
   return res.send 422 unless Object.keys(req.files).length is 1
