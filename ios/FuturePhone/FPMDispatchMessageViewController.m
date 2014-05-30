@@ -63,6 +63,7 @@
   }];
   
   [operation start];
+  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Dispatch Time Button Actions
