@@ -9,13 +9,14 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "FPMRecordViewController.h"
+#import "FPMDispatchMessageViewController.h"
 
-#define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
 #define FPM_USER_ID_URL_STRING (@"http://localhost:7076/user_id")
 
 @interface FPMRecordViewController ()
 
 @property (nonatomic) AVAudioRecorder* recorder;
+@property (nonatomic) NSURL* mediaURL;
 @property (nonatomic, weak) IBOutlet UIButton* recordButton;
 @property (nonatomic, copy) NSString* userId;
 
@@ -66,42 +67,27 @@
 
 #pragma mark - AVAudioRecorder Delegate
 
-- (void) audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)success {
+- (void)audioRecorderDidFinishRecording:(AVAudioRecorder*)recorder successfully:(BOOL)success {
   [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
   
   if (success) {
-    NSLog(@"success! url: %@", recorder.url);
-    [self createMessageWithMediaAtURL:recorder.url];
+    NSLog(@"recorded file: %@", recorder.url);
+    self.mediaURL = recorder.url;
+    [self performSegueWithIdentifier:@"RecordToDispatchPushSegue" sender:self];
   } else {
     NSLog(@"recording audio failed");
   }
 }
 
-#pragma mark - Helpers
+#pragma mark - UIViewController
 
-- (void)createMessageWithMediaAtURL:(NSURL*)fileURL {
-  NSLog(@"uploading and creating message");
-
-  NSDictionary* params = @{
-    @"delivery_unit": @"seconds",
-    @"delivery_magnitude": @10,
-    @"user_id": self.userId
-  };
-
-  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-    [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
-  } error:nil];
-  
-  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
-    NSLog(@"Create message success");
-  } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
-    NSLog(@"Create message failed");
-  }];
-
-  [operation start];
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+  FPMDispatchMessageViewController* dispatchViewController = [segue destinationViewController];
+  [dispatchViewController setMediaURL: self.mediaURL];
+  [dispatchViewController setUserId:self.userId];
 }
+
+#pragma mark - Helpers
 
 - (AVAudioRecorder*)createAudioRecorder {
   // Recorded file path
