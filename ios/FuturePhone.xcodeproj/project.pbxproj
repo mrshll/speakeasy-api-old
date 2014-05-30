@@ -25,6 +25,7 @@
 		A6C6955E1933B3B700CF6F94 /* FuturePhoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C6955D1933B3B700CF6F94 /* FuturePhoneTests.m */; };
 		BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */; };
 		BFE358AB1938160E004C2FBD /* FPMDispatchViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358AA1938160E004C2FBD /* FPMDispatchViewControllerTests.m */; };
+		A6C6AD8A1938145400E217EE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C6AD891938145400E217EE /* Crashlytics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		BFE358A71935788C004C2FBD /* FPMDispatchMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMDispatchMessageViewController.h; sourceTree = "<group>"; };
 		BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchMessageViewController.m; sourceTree = "<group>"; };
 		BFE358AA1938160E004C2FBD /* FPMDispatchViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchViewControllerTests.m; sourceTree = "<group>"; };
+		A6C6AD891938145400E217EE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 				A6C695351933B3B700CF6F94 /* CoreGraphics.framework in Frameworks */,
 				A6C695371933B3B700CF6F94 /* UIKit.framework in Frameworks */,
 				A6C695331933B3B700CF6F94 /* Foundation.framework in Frameworks */,
+				A6C6AD8A1938145400E217EE /* Crashlytics.framework in Frameworks */,
 				70F6A17801914CC5AA00E202 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -114,6 +117,7 @@
 		A6C695311933B3B700CF6F94 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A6C6AD891938145400E217EE /* Crashlytics.framework */,
 				A6192DA61933B6A30053974D /* AVFoundation.framework */,
 				A6C695321933B3B700CF6F94 /* Foundation.framework */,
 				A6C695341933B3B700CF6F94 /* CoreGraphics.framework */,
@@ -182,6 +186,7 @@
 				A6C6952C1933B3B700CF6F94 /* Frameworks */,
 				A6C6952D1933B3B700CF6F94 /* Resources */,
 				42E81F1E2EB64911861F8DFE /* Copy Pods Resources */,
+				A6C6AD881938143900E217EE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -220,6 +225,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = futurephone;
 				TargetAttributes = {
+					A6C6952E1933B3B700CF6F94 = {
+						DevelopmentTeam = Z8GUSFBWFT;
+					};
 					A6C6954F1933B3B700CF6F94 = {
 						TestTargetID = A6C6952E1933B3B700CF6F94;
 					};
@@ -295,6 +303,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		A6C6AD881938143900E217EE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 1a41139c46f6ca7cad9edd61ce5f62ba8d4516b5 42e0240a960f48fc98d000c2583ad58f13cd603bb62a0cf2d1c5a2f63a53affe";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -433,10 +454,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FuturePhone/FuturePhone-Prefix.pch";
 				INFOPLIST_FILE = "FuturePhone/FuturePhone-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -447,10 +475,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FuturePhone/FuturePhone-Prefix.pch";
 				INFOPLIST_FILE = "FuturePhone/FuturePhone-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

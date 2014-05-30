@@ -5,6 +5,7 @@
 //  Created by Marshall Moutenot on 5/26/14.
 //  Copyright (c) 2014 futurephone. All rights reserved.
 //
+#import <Crashlytics/Crashlytics.h>
 
 #import "FPMAppDelegate.h"
 
@@ -12,7 +13,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [Crashlytics startWithAPIKey:@"1a41139c46f6ca7cad9edd61ce5f62ba8d4516b5"];
     return YES;
 }
 							
