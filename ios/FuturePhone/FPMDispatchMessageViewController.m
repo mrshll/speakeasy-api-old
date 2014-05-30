@@ -101,8 +101,7 @@
 
 - (NSNumber*)randomNumberFrom:(NSInteger)min to:(NSInteger)max {
   NSInteger delta = max - min;
-  NSUInteger rand = arc4random_uniform(delta + 1
-                                       );
+  NSUInteger rand = arc4random_uniform(delta + 1);
   return [NSNumber numberWithInteger:min + rand];
 }
 @end
