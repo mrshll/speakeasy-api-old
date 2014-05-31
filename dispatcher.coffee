@@ -18,8 +18,9 @@ mongoose = require './db'
 Message = require './models/message'
 User = require './models/user'
 
-# Poll database for messages that need to be enqueued
-setInterval (->
+# Enqueue messages which are ready to be called
+# If provided, calls done with the number of dispatched messages
+enqueueReadyMessages = (done) ->
   query = Message.find
     'deliver_at':
       '$lte': moment()._d
@@ -36,7 +37,13 @@ setInterval (->
           message: message
     else
       console.log 'No messages to enqueue'
-), 5000
+    done(messages.length) if done
+
+module.exports.enqueueReadyMessages = enqueueReadyMessages
+module.exports.nsq = nsq
+
+# Poll database for messages that need to be enqueued
+setInterval enqueueReadyMessages, 5000
 
 # Close connections on exit
 process.once "SIGINT", ->
