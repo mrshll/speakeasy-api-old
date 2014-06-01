@@ -10,7 +10,7 @@
 
 #import "FPMDispatchMessageViewController.h"
 
-#define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
+#define FPM_MESSAGES_URL_STRING (@"http://7cdd5781.ngrok.com/messages")
 
 @interface FPMDispatchMessageViewController ()
 

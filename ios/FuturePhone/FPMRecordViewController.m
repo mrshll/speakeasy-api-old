@@ -11,7 +11,7 @@
 #import "FPMRecordViewController.h"
 #import "FPMDispatchMessageViewController.h"
 
-#define FPM_USER_ID_URL_STRING (@"http://localhost:7076/user_id")
+#define FPM_USER_ID_URL_STRING (@"http://7cdd5781.ngrok.com/user_id")
 
 @interface FPMRecordViewController ()
 

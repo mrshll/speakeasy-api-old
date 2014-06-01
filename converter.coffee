@@ -1,61 +1,44 @@
-_ = require 'underscore'
-NSQClient = require 'nsq-client'
-Util = require 'util'
-FFmpeg = require 'fluent-ffmpeg'
-helpers = require './helpers'
-OS = require 'os'
+requirejs = require 'requirejs'
+requirejs.config nodeRequire: require
 
-# Query db for notifications to dispatch
-mongoose = require './db'
-Message = require './models/message'
-User = require './models/user'
+requirejs [
+  'fluent-ffmpeg'
+  './helpers'
+  './worker_base'
+], (FFmpeg, helpers, WorkerBase) ->
+  class Converter extends WorkerBase
 
-CONVERTER_TOPIC = process.env.NSQ_CONVERTER_TOPIC
-channel = OS.hostname()
+    topic: helpers.CONVERTER_TOPIC
 
-nsq = new NSQClient debug: helpers.DEBUG
-nsq.on "error", (err) ->
-  console.log "ERROR " + Util.inspect(err)
+    messageHandler: (message, done) ->
+      @convertM4AToMP3 message.original_media_path, (destination) ->
+        @updateMessageWithConvertedFile message, destination
+        done()
 
-nsq.on "debug", (event) ->
-  console.log "DEBUG " + Util.inspect(event)
+    # given a path to an m4a file, it returns the path to the new converted mp3
+    convertM4AToMP3: (m4aPath, callback) ->
+      destination = m4aPath.replace /\.m4a$/, '.mp3'
+      console.log "converting #{ m4aPath } to #{ destination }"
+      new FFmpeg { source: m4aPath }
+        .withNoVideo()
+        .withAudioBitrate '128k'
+        .withAudioChannels 2
+        .withAudioFrequency 44100
+        .withAudioQuality 5
+        .fromFormat 'm4a'
+        .toFormat 'mp3'
+        .on 'error', (err) ->
+          #TODO do something real with erros
+          console.log err
+        .on 'end', ->
+          console.log 'conversion complete'
+          callback destination
+        .saveToFile destination
 
-updateMessageWithConvertedFile = (message, path) ->
-  media_uri = "#{ helpers.ROOT_URL }/#{ path }"
-  Message.findByIdAndUpdate message._id, { $set: { media_uri: media_uri }}, (err, updatedMessage) ->
-    handleError err if err
-    console.log 'updatedMessage' + updatedMessage
+    updateMessageWithConvertedFile: (message, path) ->
+      media_uri = "#{ helpers.ROOT_URL }/#{ path }"
+      Message.findByIdAndUpdate message._id, { $set: { media_uri: media_uri }}, (err, updatedMessage) ->
+        handleError err if err
+        console.log 'updatedMessage' + updatedMessage
 
-# Subscribe to topics defined on stdin
-console.log "Subscribing to #{ CONVERTER_TOPIC } / #{ channel }"
-subscriber = nsq.subscribe CONVERTER_TOPIC, channel, ephemeral: true
-subscriber.on "message", (item) ->
-  message = item.data.message
-
-  destination = message.original_media_path.replace /\.m4a$/, '.mp3'
-  console.log "converting #{ message.original_media_path } to #{ destination }"
-  new FFmpeg { source: message.original_media_path }
-    .withNoVideo()
-    .withAudioBitrate '128k'
-    .withAudioChannels 2
-    .withAudioFrequency 44100
-    .withAudioQuality 5
-    .fromFormat 'm4a'
-    .toFormat 'mp3'
-    .on 'error', (err) ->
-      #TODO do something real with erros
-      console.log err
-    .on 'end', ->
-      console.log 'conversion complete'
-      updateMessageWithConvertedFile(message, destination)
-      item.finish()
-    .saveToFile destination
-
-# Close connections on exit
-process.once "SIGINT", ->
-  process.once "SIGINT", process.exit
-  console.log()
-  console.log "Closing nsq connections"
-  console.log "Press CTL-C again to force quit"
-  nsq.close ->
-    process.exit()
+  module.exports = new Converter

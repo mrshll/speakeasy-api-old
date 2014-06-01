@@ -3,38 +3,16 @@ should = require 'should'
 request = require 'supertest'
 moment = require 'moment'
 
-app = require '../server'
-request = request(app)
-
+server = require '../server'
 helpers = require '../helpers'
-
-# DB & MODELS
-dbURI = 'mongodb://localhost/test'
-mongoose = require 'mongoose'
-clearDB = require('mocha-mongoose')(dbURI)
+factory = require './factory'
 Message = require '../models/message'
 User = require '../models/user'
 
-createUser = (callback) ->
-  user = new User
-    phone_number: '16155197142'
-    password: 'rogerrogerroger'
-  user.save callback
-
-createMessage = (callback) ->
-  createUser (err, user) ->
-    message = new Message
-      deliver_at: moment()._id
-      media_uri: 'assets/fixtures/first_call.mp3'
-      _user: user._id
-    message.save callback
+request = request(app)
 
 beforeEach (done) ->
-  return done() if  mongoose.connection.db
-  mongoose.connect dbURI, done
-
-beforeEach (done) ->
-  clearDB done
+  factory.ensureConnectionAndClearDB done
 
 describe '/twilio/callback', ->
   context 'POST', ->
@@ -50,7 +28,7 @@ describe '/twilio/callback', ->
 
     context 'with valid params', ->
       beforeEach (done) ->
-        createMessage (err, @message) =>
+        factory.createMessage (err, @message) =>
           @req = request.post("/twilio/callback?message_id=#{ message._id }")
           done()
 
@@ -77,7 +55,7 @@ describe '/messages', ->
 
     context 'with valid params', ->
       beforeEach (done) ->
-        createUser (err, @user) =>
+        factory.createUser (err, @user) =>
           @req = request.post('/messages')
             .field('delivery_unit', 'days')
             .field('delivery_magnitude', 6)

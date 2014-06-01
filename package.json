@@ -22,7 +22,10 @@
     "sinon": "^1.10.1",
     "supertest": "^0.13.0",
     "twilio": "^1.6.0",
-    "underscore": "^1.6.0"
+    "underscore": "^1.6.0",
+    "amdefine": "^0.1.0",
+    "amd-loader": "0.0.5",
+    "requirejs": "^2.1.13"
   },
   "main": "server.coffee",
   "devDependencies": {
