@@ -1,34 +1,40 @@
-requirejs = require 'requirejs'
+if typeof define isnt 'function' then define = require('amdefine')(module)
 
-requirejs.define [
+define [
+  'underscore'
   'mongoose'
   'mocha-mongoose'
+  'moment'
   '../models/message'
   '../models/user'
-], (mongoose, mochaMongoose, Message, User) ->
-  new class Factory
+], (_, mongoose, mochaMongoose, moment, Message, User) ->
+  class Factory
     DB_URI: 'mongodb://localhost/test'
 
     clearDB: -> mochaMongoose(@DB_URI)
 
-    createUser: (callback) ->
+    createUser: (params, callback) ->
       user = new User
-        phone_number: '11111111111'
-        password: 'password'
+        phone_number: params.phone_number || '12345678'
+        password: params.password || 'password'
       user.save callback
 
-    createMessage: (deliverAt, mediaURI, callback) ->
-      @createUser (err, user) ->
-        message = new Message
-          media_uri: mediaURI
+    createMessage: (params, callback) ->
+      @createUser {}, (err, user) ->
+        _.defaults params,
+          media_uri: 'http://test.com/youareeye.mp3'
+          original_media_path: 'youareeye.m4a'
           _user: user._id
-          deliver_at: deliverAt
+          deliver_at: moment()
           in_progress: false
           completed_at: null
-        message.save callback
+
+        new Message(params).save callback
 
     ensureConnectionAndClearDB: (done) ->
       unless mongoose.connection.db
         mongoose.connect @DB_URI, done
       @clearDB()
       done()
+
+  module.exports = new Factory

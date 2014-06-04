@@ -1,60 +1,47 @@
-helpers = require './helpers'
-###### TWILIO
-Twilio = require 'twilio'
-twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
+if typeof define isnt 'function' then define = require('amdefine')(module)
 
-# Query db for notifications to dispatch
-mongoose = require './db'
-Message = require './models/message'
-User = require './models/user'
+define [
+  'twilio'
+  './helpers'
+  './models/message'
+  './models/user'
+  './worker_base'
+], (Twilio, helpers, Message, User, WorkerBase) ->
+  class Caller extends WorkerBase
 
-##### QUEUE
-NSQClient = require 'nsq-client'
-Util = require 'util'
-OS = require 'os'
+    subTopic: helpers.CALLER_TOPIC
 
-nsq = new NSQClient helpers.DEBUG
+    constructor: ->
+      super
+      @twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
 
-nsq.on "error", (err) ->
-  console.log "ERROR " + Util.inspect(err)
+    messageHandler: (item, done) ->
+      message = item.data.message
+      @markMessageAsInProgress message, (err, updatedMessage) ->
+        handleError err if err
+        user = updatedMessage._user
+        @call(user, updatedMessage)
+        item.finish()
 
-nsq.on "debug", (event) ->
-  console.log "DEBUG " + Util.inspect(event)
+    # callback takes error and an updated message
+    markMessageAsInProgress: (message, done) ->
+      Message.findByIdAndUpdate message._id,
+        { $set: { in_progress: true } }, done
 
-MESSAGE_TOPIC = process.env.NSQ_MESSAGE_TOPIC
-channel = OS.hostname()
+    call: (user, message, done) ->
+      console.log "initiating call to #{ user.phone_number }"
+      params = "message_id=#{ message._id }"
+      call =
+        to: user.phone_number
+        from: "+16159135926"
+        url: "#{ helpers.ROOT_URL }/twilio/callback?#{ params }"
 
-# Subscribe to topics defined on stdin
-console.log "Subscribing to #{ MESSAGE_TOPIC } / #{ channel }"
-subscriber = nsq.subscribe MESSAGE_TOPIC, channel, ephemeral: true
-subscriber.on "message", (item) ->
-  message = item.data.message
-  user = message._user
-  Message.findByIdAndUpdate message._id, { $set: { in_progress: true } }, (err, updatedMessage) ->
-    handleError err if err
-    console.log 'updatedMessage' + updatedMessage
-    console.log "initiating call to #{ user.phone_number }"
-    params = "message_id=#{ updatedMessage._id }"
-    call =
-      to: user.phone_number
-      from: "+16159135926"
-      url: "#{ helpers.ROOT_URL }/twilio/callback?#{ params }"
+      @twilio.makeCall call, (err, data) ->
+        if err
+          console.log err
+          message.in_progress = false
+          message.save()
+        else
+          console.log data
 
-    twilio.makeCall call, (err, data) ->
-      if err
-        console.log err
-        updatedMessage.in_progress = false
-        updatedMessage.save()
-      else
-        console.log data
-
-      item.finish()
-
-# Close connections on exit
-process.once "SIGINT", ->
-  process.once "SIGINT", process.exit
-  console.log()
-  console.log "Closing nsq connections"
-  console.log "Press CTL-C again to force quit"
-  nsq.close ->
-    process.exit()
+  module.exports = new Caller

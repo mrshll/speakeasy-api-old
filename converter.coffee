@@ -1,14 +1,14 @@
-requirejs = require 'requirejs'
-requirejs.config nodeRequire: require
+if typeof define isnt 'function' then define = require('amdefine')(module)
 
-requirejs [
+define [
   'fluent-ffmpeg'
   './helpers'
   './worker_base'
-], (FFmpeg, helpers, WorkerBase) ->
+  './models/message'
+], (FFmpeg, helpers, WorkerBase, Message) ->
   class Converter extends WorkerBase
 
-    topic: helpers.CONVERTER_TOPIC
+    subTopic: helpers.CONVERTER_TOPIC
 
     messageHandler: (message, done) ->
       @convertM4AToMP3 message.original_media_path, (destination) ->
@@ -35,10 +35,10 @@ requirejs [
           callback destination
         .saveToFile destination
 
-    updateMessageWithConvertedFile: (message, path) ->
+    updateMessageWithConvertedFile: (message, path, callback) ->
       media_uri = "#{ helpers.ROOT_URL }/#{ path }"
       Message.findByIdAndUpdate message._id, { $set: { media_uri: media_uri }}, (err, updatedMessage) ->
         handleError err if err
-        console.log 'updatedMessage' + updatedMessage
+        callback(err, updatedMessage)
 
   module.exports = new Converter

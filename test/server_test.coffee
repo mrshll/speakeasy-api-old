@@ -3,7 +3,7 @@ should = require 'should'
 request = require 'supertest'
 moment = require 'moment'
 
-server = require '../server'
+app = require '../server'
 helpers = require '../helpers'
 factory = require './factory'
 Message = require '../models/message'
@@ -28,7 +28,7 @@ describe '/twilio/callback', ->
 
     context 'with valid params', ->
       beforeEach (done) ->
-        factory.createMessage (err, @message) =>
+        factory.createMessage {}, (err, @message) =>
           @req = request.post("/twilio/callback?message_id=#{ message._id }")
           done()
 
@@ -55,7 +55,7 @@ describe '/messages', ->
 
     context 'with valid params', ->
       beforeEach (done) ->
-        factory.createUser (err, @user) =>
+        factory.createUser {}, (err, @user) =>
           @req = request.post('/messages')
             .field('delivery_unit', 'days')
             .field('delivery_magnitude', 6)

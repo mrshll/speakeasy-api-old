@@ -24,7 +24,8 @@ describe 'dispatcher', ->
 
     context '1 message ready', ->
       beforeEach (done) ->
-        factory.createMessage(moment().subtract('minute', 1), 'youareeye', done)
+        messageParams = deliver_at: moment().subtract('minute', 1)
+        factory.createMessage(messageParams, done)
 
       it 'should publish a message', (done) ->
         dispatcher.enqueueReadyMessages =>
@@ -39,22 +40,27 @@ describe 'dispatcher', ->
 
     context 'messages exist but are in the future', ->
       it 'should not publish a message', (done) ->
-        factory.createMessage moment().add('day', 1), 'youareeye', =>
+        messageParams = deliver_at: moment().add('minute', 1)
+        factory.createMessage messageParams, =>
           dispatcher.enqueueReadyMessages =>
             @publishStub.called.should.be.false
             done()
 
     context 'messages exist but do not have a media uri', ->
       it 'should not publish a message', (done) ->
-        factory.createMessage moment().subtract('day', 1), null, =>
+        messageParams =
+          deliver_at: moment().subtract('day', 1)
+          media_uri: null
+        factory.createMessage messageParams, =>
           dispatcher.enqueueReadyMessages =>
             @publishStub.called.should.be.false
             done()
 
     context 'multiple messages are ready', ->
       beforeEach (done) ->
-        factory.createMessage moment().subtract('day', 1), 'youareeye', ->
-          factory.createMessage moment().subtract('day', 1), 'youareeye', done
+        messageParams = deliver_at: moment().subtract('day', 1)
+        factory.createMessage messageParams, ->
+          factory.createMessage messageParams, done
 
       it 'should publish all the messages', (done) ->
         dispatcher.enqueueReadyMessages =>

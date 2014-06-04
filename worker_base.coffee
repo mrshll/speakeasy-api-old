@@ -1,4 +1,4 @@
-if  typeof define isnt 'function' then  define = require('amdefine')(module)
+if typeof define isnt 'function' then define = require('amdefine')(module)
 define [
   'underscore'
   'nsq-client'
@@ -24,15 +24,19 @@ define [
       console.log "Subscribing to #{ @topic } / #{ @channel }"
       subscriber = @nsq.subscribe @topic, @channel, ephemeral: true
 
-      subscriber.on "message", (message) ->
-        @messageHandler message, ->
-          item.finish()
+      if @subTopic
+        subscriber.on "message", (message) ->
+          @messageHandler message, ->
+            item.finish()
 
       @registerExitCallback()
 
     messageHandler: (message, done) ->
       console.log message
       done()
+
+    enqueueMessage: (message) ->
+      @nsq.publish @topic, message: message
 
     registerExitCallback: ->
       # Close connections on exit
