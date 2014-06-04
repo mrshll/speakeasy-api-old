@@ -1,27 +1,33 @@
 should = require 'should'
 fs = require 'fs'
 path = require 'path'
+moment = require 'moment'
 
 factory = require './factory'
 converter = require '../converter'
 
+m4aPath = 'assets/fixtures/test.m4a'
+mp3DesiredPath = 'assets/fixtures/test.mp3'
+
 beforeEach (done) ->
-  debugger
+  fs.unlinkSync(mp3DesiredPath) if fs.existsSync(mp3DesiredPath)
   factory.ensureConnectionAndClearDB done
 
 describe 'converter', ->
   describe 'convertM4AToMp3', ->
-    m4aPath = 'assets/fixtures/test.m4a'
 
     it 'should create an mp3 at the correct destination', (done) ->
       converter.convertM4AToMP3 m4aPath, (destination) ->
-        destination.should.equal 'assets/fixtures/test.mp3'
+        destination.should.equal mp3DesiredPath
         fs.exists destination , (exists) ->
           exists.should.equal true
           done()
 
   describe 'updateMessageWithConvertedFile', ->
-    it 'should updated the message with the converted file', ->
+    beforeEach (done) ->
+      factory.createMessage {}, (err, @message) => done()
 
-
-
+    it 'should update the message with the converted file', (done) ->
+      converter.updateMessageWithConvertedFile @message, 'youareeye.mp3', (err, updatedMessage) ->
+        updatedMessage.media_uri.should.equal "http://localhost:7076/youareeye.mp3"
+      done()

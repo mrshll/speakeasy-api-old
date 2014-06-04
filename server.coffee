@@ -1,162 +1,147 @@
-_ = require 'underscore'
-moment = require 'moment'
-async = require 'async'
+if typeof define isnt 'function' then define = require('amdefine')(module)
+define [
+  'moment'
+  'express'
+  'cookie-parser'
+  'express-session'
+  'body-parser'
+  'multer'
+  'twilio'
+  'nsq-client'
+  './helpers'
+  './models/message'
+  './models/user'
+], (
+  moment, express, cookieParser, session, bodyParser, multer, Twilio,
+  NSQClient, helpers, Message, User
+) ->
+  class WebServer
 
-###### EXPRESS
-express = require 'express.io'
-multer = require 'multer'
-util = require 'util'
+    constructor: ->
+      @app = express()
 
-app = express()
-app.http().io()
+      @app.use require("connect-assets")()
+      @app.use cookieParser()
+      @app.use bodyParser()
+      @app.use session secret: 'thisismysupersecret'
 
-app.use require("connect-assets")()
-app.use express.cookieParser()
-app.use express.session secret:'thisismysupersecret'
-app.use express.json()
+      #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
+      @app.use multer dest: './uploads/'
 
-#TODO maybe use limits and rename options (https://github.com/expressjs/multer)
-app.use multer dest: './uploads/'
+      @app.use express.static __dirname + '/assets'
+      @app.use '/uploads', express.static __dirname + '/uploads'
 
-app.configure ->
-  app.set 'view engine', 'hamlc'
-  app.set 'layout', 'layout'
+      helpers.debug 'debug mode enabled'
 
-app.use express.static __dirname + '/assets'
-app.use '/uploads', express.static __dirname + '/uploads'
+      # NSQ setup
+      @nsq = new NSQClient debug: helpers.DEBUG
 
-helpers = require './helpers'
-helpers.debug 'debug mode enabled'
+      @app.use helpers.outputRequestRoute
+      @app.use helpers.hydrateRequestWithUser
 
+      ###### TWILIO
+      @twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
 
-###### MODELS
-mongoose = require './db'
-Message = require './models/message'
-User = require './models/user'
+      ###### DB
+      mongoose = require './db'
+      Message = require './models/message'
+      User = require './models/user'
 
-###### NSQ
-NSQClient = require 'nsq-client'
-Util = require "util"
-nsq = new NSQClient debug: helpers.DEBUG
-CONVERTER_TOPIC = process.env.NSQ_CONVERTER_TOPIC
+      @registerRoutes()
+      @server = @startServer()
 
-# Custom middleware to output route in debug mode
-app.use (req, res, next) ->
-  helpers.debug "#{ req.originalUrl } #{ req.method }"
-  next()
+    startServer: ->
+      appPort = process.env.PORT or 7076
+      server = @app.listen appPort, ->
+        console.log 'Listening on port %d', server.address().port
+      server
 
-# Custom middleware to hydrate request with current user
-app.use (req, res, next) ->
-  if req.session and req.session.userID
-    User.findById req.session.userID, (err, user) ->
-      if not err and user
-        req.user = user
-        next()
-      else
-        next new Error("Could not restore User from Session.")
-  else
-    next()
+    registerRoutes: ->
+      @app.post '/twilio/callback', (req, res) ->
+        messageId = req.query.message_id
+        return res.send 422 unless messageId
 
-userRequired = (req, res, next) ->
-  # TODO: Authenticate
-  if req.user then next() else next new Error 'Not Logged In'
+        Message.findById messageId, (err, message) ->
+          console.log message
+          if err
+            console.log err
+            res.send 500
+          else
+            resp = new Twilio.TwimlResponse()
+            resp.play message.media_uri
 
-###### TWILIO
-Twilio = require 'twilio'
-twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
+            message.completed_at = moment()._d
+            message.in_progress = false
 
-app.post '/twilio/callback', (req, res) ->
-  messageId = req.query.message_id
-  return res.send 422 unless messageId
+            message.save (err, message) ->
+              res.header('Content-Type','text/xml').send resp.toString()
 
-  Message.findById messageId, (err, message) ->
-    console.log message
-    if err
-      console.log err
-      res.send 500
-    else
-      resp = new Twilio.TwimlResponse()
-      resp.play message.media_uri
+      @app.get '/seed', (req, res) ->
+        userDatas = [{
+            phone_number: '16155197142'
+            password: '1234'
+          },
+          {
+            phone_number: '12069638669'
+            password: '1234'
+          }]
 
-      message.completed_at = moment()._d
-      message.in_progress = false
+        for userData in userDatas
+          user = new User userData
+          user.save (err, user) ->
+            if err
+              console.error err
+            else
+              helpers.debug 'seeded database with user: ' + user
 
-      message.save (err, message) ->
-        res.header('Content-Type','text/xml').send resp.toString()
+          messageDatas = [{
+            deliver_at: moment()._d
+            original_media_path: 'fixtures/first_call.mp3'
+            _user: user._id
+          }]
 
-###### ROUTES
-app.get '/seed', (req, res) ->
-  userDatas = [{
-      phone_number: '16155197142'
-      password: '1234'
-    },
-    {
-      phone_number: '12069638669'
-      password: '1234'
-    }]
+          for messageData in messageDatas
+            message = new Message messageData
+            message.save (err, message) ->
+              if err
+                console.error err
+              else
+                helpers.debug 'seeded database with message: ' + message
 
-  for userData in userDatas
-    user = new User userData
-    user.save (err, user) ->
-      if err
-        console.error err
-      else
-        helpers.debug 'seeded database with user: ' + user
+        res.send 200
 
-    messageDatas = [{
-      deliver_at: moment()._d
-      original_media_path: 'fixtures/first_call.mp3'
-      _user: user._id
-    }]
+      @app.get '/user_id', (req, res) ->
+        User.findOne {}, (err, user) ->
+          res.json user_id: user._id
 
-    for messageData in messageDatas
-      message = new Message messageData
-      message.save (err, message) ->
-        if err
-          console.error err
-        else
-          helpers.debug 'seeded database with message: ' + message
+      #TODO: authenticate & validate user
+      @app.post '/messages', (req, res) =>
+        params = req.body
+        return res.send 422 unless params.delivery_unit and
+          params.delivery_magnitude and
+          params.user_id and
+          Object.keys(req.files).length is 1
 
-  res.send 200
+        for key, file of req.files
+          # we just want the first file, so we immediately return
+          helpers.debug "File uploaded to #{ file.path }"
+          #TODO enqueu the media into a topic for conversion
 
-app.get '/user_id', (req, res) ->
-  User.findOne {}, (err, user) ->
-    res.json user_id: user._id
+        deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
+        messageParams =
+          deliver_at: deliver_at._d
+          original_media_path: file.path
+          _user: params.user_id
 
-#TODO: authenticate & validate user
-app.post '/messages', (req, res) ->
-  params = req.body
-  return res.send 422 unless params.delivery_unit and
-    params.delivery_magnitude and
-    params.user_id and
-    Object.keys(req.files).length is 1
+        message = new Message messageParams
+        message.save (err, message) =>
+          if err
+            console.error err
+            res.send 500
+          else
+            helpers.debug 'created: ' + message
+            @nsq.publish helpers.CONVERTER_TOPIC,
+              message: message
+            res.send 201
 
-  for key, file of req.files
-    # we just want the first file, so we immediately return
-    helpers.debug "File uploaded to #{ file.path }"
-    #TODO enqueu the media into a topic for conversion
-
-  deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
-  messageParams =
-    deliver_at: deliver_at._d
-    original_media_path: file.path
-    _user: params.user_id
-
-  message = new Message messageParams
-  message.save (err, message) ->
-    if err
-      console.error err
-      res.send 500
-    else
-      helpers.debug 'created: ' + message
-      nsq.publish CONVERTER_TOPIC,
-        message: message
-      res.send 201
-
-######
-
-appPort = process.env.PORT or 7076
-server = app.listen appPort, ->
-  console.log 'Listening on port %d', server.address().port
-
-module.exports = app
+  module.exports = new WebServer().server

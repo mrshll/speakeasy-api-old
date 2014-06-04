@@ -23,6 +23,9 @@
 		A6365398193ADBE0002F0C22 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A636538A193ADBE0002F0C22 /* Icon.png */; };
 		A6365399193ADBE0002F0C22 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A636538B193ADBE0002F0C22 /* Icon@2x.png */; };
 		A636539A193ADBE0002F0C22 /* original.png in Resources */ = {isa = PBXBuildFile; fileRef = A636538C193ADBE0002F0C22 /* original.png */; };
+		A6847E89193EAABC0034859F /* FPMOnboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E88193EAABC0034859F /* FPMOnboardViewController.m */; };
+		A6847E8C193EB0380034859F /* onboarding.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8A193EB0380034859F /* onboarding.png */; };
+		A6847E8D193EB0380034859F /* onboarding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8B193EB0380034859F /* onboarding@2x.png */; };
 		A6C695331933B3B700CF6F94 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695321933B3B700CF6F94 /* Foundation.framework */; };
 		A6C695351933B3B700CF6F94 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695341933B3B700CF6F94 /* CoreGraphics.framework */; };
 		A6C695371933B3B700CF6F94 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695361933B3B700CF6F94 /* UIKit.framework */; };
@@ -70,6 +73,10 @@
 		A636538A193ADBE0002F0C22 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		A636538B193ADBE0002F0C22 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		A636538C193ADBE0002F0C22 /* original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = original.png; sourceTree = "<group>"; };
+		A6847E87193EAABC0034859F /* FPMOnboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMOnboardViewController.h; sourceTree = "<group>"; };
+		A6847E88193EAABC0034859F /* FPMOnboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMOnboardViewController.m; sourceTree = "<group>"; };
+		A6847E8A193EB0380034859F /* onboarding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding.png; sourceTree = "<group>"; };
+		A6847E8B193EB0380034859F /* onboarding@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding@2x.png"; sourceTree = "<group>"; };
 		A6C6952F1933B3B700CF6F94 /* FuturePhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuturePhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C695321933B3B700CF6F94 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A6C695341933B3B700CF6F94 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -125,6 +132,8 @@
 		A636537E193ADBE0002F0C22 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A6847E8A193EB0380034859F /* onboarding.png */,
+				A6847E8B193EB0380034859F /* onboarding@2x.png */,
 				A636537F193ADBE0002F0C22 /* Icon-120.png */,
 				A6365380193ADBE0002F0C22 /* Icon-72.png */,
 				A6365381193ADBE0002F0C22 /* Icon-72@2x.png */,
@@ -190,6 +199,8 @@
 				A6C6954A1933B3B700CF6F94 /* Images.xcassets */,
 				A6C695441933B3B700CF6F94 /* Main.storyboard */,
 				A6C695391933B3B700CF6F94 /* Supporting Files */,
+				A6847E87193EAABC0034859F /* FPMOnboardViewController.h */,
+				A6847E88193EAABC0034859F /* FPMOnboardViewController.m */,
 			);
 			path = FuturePhone;
 			sourceTree = "<group>";
@@ -321,9 +332,11 @@
 				A6365397193ADBE0002F0C22 /* Icon-Spotlight-iOS7@2x.png in Resources */,
 				A6365391193ADBE0002F0C22 /* Icon-76@2x.png in Resources */,
 				A6365398193ADBE0002F0C22 /* Icon.png in Resources */,
+				A6847E8C193EB0380034859F /* onboarding.png in Resources */,
 				A636539A193ADBE0002F0C22 /* original.png in Resources */,
 				A6365396193ADBE0002F0C22 /* Icon-Spotlight-iOS7.png in Resources */,
 				A6C695461933B3B700CF6F94 /* Main.storyboard in Resources */,
+				A6847E8D193EB0380034859F /* onboarding@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -388,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6847E89193EAABC0034859F /* FPMOnboardViewController.m in Sources */,
 				BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */,
 				A6C695431933B3B700CF6F94 /* FPMAppDelegate.m in Sources */,
 				A6C6953F1933B3B700CF6F94 /* main.m in Sources */,
