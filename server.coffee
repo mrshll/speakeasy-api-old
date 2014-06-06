@@ -11,9 +11,10 @@ define [
   './helpers'
   './models/message'
   './models/user'
+  './models/login_token'
 ], (
   moment, express, cookieParser, session, bodyParser, multer, Twilio,
-  NSQClient, helpers, Message, User
+  NSQClient, helpers, Message, User, LoginToken
 ) ->
   class WebServer
 
@@ -109,6 +110,43 @@ define [
                 helpers.debug 'seeded database with message: ' + message
 
         res.send 200
+
+      # Login Step 1: Takes a phone_number param and sends it a validation code
+      @app.post '/login/phone_number', (req, res) =>
+        phone = req.body.phone_number
+        token = helpers.randomSixDigitCode()
+        persistToken = LoginToken.create
+                         phone_number: phone
+                         token: token
+                         expires: moment().add 'minutes', 10
+        persistToken.then (loginToken, err) =>
+          # TODO: perhaps dispatch to the queue to be sent in the caller
+          @twilio.sendMessage {
+            from: helpers.TWILIO_FROM_PHONE
+            to: phone
+            body: "Hi! Enter #{ token } in Future Phone to log in."
+          }, (err, response) ->
+            if err
+              res.send 400
+            else
+              res.send 200
+
+      # Login Step 2: Takes a login_token and phone_number and responds
+      # with a session key if the token is valid
+      @app.post '/login/validate_login_token', (req, res) =>
+        phone = req.body.phone_number
+        token = req.body.login_token
+        findToken = LoginToken.findOne
+          phone_number: phone
+          token: token
+          expires:
+            $gt: moment()
+        findToken.exec().then (token, err) ->
+          if token
+            # TODO make and persist a real session key
+            res.json session_key: 'a29fjasdlkjf'
+          else
+            res.send 404
 
       @app.get '/user_id', (req, res) ->
         User.findOne {}, (err, user) ->

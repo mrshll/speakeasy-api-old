@@ -11,8 +11,16 @@ define [
     CONVERTER_TOPIC: process.env.NSQ_CONVERTER_TOPIC
     CALLER_TOPIC: process.env.NSQ_CALLER_TOPIC
 
+    # Twilio
+    TWILIO_FROM_PHONE: process.env.TWILIO_FROM_PHONE
+
     calculateFutureDelivery: (unit, magnitude) ->
       moment().add unit, parseInt(magnitude)
+
+    randomSixDigitCode: -> "#{ @randomInt 100000, 999999 }"
+
+    randomInt: (min, max) ->
+      Math.floor(Math.random() * (max - min + 1)) + min
 
     debug: (msg) ->
       console.log msg if process.env.APP_ENV is 'debug'
