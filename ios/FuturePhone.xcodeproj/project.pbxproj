@@ -26,6 +26,7 @@
 		A6847E89193EAABC0034859F /* FPMOnboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E88193EAABC0034859F /* FPMOnboardViewController.m */; };
 		A6847E8C193EB0380034859F /* onboarding.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8A193EB0380034859F /* onboarding.png */; };
 		A6847E8D193EB0380034859F /* onboarding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8B193EB0380034859F /* onboarding@2x.png */; };
+		A6847E90193F60B60034859F /* FPMConfirmAuthMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E8F193F60B60034859F /* FPMConfirmAuthMessageViewController.m */; };
 		A6C695331933B3B700CF6F94 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695321933B3B700CF6F94 /* Foundation.framework */; };
 		A6C695351933B3B700CF6F94 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695341933B3B700CF6F94 /* CoreGraphics.framework */; };
 		A6C695371933B3B700CF6F94 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695361933B3B700CF6F94 /* UIKit.framework */; };
@@ -41,7 +42,7 @@
 		A6C6955C1933B3B700CF6F94 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A6C6955A1933B3B700CF6F94 /* InfoPlist.strings */; };
 		A6C6955E1933B3B700CF6F94 /* FuturePhoneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C6955D1933B3B700CF6F94 /* FuturePhoneTests.m */; };
 		A6C6AD8A1938145400E217EE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C6AD891938145400E217EE /* Crashlytics.framework */; };
-		BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */; };
+		BFE358A91935788C004C2FBD /* FPMDispatchAuthMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358A81935788C004C2FBD /* FPMDispatchAuthMessageViewController.m */; };
 		BFE358AB1938160E004C2FBD /* FPMDispatchViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358AA1938160E004C2FBD /* FPMDispatchViewControllerTests.m */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +78,8 @@
 		A6847E88193EAABC0034859F /* FPMOnboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMOnboardViewController.m; sourceTree = "<group>"; };
 		A6847E8A193EB0380034859F /* onboarding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding.png; sourceTree = "<group>"; };
 		A6847E8B193EB0380034859F /* onboarding@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding@2x.png"; sourceTree = "<group>"; };
+		A6847E8E193F60B60034859F /* FPMConfirmAuthMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMConfirmAuthMessageViewController.h; sourceTree = "<group>"; };
+		A6847E8F193F60B60034859F /* FPMConfirmAuthMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMConfirmAuthMessageViewController.m; sourceTree = "<group>"; };
 		A6C6952F1933B3B700CF6F94 /* FuturePhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuturePhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C695321933B3B700CF6F94 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A6C695341933B3B700CF6F94 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -97,8 +100,8 @@
 		A6C6955B1933B3B700CF6F94 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A6C6955D1933B3B700CF6F94 /* FuturePhoneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FuturePhoneTests.m; sourceTree = "<group>"; };
 		A6C6AD891938145400E217EE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
-		BFE358A71935788C004C2FBD /* FPMDispatchMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMDispatchMessageViewController.h; sourceTree = "<group>"; };
-		BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchMessageViewController.m; sourceTree = "<group>"; };
+		BFE358A71935788C004C2FBD /* FPMDispatchAuthMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMDispatchAuthMessageViewController.h; sourceTree = "<group>"; };
+		BFE358A81935788C004C2FBD /* FPMDispatchAuthMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchAuthMessageViewController.m; sourceTree = "<group>"; };
 		BFE358AA1938160E004C2FBD /* FPMDispatchViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchViewControllerTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -194,13 +197,15 @@
 				A6C695421933B3B700CF6F94 /* FPMAppDelegate.m */,
 				A6C695471933B3B700CF6F94 /* FPMRecordViewController.h */,
 				A6C695481933B3B700CF6F94 /* FPMRecordViewController.m */,
-				BFE358A71935788C004C2FBD /* FPMDispatchMessageViewController.h */,
-				BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */,
+				BFE358A71935788C004C2FBD /* FPMDispatchAuthMessageViewController.h */,
+				BFE358A81935788C004C2FBD /* FPMDispatchAuthMessageViewController.m */,
 				A6C6954A1933B3B700CF6F94 /* Images.xcassets */,
 				A6C695441933B3B700CF6F94 /* Main.storyboard */,
 				A6C695391933B3B700CF6F94 /* Supporting Files */,
 				A6847E87193EAABC0034859F /* FPMOnboardViewController.h */,
 				A6847E88193EAABC0034859F /* FPMOnboardViewController.m */,
+				A6847E8E193F60B60034859F /* FPMConfirmAuthMessageViewController.h */,
+				A6847E8F193F60B60034859F /* FPMConfirmAuthMessageViewController.m */,
 			);
 			path = FuturePhone;
 			sourceTree = "<group>";
@@ -402,7 +407,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6847E89193EAABC0034859F /* FPMOnboardViewController.m in Sources */,
-				BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */,
+				A6847E90193F60B60034859F /* FPMConfirmAuthMessageViewController.m in Sources */,
+				BFE358A91935788C004C2FBD /* FPMDispatchAuthMessageViewController.m in Sources */,
 				A6C695431933B3B700CF6F94 /* FPMAppDelegate.m in Sources */,
 				A6C6953F1933B3B700CF6F94 /* main.m in Sources */,
 				A6C695491933B3B700CF6F94 /* FPMRecordViewController.m in Sources */,

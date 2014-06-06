@@ -63,10 +63,10 @@
             </objects>
             <point key="canvasLocation" x="23" y="-260"/>
         </scene>
-        <!--View Controller-->
+        <!--Confirm Auth Message View Controller-->
         <scene sceneID="Xe4-tR-woN">
             <objects>
-                <viewController id="76F-jb-Snf" sceneMemberID="viewController">
+                <viewController id="76F-jb-Snf" customClass="FPMConfirmAuthMessageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="azo-2F-F4s"/>
                         <viewControllerLayoutGuide type="bottom" id="xwf-Fb-eCg"/>
@@ -84,6 +84,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad" keyboardAppearance="alert"/>
+                                <connections>
+                                    <action selector="valueChanged:" destination="76F-jb-Snf" eventType="valueChanged" id="Ksh-Wh-Qi9"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -129,10 +132,10 @@
             </objects>
             <point key="canvasLocation" x="86" y="480"/>
         </scene>
-        <!--Dispatch Message View Controller-->
+        <!--Dispatch Auth Message View Controller-->
         <scene sceneID="ZmT-kR-aHY">
             <objects>
-                <viewController id="raW-D8-035" customClass="FPMDispatchMessageViewController" sceneMemberID="viewController">
+                <viewController id="raW-D8-035" customClass="FPMDispatchAuthMessageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TKN-5d-o2b"/>
                         <viewControllerLayoutGuide type="bottom" id="eqG-nr-ytj"/>

@@ -9,7 +9,7 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "FPMRecordViewController.h"
-#import "FPMDispatchMessageViewController.h"
+#import "FPMDispatchAuthMessageViewController.h"
 
 #define FPM_USER_ID_URL_STRING (@"http://7cdd5781.ngrok.com/user_id")
 
@@ -82,7 +82,7 @@
 #pragma mark - UIViewController
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  FPMDispatchMessageViewController* dispatchViewController = [segue destinationViewController];
+  FPMDispatchAuthMessageViewController* dispatchViewController = [segue destinationViewController];
   [dispatchViewController setMediaURL: self.mediaURL];
   [dispatchViewController setUserId:self.userId];
 }

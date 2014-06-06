@@ -8,15 +8,15 @@
 
 #import <AFNetworking/AFNetworking.h>
 
-#import "FPMDispatchMessageViewController.h"
+#import "FPMDispatchAuthMessageViewController.h"
 
 #define FPM_MESSAGES_URL_STRING (@"http://7cdd5781.ngrok.com/messages")
 
-@interface FPMDispatchMessageViewController ()
+@interface FPMDispatchAuthMessageViewController ()
 
 @end
 
-@implementation FPMDispatchMessageViewController
+@implementation FPMDispatchAuthMessageViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

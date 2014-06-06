@@ -8,11 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
-#import "FPMDispatchMessageViewController.h"
+#import "FPMDispatchAuthMessageViewController.h"
 
 @interface FPMDispatchViewControllerTests : XCTestCase
 
-@property FPMDispatchMessageViewController* vc;
+@property FPMDispatchAuthMessageViewController* vc;
 
 @end
 
@@ -21,7 +21,7 @@
 - (void)setUp
 {
   [super setUp];
-  self.vc = [[FPMDispatchMessageViewController alloc] init];
+  self.vc = [[FPMDispatchAuthMessageViewController alloc] init];
 }
 
 - (void)tearDown
