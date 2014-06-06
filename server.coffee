@@ -127,15 +127,18 @@ define [
             body: "Hi! Enter #{ token } in Future Phone to log in."
           }, (err, response) ->
             if err
+              helpers.debug err
               res.send 400
             else
+              # TODO: maybe don't log, doing for dev purposes
+              helpers.debug "#{ phone } - #{ token }"
               res.send 200
 
       # Login Step 2: Takes a login_token and phone_number and responds
       # with a session key if the token is valid
-      @app.post '/login/validate_login_token', (req, res) =>
+      @app.post '/login/validate_token', (req, res) =>
         phone = req.body.phone_number
-        token = req.body.login_token
+        token = req.body.token
         findToken = LoginToken.findOne
           phone_number: phone
           token: token

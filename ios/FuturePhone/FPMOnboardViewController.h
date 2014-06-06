@@ -10,4 +10,6 @@
 
 @interface FPMOnboardViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextField;
+
 @end
