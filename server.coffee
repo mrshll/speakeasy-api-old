@@ -120,6 +120,7 @@ define [
                          token: token
                          expires: moment().add 'minutes', 10
         persistToken.then (loginToken, err) =>
+          # TODO: perhaps dispatch to the queue to be sent in the caller
           @twilio.sendMessage {
             from: helpers.TWILIO_FROM_PHONE
             to: phone
