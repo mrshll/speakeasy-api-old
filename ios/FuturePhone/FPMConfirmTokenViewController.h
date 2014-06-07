@@ -10,6 +10,4 @@
 
 @interface FPMConfirmTokenViewController : UIViewController
 
-@property (nonatomic) NSString* phoneNumber;
-
 @end

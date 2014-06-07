@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 futurephone. All rights reserved.
 //
 #import <AFNetworking/AFNetworking.h>
+#import <Lockbox/Lockbox.h>
 
 #import "FPMConfirmTokenViewController.h"
 #import "FPMOnboardViewController.h"
@@ -29,6 +30,7 @@
   operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
   [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
     NSLog(@"Token request success");
+    [Lockbox setString:phoneNumber forKey:@"phoneNumber"];
   } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
     NSLog(@"%@", error);
   }];
@@ -36,13 +38,6 @@
   [operation start];
   
   [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - UIViewController
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  FPMConfirmTokenViewController* confirmTokenViewController = [segue destinationViewController];
-  [confirmTokenViewController setPhoneNumber:[self.phoneNumberTextField text]];
 }
 
 @end

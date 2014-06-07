@@ -11,14 +11,11 @@
 #import "FPMRecordViewController.h"
 #import "FPMDispatchAuthMessageViewController.h"
 
-#define FPM_USER_ID_URL_STRING (@"http://7cdd5781.ngrok.com/user_id")
-
 @interface FPMRecordViewController ()
 
 @property (nonatomic) AVAudioRecorder* recorder;
 @property (nonatomic) NSURL* mediaURL;
 @property (nonatomic, weak) IBOutlet UIButton* recordButton;
-@property (nonatomic, copy) NSString* userId;
 
 @end
 
@@ -29,13 +26,6 @@
   [super viewDidLoad];
   
   self.recorder = [self createAudioRecorder];
-
-  // TEMP: Get a user id from the server 
-  AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-  [manager GET:FPM_USER_ID_URL_STRING parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSDictionary* response = (NSDictionary*)responseObject;
-    self.userId = response[@"user_id"];
-  } failure:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,7 +74,6 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
   FPMDispatchAuthMessageViewController* dispatchViewController = [segue destinationViewController];
   [dispatchViewController setMediaURL: self.mediaURL];
-  [dispatchViewController setUserId:self.userId];
 }
 
 #pragma mark - Helpers

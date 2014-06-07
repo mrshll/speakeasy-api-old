@@ -137,10 +137,10 @@ define [
       # Login Step 2: Takes a login_token and phone_number and responds
       # with a session key if the token is valid
       @app.post '/login/validate_token', (req, res) =>
-        phone = req.body.phone_number
+        phoneNumber = req.body.phone_number
         token = req.body.token
         findToken = LoginToken.findOne
-          phone_number: phone
+          phone_number: phoneNumber
           token: token
           expires:
             $gt: moment()
@@ -151,38 +151,39 @@ define [
           else
             res.send 404
 
-      @app.get '/user_id', (req, res) ->
-        User.findOne {}, (err, user) ->
-          res.json user_id: user._id
-
       #TODO: authenticate & validate user
       @app.post '/messages', (req, res) =>
         params = req.body
+        console.log params
         return res.send 422 unless params.delivery_unit and
           params.delivery_magnitude and
-          params.user_id and
+          params.phone_number and
+          params.session_key and
           Object.keys(req.files).length is 1
 
-        for key, file of req.files
-          # we just want the first file, so we immediately return
-          helpers.debug "File uploaded to #{ file.path }"
-          #TODO enqueu the media into a topic for conversion
+        findUser = User.findOne
+          phone_number: params.phone_number
+        findUser.exec().then (user, err) =>
+          for key, file of req.files
+            # we just want the first file, so we immediately return
+            helpers.debug "File uploaded to #{ file.path }"
+            #TODO enqueu the media into a topic for conversion
 
-        deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
-        messageParams =
-          deliver_at: deliver_at._d
-          original_media_path: file.path
-          _user: params.user_id
+          deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
+          messageParams =
+            deliver_at: deliver_at._d
+            original_media_path: file.path
+            _user: user._id
 
-        message = new Message messageParams
-        message.save (err, message) =>
-          if err
-            console.error err
-            res.send 500
-          else
-            helpers.debug 'created: ' + message
-            @nsq.publish helpers.CONVERTER_TOPIC,
-              message: message
-            res.send 201
+          message = new Message messageParams
+          message.save (err, message) =>
+            if err
+              console.error err
+              res.send 500
+            else
+              helpers.debug 'created: ' + message
+              @nsq.publish helpers.CONVERTER_TOPIC,
+                message: message
+              res.send 201
 
   module.exports = new WebServer().server
