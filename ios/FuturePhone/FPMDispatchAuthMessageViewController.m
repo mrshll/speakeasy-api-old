@@ -7,10 +7,11 @@
 //
 
 #import <AFNetworking/AFNetworking.h>
+#import <Lockbox/Lockbox.h>
 
 #import "FPMDispatchAuthMessageViewController.h"
 
-#define FPM_MESSAGES_URL_STRING (@"http://7cdd5781.ngrok.com/messages")
+#define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
 
 @interface FPMDispatchAuthMessageViewController ()
 
@@ -44,10 +45,13 @@
 - (void)createMessageWithMediaAtURL:(NSURL*)fileURL withTimeUnit:(NSString*)timeUnit magnitude:(NSNumber*)magnitude {
   NSLog(@"uploading and creating message");
 
+  NSString* phoneNumber = [Lockbox stringForKey:@"phoneNumber"];
+  NSString* sessionKey = [Lockbox stringForKey:@"sessionKey"];
   NSDictionary* params = @{
     @"delivery_unit": timeUnit,
     @"delivery_magnitude": magnitude,
-    @"user_id": self.userId
+    @"phone_number": phoneNumber,
+    @"session_key": sessionKey
   };
 
   NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {

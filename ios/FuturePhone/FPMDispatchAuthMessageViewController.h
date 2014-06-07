@@ -11,7 +11,6 @@
 @interface FPMDispatchAuthMessageViewController : UIViewController
 
 @property (nonatomic) NSURL* mediaURL;
-@property (nonatomic, copy) NSString* userId;
 
 - (NSNumber*)randomNumberFrom:(NSInteger)min to:(NSInteger)max;
 

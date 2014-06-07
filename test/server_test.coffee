@@ -59,7 +59,8 @@ describe '/messages', ->
           @req = request.post('/messages')
             .field('delivery_unit', 'days')
             .field('delivery_magnitude', 6)
-            .field('user_id', @user._id.toString())
+            .field('phone_number', @user.phone_number)
+            .field('session_key', 'abc123')
             .attach('media', 'assets/fixtures/first_call.mp3')
           done()
 

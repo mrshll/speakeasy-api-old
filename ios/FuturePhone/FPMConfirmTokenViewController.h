@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FPMConfirmAuthMessageViewController : UIViewController
+@interface FPMConfirmTokenViewController : UIViewController
 
 @end

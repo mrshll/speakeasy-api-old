@@ -4,6 +4,7 @@ define [
   './models/user'
 ], (moment, User) ->
   class Helpers
+    #TODO raise error on startup if any required params are not set, or add defaults to all
     ROOT_URL: process.env.ROOT_URL || 'http://localhost:7076'
     DEBUG: process.env.APP_ENV is 'debug'
 

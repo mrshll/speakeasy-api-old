@@ -26,7 +26,7 @@
 		A6847E89193EAABC0034859F /* FPMOnboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E88193EAABC0034859F /* FPMOnboardViewController.m */; };
 		A6847E8C193EB0380034859F /* onboarding.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8A193EB0380034859F /* onboarding.png */; };
 		A6847E8D193EB0380034859F /* onboarding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8B193EB0380034859F /* onboarding@2x.png */; };
-		A6847E90193F60B60034859F /* FPMConfirmAuthMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E8F193F60B60034859F /* FPMConfirmAuthMessageViewController.m */; };
+		A6847E90193F60B60034859F /* FPMConfirmTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E8F193F60B60034859F /* FPMConfirmTokenViewController.m */; };
 		A6C695331933B3B700CF6F94 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695321933B3B700CF6F94 /* Foundation.framework */; };
 		A6C695351933B3B700CF6F94 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695341933B3B700CF6F94 /* CoreGraphics.framework */; };
 		A6C695371933B3B700CF6F94 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C695361933B3B700CF6F94 /* UIKit.framework */; };
@@ -78,8 +78,8 @@
 		A6847E88193EAABC0034859F /* FPMOnboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMOnboardViewController.m; sourceTree = "<group>"; };
 		A6847E8A193EB0380034859F /* onboarding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding.png; sourceTree = "<group>"; };
 		A6847E8B193EB0380034859F /* onboarding@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "onboarding@2x.png"; sourceTree = "<group>"; };
-		A6847E8E193F60B60034859F /* FPMConfirmAuthMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMConfirmAuthMessageViewController.h; sourceTree = "<group>"; };
-		A6847E8F193F60B60034859F /* FPMConfirmAuthMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMConfirmAuthMessageViewController.m; sourceTree = "<group>"; };
+		A6847E8E193F60B60034859F /* FPMConfirmTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMConfirmTokenViewController.h; sourceTree = "<group>"; };
+		A6847E8F193F60B60034859F /* FPMConfirmTokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMConfirmTokenViewController.m; sourceTree = "<group>"; };
 		A6C6952F1933B3B700CF6F94 /* FuturePhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuturePhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A6C695321933B3B700CF6F94 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A6C695341933B3B700CF6F94 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -204,8 +204,8 @@
 				A6C695391933B3B700CF6F94 /* Supporting Files */,
 				A6847E87193EAABC0034859F /* FPMOnboardViewController.h */,
 				A6847E88193EAABC0034859F /* FPMOnboardViewController.m */,
-				A6847E8E193F60B60034859F /* FPMConfirmAuthMessageViewController.h */,
-				A6847E8F193F60B60034859F /* FPMConfirmAuthMessageViewController.m */,
+				A6847E8E193F60B60034859F /* FPMConfirmTokenViewController.h */,
+				A6847E8F193F60B60034859F /* FPMConfirmTokenViewController.m */,
 			);
 			path = FuturePhone;
 			sourceTree = "<group>";
@@ -407,7 +407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A6847E89193EAABC0034859F /* FPMOnboardViewController.m in Sources */,
-				A6847E90193F60B60034859F /* FPMConfirmAuthMessageViewController.m in Sources */,
+				A6847E90193F60B60034859F /* FPMConfirmTokenViewController.m in Sources */,
 				BFE358A91935788C004C2FBD /* FPMDispatchAuthMessageViewController.m in Sources */,
 				A6C695431933B3B700CF6F94 /* FPMAppDelegate.m in Sources */,
 				A6C6953F1933B3B700CF6F94 /* main.m in Sources */,
