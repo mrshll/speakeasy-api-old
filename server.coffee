@@ -114,7 +114,7 @@ define [
       # Login Step 1: Takes a phone_number param and sends it a validation code
       @app.post '/login/phone_number', (req, res) =>
         phone = req.body.phone_number
-        token = helpers.randomSixDigitCode()
+        token = helpers.randomSixDigitToken()
         persistToken = LoginToken.create
                          phone_number: phone
                          token: token

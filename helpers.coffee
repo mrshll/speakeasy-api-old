@@ -1,8 +1,9 @@
 if typeof define isnt 'function' then define = require('amdefine')(module)
 define [
+  'crypto'
   'moment'
   './models/user'
-], (moment, User) ->
+], (crypto, moment, User) ->
   class Helpers
     #TODO raise error on startup if any required params are not set, or add defaults to all
     ROOT_URL: process.env.ROOT_URL || 'http://localhost:7076'
@@ -18,10 +19,13 @@ define [
     calculateFutureDelivery: (unit, magnitude) ->
       moment().add unit, parseInt(magnitude)
 
-    randomSixDigitCode: -> "#{ @randomInt 100000, 999999 }"
-
-    randomInt: (min, max) ->
-      Math.floor(Math.random() * (max - min + 1)) + min
+    randomSixDigitToken: ->
+      length = 6
+      randomBytes = crypto.randomBytes(length)
+      code = []
+      for i in [0...length]
+        code[i] = randomBytes[i] % 10
+      code.join ''
 
     debug: (msg) ->
       console.log msg if process.env.APP_ENV is 'debug'
