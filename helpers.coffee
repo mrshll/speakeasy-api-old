@@ -10,8 +10,8 @@ define [
     DEBUG: process.env.APP_ENV is 'debug'
 
     # Queue topics
-    CONVERTER_TOPIC: process.env.NSQ_CONVERTER_TOPIC
-    CALLER_TOPIC: process.env.NSQ_CALLER_TOPIC
+    CONVERTER_TOPIC: process.env.NSQ_CONVERTER_TOPIC || 'mp4_converter_topic'
+    CALLER_TOPIC: process.env.NSQ_CALLER_TOPIC || 'caller_topic'
 
     # Twilio
     TWILIO_FROM_PHONE: process.env.TWILIO_FROM_PHONE
