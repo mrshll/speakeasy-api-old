@@ -24,6 +24,7 @@ define [
       @app.use require("connect-assets")()
       @app.use cookieParser()
       @app.use bodyParser()
+      # TODO Using in memory session store, change for production
       @app.use session secret: 'thisismysupersecret'
 
       #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
@@ -63,7 +64,6 @@ define [
         return res.send 422 unless messageId
 
         Message.findById messageId, (err, message) ->
-          console.log message
           if err
             console.log err
             res.send 500
@@ -113,14 +113,15 @@ define [
 
       # Login Step 1: Takes a phone_number param and sends it a validation code
       @app.post '/login/phone_number', (req, res) =>
+        # went you hit this route you are logged out of any previous session
+        req.session.loggedIn = false
         phone = req.body.phone_number
-        token = helpers.randomSixDigitCode()
+        token = helpers.randomSixDigitToken()
         persistToken = LoginToken.create
                          phone_number: phone
                          token: token
                          expires: moment().add 'minutes', 10
         persistToken.then (loginToken, err) =>
-          # TODO: perhaps dispatch to the queue to be sent in the caller
           @twilio.sendMessage {
             from: helpers.TWILIO_FROM_PHONE
             to: phone
@@ -146,15 +147,14 @@ define [
             $gt: moment()
         findToken.exec().then (token, err) ->
           if token
-            # TODO make and persist a real session key
-            res.json session_key: 'a29fjasdlkjf'
+            req.session.loggedIn = true
+            res.send 200
           else
             res.send 404
 
       #TODO: authenticate & validate user
       @app.post '/messages', (req, res) =>
         params = req.body
-        console.log params
         return res.send 422 unless params.delivery_unit and
           params.delivery_magnitude and
           params.phone_number and
@@ -186,4 +186,4 @@ define [
                 message: message
               res.send 201
 
-  module.exports = new WebServer().server
+  module.exports = new WebServer()

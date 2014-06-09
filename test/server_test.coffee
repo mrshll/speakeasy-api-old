@@ -1,15 +1,17 @@
 _ = require 'underscore'
 should = require 'should'
 request = require 'supertest'
+sinon = require 'sinon'
 moment = require 'moment'
 
-app = require '../server'
+webServer = require '../server'
 helpers = require '../helpers'
 factory = require './factory'
 Message = require '../models/message'
 User = require '../models/user'
+LoginToken = require '../models/login_token'
 
-request = request(app)
+request = request(webServer.app)
 
 beforeEach (done) ->
   factory.ensureConnectionAndClearDB done
@@ -38,7 +40,6 @@ describe '/twilio/callback', ->
           res.text.match(/xml.*Play.*\.mp3/).should.have.lengthOf 1
 
           Message.findById @message._id, (err, message) ->
-            console.log message
             moment(message.completed_at).isBefore(moment()).should.equal true
             done()
 
@@ -82,10 +83,85 @@ describe '/messages', ->
             moment(message.deliver_at).isAfter(moment()).should.equal true
           done()
 
-describe 'helpers', ->
-  describe '#calculateFutureDelivery', ->
-    it 'should return a date in the future', (done) ->
-      now = moment()
-      future_date = helpers.calculateFutureDelivery 'days', 6
-      future_date.isAfter(now).should.equal true
+PHONE_NUMBER = '1111111111'
+describe '/login/phone_number', ->
+  context 'POST', ->
+    beforeEach (done) ->
+      @req = request.post '/login/phone_number'
+               .field 'phone_number', PHONE_NUMBER
       done()
+
+    context 'success', ->
+      beforeEach (done) ->
+        @sendMessageStub = sinon.stub().yields()
+        webServer.twilio.sendMessage = @sendMessageStub
+        done()
+
+      it 'creates a login token', (done) ->
+        @req.expect(200).end (err, res) =>
+          findToken = LoginToken.findOne
+            phone_number: PHONE_NUMBER
+            expires:
+              $gt: moment()
+          findToken.exec().then (tokenRecord, err) =>
+            tokenRecord.token.length.should.equal 6
+            done()
+
+      it 'sends a token message to twilio', (done) ->
+        @req.expect(200).end (err, res) =>
+          throw err if err
+          @sendMessageStub.calledOnce.should.be.true
+          done()
+
+    context 'twilio send message returns an error', ->
+      beforeEach (done) ->
+        @sendMessageStub = sinon.stub().yields "error", null
+        webServer.twilio.sendMessage = @sendMessageStub
+        done()
+
+      it 'returns 400', (done) ->
+        @req.expect(400).end done
+
+TOKEN = '123456'
+describe '/login/validate_token', ->
+  context 'POST', ->
+    beforeEach (done) ->
+      LoginToken.create {
+        phone_number: PHONE_NUMBER
+        token: TOKEN
+        expires: moment().add 'minutes', 10
+      }, done
+
+    context 'success', ->
+      beforeEach (done) ->
+        @req = request.post '/login/validate_token'
+                 .field 'phone_number', PHONE_NUMBER
+                 .field 'token', TOKEN
+        done()
+
+      it 'returns 200', (done) ->
+        @req.expect(200).end done
+
+    context 'incorrect token', ->
+      beforeEach (done) ->
+        @req = request.post '/login/validate_token'
+                 .field 'phone_number', PHONE_NUMBER
+                 .field 'token', 'wrongtoken'
+        done()
+
+      it 'returns 404', (done) ->
+        @req.expect(404).end done
+
+    context 'expired token', ->
+      beforeEach (done) ->
+        @req = request.post '/login/validate_token'
+                 .field 'phone_number', PHONE_NUMBER
+                 .field 'token', '888888'
+        LoginToken.create {
+          phone_number: PHONE_NUMBER
+          token: '888888'
+          expires: moment().subtract 'minutes', 1
+        }, done
+
+      it 'returns 404', (done) ->
+        @req.expect(404).end done
