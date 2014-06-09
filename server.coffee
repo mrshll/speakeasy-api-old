@@ -24,6 +24,7 @@ define [
       @app.use require("connect-assets")()
       @app.use cookieParser()
       @app.use bodyParser()
+      # TODO Using in memory session store, not for production
       @app.use session secret: 'thisismysupersecret'
 
       #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
@@ -113,6 +114,8 @@ define [
 
       # Login Step 1: Takes a phone_number param and sends it a validation code
       @app.post '/login/phone_number', (req, res) =>
+        # went you hit this route you are logged out of previous sessions
+        req.session.loggedIn = false
         phone = req.body.phone_number
         token = helpers.randomSixDigitToken()
         persistToken = LoginToken.create
@@ -132,6 +135,7 @@ define [
             else
               # TODO: maybe don't log, doing for dev purposes
               helpers.debug "#{ phone } - #{ token }"
+              req.session.loggingIn = true
               res.send 200
 
       # Login Step 2: Takes a login_token and phone_number and responds
@@ -146,8 +150,9 @@ define [
             $gt: moment()
         findToken.exec().then (token, err) ->
           if token
-            # TODO make and persist a real session key
-            res.json session_key: 'a29fjasdlkjf'
+            req.session.loggedIn = true
+            req.session.loggingIn = false
+            res.send 200
           else
             res.send 404
 
