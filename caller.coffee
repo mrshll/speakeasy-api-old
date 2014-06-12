@@ -13,7 +13,7 @@ define [
 
     constructor: ->
       super
-      @twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
+      @twilio = Twilio helpers.TWILIO_ACCOUNT_SID, helpers.TWILIO_AUTH_TOKEN
 
     messageHandler: (item, done) ->
       message = item.data.message
