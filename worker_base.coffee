@@ -10,10 +10,10 @@ define [
   './models/user'
 ], (_, NSQClient, Util, OS, helpers, mongoose, Message, User) ->
   class WorkerBase
-    channel: OS.hostname()
+    channel: helpers.NSQ_CHANNEL
 
     constructor: ->
-      @nsq = new NSQClient debug: helpers.DEBUG
+      @nsq = new NSQClient debug: helpers.NSQ_DEBUG
       @nsq.on "error", (err) ->
         console.log "ERROR " + Util.inspect(err)
 
@@ -21,8 +21,9 @@ define [
         console.log "DEBUG " + Util.inspect(event)
 
       # Subscribe to topics defined on stdin
-      console.log "Subscribing to #{ @topic } / #{ @channel }"
-      subscriber = @nsq.subscribe @topic, @channel, ephemeral: true
+      if @subTopic
+        console.log "Subscribing to #{ @subTopic } / #{ @channel }"
+        subscriber = @nsq.subscribe @subTopic, @channel, ephemeral: true
 
       if @subTopic
         subscriber.on "message", (message) ->
@@ -36,14 +37,14 @@ define [
       done()
 
     enqueueMessage: (message) ->
-      @nsq.publish @topic, message: message
+      @nsq.publish @pubTopic, message: message
 
     registerExitCallback: ->
       # Close connections on exit
-      process.once "SIGINT", ->
+      process.once "SIGINT", =>
         process.once "SIGINT", process.exit
         console.log()
         console.log "Closing nsq connections"
         console.log "Press CTL-C again to force quit"
-        nsq.close ->
+        @nsq.close ->
           process.exit()

@@ -16,7 +16,7 @@ define [
 
     # Enqueue messages which are ready to be called
     # If provided, calls done with the number of dispatched messages
-    enqueueReadyMessages: (done) ->
+    enqueueReadyMessages: (done) =>
       query = Message.find
         'deliver_at':
           '$lte': moment()._d

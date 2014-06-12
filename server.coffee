@@ -42,7 +42,7 @@ define [
       @app.use helpers.hydrateRequestWithUser
 
       ###### TWILIO
-      @twilio = Twilio process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN
+      @twilio = Twilio helpers.TWILIO_ACCOUNT_SID, helpers.TWILIO_AUTH_TOKEN
 
       ###### DB
       mongoose = require './db'
