@@ -139,10 +139,10 @@
             </objects>
             <point key="canvasLocation" x="86" y="480"/>
         </scene>
-        <!--Dispatch Auth Message View Controller-->
+        <!--Dispatch Message View Controller-->
         <scene sceneID="ZmT-kR-aHY">
             <objects>
-                <viewController id="raW-D8-035" customClass="FPMDispatchAuthMessageViewController" sceneMemberID="viewController">
+                <viewController id="raW-D8-035" customClass="FPMDispatchMessageViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TKN-5d-o2b"/>
                         <viewControllerLayoutGuide type="bottom" id="eqG-nr-ytj"/>

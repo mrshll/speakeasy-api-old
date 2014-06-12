@@ -9,15 +9,14 @@
 #import <AFNetworking/AFNetworking.h>
 #import <Lockbox/Lockbox.h>
 
-#import "FPMDispatchAuthMessageViewController.h"
+#import "FPMNetworking.h"
+#import "FPMDispatchMessageViewController.h"
 
-#define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
-
-@interface FPMDispatchAuthMessageViewController ()
+@interface FPMDispatchMessageViewController ()
 
 @end
 
-@implementation FPMDispatchAuthMessageViewController
+@implementation FPMDispatchMessageViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -50,23 +49,15 @@
   NSDictionary* params = @{
     @"delivery_unit": timeUnit,
     @"delivery_magnitude": magnitude,
-    @"phone_number": phoneNumber,
-    @"session_key": sessionKey
+    @"phone_number": phoneNumber
   };
-
-  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-    [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
-  } error:nil];
-
-  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-  operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-  [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation* operation, id responseObject) {
-    NSLog(@"Create message success");
-  } failure:^(AFHTTPRequestOperation* operation, NSError* error) {
-    NSLog(@"Create message failed");
-  }];
   
-  [operation start];
+  [FPMNetworking createMessageWithFileAtURL:fileURL andParams:params andSuccess:^(AFHTTPRequestOperation* operation, id responseData) {
+    NSLog(@"Create message success");
+  } andFailure:^(AFHTTPRequestOperation* operation, NSError* error) {
+    NSLog(@"Create message failed with error: %@", error);
+  }];
+
   [self dismissViewControllerAnimated:YES completion:nil];
 }
 
