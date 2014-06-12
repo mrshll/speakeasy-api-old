@@ -19,13 +19,16 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Lockbox (1.4.9)
+  - pop (1.0.5)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
   - Lockbox (~> 1.4.9)
+  - pop (~> 1.0)
 
 SPEC CHECKSUMS:
   AFNetworking: ab63e259fe91eef4519b371ef0a4955af0e73e64
   Lockbox: cfe87dbbce6b5c6d7cfeefc3fe6594ef55919b11
+  pop: 75fa2b33934200a8a68abb449ac1726fcf7e43b9
 
 COCOAPODS: 0.33.1

@@ -14,6 +14,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[Crashlytics startWithAPIKey:@"1a41139c46f6ca7cad9edd61ce5f62ba8d4516b5"];
+	[FPMNetworking loadCookies];
 	return YES;
 }
 

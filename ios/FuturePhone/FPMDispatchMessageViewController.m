@@ -45,7 +45,6 @@
   NSLog(@"uploading and creating message");
 
   NSString* phoneNumber = [Lockbox stringForKey:@"phoneNumber"];
-  NSString* sessionKey = [Lockbox stringForKey:@"sessionKey"];
   NSDictionary* params = @{
     @"delivery_unit": timeUnit,
     @"delivery_magnitude": magnitude,

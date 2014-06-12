@@ -9,23 +9,34 @@
 #import <Lockbox/Lockbox.h>
 #import "FPMNetworking.h"
 
-#define FPM_MESSAGES_URL_STRING (@"http://localhost:7076/messages")
-#define FPM_REQUEST_CODE_URL_STRING (@"http://localhost:7076/login/phone_number")
-#define FPM_CONFIRM_TOKEN_URL_STRING (@"http://localhost:7076/login/validate_token")
+#define FPM_BASE_URL_STRING (@"http://localhost:7076")
+
+#define FPM_MESSAGES_URL_STRING ([NSString stringWithFormat:@"%@/messages", FPM_BASE_URL_STRING])
+
+#define FPM_REQUEST_CODE_URL_STRING ([NSString stringWithFormat:@"%@/login/phone_number", FPM_BASE_URL_STRING])
+
+#define FPM_CONFIRM_TOKEN_URL_STRING ([NSString stringWithFormat:@"%@/login/validate_token", FPM_BASE_URL_STRING])
 
 @implementation FPMNetworking
 
 + (void)saveCookies {
 	NSArray* cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
-	[Lockbox setArray:cookies forKey:@"cookies"];
+  
+  NSMutableArray* allCookieParams = [[NSMutableArray alloc] init];
+  for (NSHTTPCookie* cookie in cookies) {
+    [allCookieParams addObject:[cookie properties]];
+  }
+	[Lockbox setArray:allCookieParams forKey:@"cookies"];
 }
 
 + (void)loadCookies {
-	NSArray* cookies = [Lockbox arrayForKey:@"cookies"];
-
-	for (NSHTTPCookie* cookie in cookies) {
-		[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
-	}
+	NSArray* allCookieParams = [Lockbox arrayForKey:@"cookies"];
+  
+  NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+  for (NSDictionary* cookieParams in allCookieParams) {
+    NSHTTPCookie* cookie = [[NSHTTPCookie alloc] initWithProperties:cookieParams];
+    [sharedCookieStorage setCookie:cookie];
+  }
 }
 
 + (void)createMessageWithFileAtURL:(NSURL *)fileURL andParams:(NSDictionary*)params
