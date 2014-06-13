@@ -53,7 +53,7 @@ define [
       @server = @startServer()
 
     startServer: ->
-      appPort = process.env.PORT or 7076
+      appPort = helpers.PORT
       server = @app.listen appPort, ->
         console.log 'Listening on port %d', server.address().port
       server

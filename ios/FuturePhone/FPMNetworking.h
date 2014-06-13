@@ -13,7 +13,7 @@
 
 + (void)saveCookies;
 
-+ (void)loadCookies;
++ (BOOL)loadCookies;
 
 + (void)createMessageWithFileAtURL:(NSURL*)fileURL andParams:(NSDictionary*)params
                         andSuccess:(void (^)(AFHTTPRequestOperation*, id))success

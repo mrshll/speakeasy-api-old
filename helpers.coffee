@@ -6,7 +6,8 @@ define [
 ], (crypto, moment, User) ->
   class Helpers
     #TODO raise error on startup if any required params are not set, or add defaults to all
-    ROOT_URL: process.env.ROOT_URL || 'http://localhost:7076'
+    PORT: process.env.PORT
+    ROOT_URL: process.env.ROOT_URL || "http://localhost:#{ @PORT }"
     DEBUG: process.env.APP_ENV is 'debug'
 
     # Queue topics

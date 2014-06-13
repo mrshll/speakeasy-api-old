@@ -10,6 +10,8 @@
 	<string>FuturePhone</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>0051553B-ACFD-4F79-B568-2D165366B8DE</key>
+		<string>https://github.com/schneiderandre/popping</string>
 		<key>F7A438B0-A860-41E4-9BC4-2737C97DC487</key>
 		<string>ssh://github.com/mmoutenot/futurephone.me.git</string>
 	</dict>
@@ -17,6 +19,8 @@
 	<string>ios/FuturePhone.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>0051553B-ACFD-4F79-B568-2D165366B8DE</key>
+		<string>../../../popping</string>
 		<key>F7A438B0-A860-41E4-9BC4-2737C97DC487</key>
 		<string>../..</string>
 	</dict>
@@ -35,6 +39,14 @@
 			<string>F7A438B0-A860-41E4-9BC4-2737C97DC487</string>
 			<key>IDESourceControlWCCName</key>
 			<string>FuturePhone</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0051553B-ACFD-4F79-B568-2D165366B8DE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>popping</string>
 		</dict>
 	</array>
 </dict>

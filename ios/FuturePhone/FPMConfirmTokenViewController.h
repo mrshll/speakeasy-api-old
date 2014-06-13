@@ -10,4 +10,6 @@
 
 @interface FPMConfirmTokenViewController : UIViewController
 
+@property (strong) UITextField* tokenTextField;
+
 @end

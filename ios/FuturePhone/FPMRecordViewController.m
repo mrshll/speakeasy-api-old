@@ -8,6 +8,8 @@
 
 #import <AFNetworking/AFNetworking.h>
 
+#import "UIColor+CustomColors.h"
+#import "FlatButton.h"
 #import "FPMRecordViewController.h"
 #import "FPMDispatchMessageViewController.h"
 
@@ -15,7 +17,7 @@
 
 @property (nonatomic) AVAudioRecorder* recorder;
 @property (nonatomic) NSURL* mediaURL;
-@property (nonatomic, weak) IBOutlet UIButton* recordButton;
+@property (nonatomic, weak) IBOutlet FlatButton* recordButton;
 
 @end
 
@@ -24,6 +26,8 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+  
+  [self addRecordButton];
   
   self.recorder = [self createAudioRecorder];
 }
@@ -99,6 +103,30 @@
   recorder.meteringEnabled = YES;
   [recorder prepareToRecord];
   return recorder;
+}
+
+- (void)addRecordButton {
+	self.recordButton = [FlatButton button];
+	self.recordButton.backgroundColor = [UIColor customYellowColor];
+	self.recordButton.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
+	[self.view addSubview:self.recordButton];
+  
+	[self.recordButton addTarget:self action:@selector(recordButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  
+  NSDictionary *views = NSDictionaryOfVariableBindings(_recordButton);
+  
+  [self.view addConstraints:[NSLayoutConstraint
+                             constraintsWithVisualFormat:@"H:|-[_recordButton]-|"
+                             options:0
+                             metrics:nil
+                             views:views]];
+  
+  [self.view addConstraints:[NSLayoutConstraint
+                             constraintsWithVisualFormat:@"V:|-[_recordButton]-|"
+                             options:0
+                             metrics:nil
+                             views:views]];
 }
 
 @end
