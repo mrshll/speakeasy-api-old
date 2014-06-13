@@ -7,15 +7,37 @@
 //
 #import <Crashlytics/Crashlytics.h>
 
+#import "UIColor+CustomColors.h"
 #import "FPMNetworking.h"
+#import "FPMRecordViewController.h"
+#import "FPMAuthModalViewController.h"
 #import "FPMAppDelegate.h"
 
 @implementation FPMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[Crashlytics startWithAPIKey:@"1a41139c46f6ca7cad9edd61ce5f62ba8d4516b5"];
-	[FPMNetworking loadCookies];
-	return YES;
+	BOOL hasCookies = [FPMNetworking loadCookies];
+  
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  
+  FPMRecordViewController* recordViewController = [FPMRecordViewController new];
+  [self.window setRootViewController:recordViewController];
+  self.window.backgroundColor = [UIColor whiteColor];
+  self.window.tintColor = [UIColor customBlueColor];
+  [self.window makeKeyAndVisible];
+  
+  if (YES || !hasCookies){
+    [self performSelector:@selector(showAuthModal) withObject:nil afterDelay:1.f];
+  }
+  
+  [[UINavigationBar appearance] setTitleTextAttributes:
+   @{
+     NSFontAttributeName: [UIFont fontWithName:@"Avenir" size:20],
+     NSForegroundColorAttributeName: [UIColor customGrayColor]
+    }];
+  
+  return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -38,6 +60,13 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 	[FPMNetworking saveCookies];
+}
+
+- (void)showAuthModal {
+  FPMAuthModalViewController *authModal = [FPMAuthModalViewController new];
+  [self.window.rootViewController presentViewController:authModal animated:NO completion:^{
+    [authModal presentLoginModal];
+  }];
 }
 
 @end

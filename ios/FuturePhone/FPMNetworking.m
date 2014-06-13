@@ -9,7 +9,7 @@
 #import <Lockbox/Lockbox.h>
 #import "FPMNetworking.h"
 
-#define FPM_BASE_URL_STRING (@"http://localhost:7076")
+#define FPM_BASE_URL_STRING (@"http://7cdd5781.ngrok.com")
 
 #define FPM_MESSAGES_URL_STRING ([NSString stringWithFormat:@"%@/messages", FPM_BASE_URL_STRING])
 
@@ -24,19 +24,25 @@
   
   NSMutableArray* allCookieParams = [[NSMutableArray alloc] init];
   for (NSHTTPCookie* cookie in cookies) {
-    [allCookieParams addObject:[cookie properties]];
+    NSData* cookieData = [NSJSONSerialization dataWithJSONObject:[cookie properties] options:0 error:nil];
+    NSString* cookieString = [[NSString alloc] initWithData:cookieData encoding:NSUTF8StringEncoding];
+    [allCookieParams addObject:cookieString];
   }
 	[Lockbox setArray:allCookieParams forKey:@"cookies"];
 }
 
-+ (void)loadCookies {
++ (BOOL)loadCookies {
 	NSArray* allCookieParams = [Lockbox arrayForKey:@"cookies"];
   
   NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-  for (NSDictionary* cookieParams in allCookieParams) {
+  for (NSString* cookieString in allCookieParams) {
+    NSData* cookieData = [cookieString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary* cookieParams = [NSJSONSerialization JSONObjectWithData:cookieData options:0 error:nil];
     NSHTTPCookie* cookie = [[NSHTTPCookie alloc] initWithProperties:cookieParams];
     [sharedCookieStorage setCookie:cookie];
   }
+  
+  return [allCookieParams count];
 }
 
 + (void)createMessageWithFileAtURL:(NSURL *)fileURL andParams:(NSDictionary*)params

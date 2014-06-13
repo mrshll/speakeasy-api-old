@@ -50,10 +50,6 @@
                                 <state key="normal" title="Log In">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <action selector="logInPressed:" destination="9jc-RU-JRh" eventType="touchUpInside" id="KyW-xD-Vwo"/>
-                                    <segue destination="76F-jb-Snf" kind="push" id="8mp-GR-owt"/>
-                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -61,6 +57,7 @@
                     <navigationItem key="navigationItem" id="dVU-qt-DLS"/>
                     <connections>
                         <outlet property="phoneNumberTextField" destination="L7J-mg-Pv2" id="YPP-cA-5vM"/>
+                        <segue destination="76F-jb-Snf" kind="push" identifier="confirmTokenSegue" id="1rc-IK-Q6O"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6yT-O9-Q0h" userLabel="First Responder" sceneMemberID="firstResponder"/>

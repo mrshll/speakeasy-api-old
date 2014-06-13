@@ -8,12 +8,21 @@
 #import <AFNetworking/AFNetworking.h>
 #import <Lockbox/Lockbox.h>
 
+#import "UIColor+CustomColors.h"
 #import "FPMNetworking.h"
+#import "FPMAuthModalViewController.h"
 #import "FPMConfirmTokenViewController.h"
 
 @implementation FPMConfirmTokenViewController
 
 #define TOKEN_LENGTH 6
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+  
+	self.view.backgroundColor = [UIColor customBlueColor];
+  [self addTokenTextField];
+}
 
 - (IBAction)textEntered:(UITextField *)sender {
   NSString* token = sender.text;
@@ -35,12 +44,46 @@
     
     [FPMNetworking saveCookies];
     
-    [self performSegueWithIdentifier:@"authComplete" sender:self];
+    [self dismissViewControllerAnimated:YES completion:nil];
+    FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self presentingViewController];
+    [authModal dismiss];
+    
   } andFailure:^(AFHTTPRequestOperation* operation, NSError* error) {
     NSLog(@"%@", error);
   }];
 
   [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)addTokenTextField {
+  self.tokenTextField = [UITextField new];
+  self.tokenTextField.translatesAutoresizingMaskIntoConstraints = NO;
+  self.tokenTextField.textAlignment = NSTextAlignmentCenter;
+  self.tokenTextField.keyboardType = UIKeyboardTypeNumberPad;
+  self.tokenTextField.backgroundColor = [UIColor whiteColor];
+  self.tokenTextField.layer.cornerRadius = 2.f;
+  self.tokenTextField.placeholder = @"123456";
+  
+  [self.tokenTextField addTarget:self
+                          action:@selector(textEntered:)
+                forControlEvents:UIControlEventEditingChanged];
+  
+  [self.tokenTextField becomeFirstResponder];
+  [self.view addSubview:self.tokenTextField];
+  
+  NSDictionary *views = NSDictionaryOfVariableBindings(_tokenTextField);
+  
+  [self.view addConstraints:[NSLayoutConstraint
+                             constraintsWithVisualFormat:@"H:|-(40)-[_tokenTextField]-(40)-|"
+                             options:0
+                             metrics:nil
+                             views:views]];
+  
+  [self.view addConstraints:[NSLayoutConstraint
+                             constraintsWithVisualFormat:@"V:|-(88)-[_tokenTextField(==36)]"
+                             options:0
+                             metrics:nil
+                             views:views]];
 }
 
 @end
