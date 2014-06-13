@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FPMDispatchAuthMessageViewController : UIViewController
+@interface FPMDispatchMessageViewController : UIViewController
 
 @property (nonatomic) NSURL* mediaURL;
 

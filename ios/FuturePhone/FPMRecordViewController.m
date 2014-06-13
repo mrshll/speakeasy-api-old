@@ -9,7 +9,7 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "FPMRecordViewController.h"
-#import "FPMDispatchAuthMessageViewController.h"
+#import "FPMDispatchMessageViewController.h"
 
 @interface FPMRecordViewController ()
 
@@ -72,7 +72,7 @@
 #pragma mark - UIViewController
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-  FPMDispatchAuthMessageViewController* dispatchViewController = [segue destinationViewController];
+  FPMDispatchMessageViewController* dispatchViewController = [segue destinationViewController];
   [dispatchViewController setMediaURL: self.mediaURL];
 }
 
