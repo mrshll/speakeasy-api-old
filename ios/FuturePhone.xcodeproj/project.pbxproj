@@ -9,11 +9,12 @@
 /* Begin PBXBuildFile section */
 		70F6A17801914CC5AA00E202 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9822ED19A84EE3BD1D678A /* libPods.a */; };
 		A604AD831949E50200C1B333 /* UIColor+CustomColors.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD821949E50200C1B333 /* UIColor+CustomColors.m */; };
-		A604AD881949E5E800C1B333 /* FlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD871949E5E800C1B333 /* FlatButton.m */; };
-		A604AD8E194A00AF00C1B333 /* PresentingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD8D194A00AF00C1B333 /* PresentingAnimator.m */; };
-		A604AD91194A00B600C1B333 /* DismissingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD90194A00B600C1B333 /* DismissingAnimator.m */; };
+		A604AD881949E5E800C1B333 /* FPMFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD871949E5E800C1B333 /* FPMFlatButton.m */; };
+		A604AD8E194A00AF00C1B333 /* FPMPresentingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD8D194A00AF00C1B333 /* FPMPresentingAnimator.m */; };
+		A604AD91194A00B600C1B333 /* FPMDismissingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD90194A00B600C1B333 /* FPMDismissingAnimator.m */; };
 		A604AD94194A011F00C1B333 /* FPMModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD93194A011F00C1B333 /* FPMModalViewController.m */; };
 		A604AD9B194A898800C1B333 /* FPMAuthModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD9A194A898800C1B333 /* FPMAuthModalViewController.m */; };
+		A616D301194D4F2600261B08 /* FPMPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A616D300194D4F2600261B08 /* FPMPhoneNumberTextField.m */; };
 		A6192DA71933B6A30053974D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6192DA61933B6A30053974D /* AVFoundation.framework */; };
 		A636538D193ADBE0002F0C22 /* Icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = A636537F193ADBE0002F0C22 /* Icon-120.png */; };
 		A636538E193ADBE0002F0C22 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = A6365380193ADBE0002F0C22 /* Icon-72.png */; };
@@ -67,16 +68,18 @@
 		7C9822ED19A84EE3BD1D678A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A604AD811949E50200C1B333 /* UIColor+CustomColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+CustomColors.h"; sourceTree = "<group>"; };
 		A604AD821949E50200C1B333 /* UIColor+CustomColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CustomColors.m"; sourceTree = "<group>"; };
-		A604AD861949E5E800C1B333 /* FlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlatButton.h; path = ../../../popping/Popping/FlatButton.h; sourceTree = "<group>"; };
-		A604AD871949E5E800C1B333 /* FlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlatButton.m; path = ../../../popping/Popping/FlatButton.m; sourceTree = "<group>"; };
-		A604AD8C194A00AF00C1B333 /* PresentingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PresentingAnimator.h; path = ../../../popping/Popping/PresentingAnimator.h; sourceTree = "<group>"; };
-		A604AD8D194A00AF00C1B333 /* PresentingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PresentingAnimator.m; path = ../../../popping/Popping/PresentingAnimator.m; sourceTree = "<group>"; };
-		A604AD8F194A00B600C1B333 /* DismissingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DismissingAnimator.h; path = ../../../popping/Popping/DismissingAnimator.h; sourceTree = "<group>"; };
-		A604AD90194A00B600C1B333 /* DismissingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DismissingAnimator.m; path = ../../../popping/Popping/DismissingAnimator.m; sourceTree = "<group>"; };
+		A604AD861949E5E800C1B333 /* FPMFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FPMFlatButton.h; path = ../../../popping/Popping/FPMFlatButton.h; sourceTree = "<group>"; };
+		A604AD871949E5E800C1B333 /* FPMFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPMFlatButton.m; path = ../../../popping/Popping/FPMFlatButton.m; sourceTree = "<group>"; };
+		A604AD8C194A00AF00C1B333 /* FPMPresentingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FPMPresentingAnimator.h; path = ../../../popping/Popping/FPMPresentingAnimator.h; sourceTree = "<group>"; };
+		A604AD8D194A00AF00C1B333 /* FPMPresentingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPMPresentingAnimator.m; path = ../../../popping/Popping/FPMPresentingAnimator.m; sourceTree = "<group>"; };
+		A604AD8F194A00B600C1B333 /* FPMDismissingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FPMDismissingAnimator.h; path = ../../../popping/Popping/FPMDismissingAnimator.h; sourceTree = "<group>"; };
+		A604AD90194A00B600C1B333 /* FPMDismissingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPMDismissingAnimator.m; path = ../../../popping/Popping/FPMDismissingAnimator.m; sourceTree = "<group>"; };
 		A604AD92194A011F00C1B333 /* FPMModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMModalViewController.h; sourceTree = "<group>"; };
 		A604AD93194A011F00C1B333 /* FPMModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMModalViewController.m; sourceTree = "<group>"; };
 		A604AD99194A898800C1B333 /* FPMAuthModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMAuthModalViewController.h; sourceTree = "<group>"; };
 		A604AD9A194A898800C1B333 /* FPMAuthModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMAuthModalViewController.m; sourceTree = "<group>"; };
+		A616D2FF194D4F2600261B08 /* FPMPhoneNumberTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMPhoneNumberTextField.h; sourceTree = "<group>"; };
+		A616D300194D4F2600261B08 /* FPMPhoneNumberTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMPhoneNumberTextField.m; sourceTree = "<group>"; };
 		A6192DA61933B6A30053974D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		A636537F193ADBE0002F0C22 /* Icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-120.png"; sourceTree = "<group>"; };
 		A6365380193ADBE0002F0C22 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
@@ -171,6 +174,7 @@
 		A604AD841949E5D900C1B333 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				A616D2FD194D4EA100261B08 /* PhoneNumberTextField */,
 				A604AD851949E5E100C1B333 /* FlatButton */,
 			);
 			name = Controls;
@@ -179,8 +183,8 @@
 		A604AD851949E5E100C1B333 /* FlatButton */ = {
 			isa = PBXGroup;
 			children = (
-				A604AD861949E5E800C1B333 /* FlatButton.h */,
-				A604AD871949E5E800C1B333 /* FlatButton.m */,
+				A604AD861949E5E800C1B333 /* FPMFlatButton.h */,
+				A604AD871949E5E800C1B333 /* FPMFlatButton.m */,
 			);
 			name = FlatButton;
 			sourceTree = "<group>";
@@ -188,47 +192,56 @@
 		A604AD89194A009200C1B333 /* Animator */ = {
 			isa = PBXGroup;
 			children = (
-				A604AD8B194A009C00C1B333 /* DismissingAnimator */,
-				A604AD8A194A009700C1B333 /* PresentingAnimator */,
+				A604AD8B194A009C00C1B333 /* Modal */,
 			);
 			name = Animator;
 			sourceTree = "<group>";
 		};
-		A604AD8A194A009700C1B333 /* PresentingAnimator */ = {
+		A604AD8B194A009C00C1B333 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				A604AD8C194A00AF00C1B333 /* PresentingAnimator.h */,
-				A604AD8D194A00AF00C1B333 /* PresentingAnimator.m */,
+				A604AD8D194A00AF00C1B333 /* FPMPresentingAnimator.m */,
+				A604AD8C194A00AF00C1B333 /* FPMPresentingAnimator.h */,
+				A604AD8F194A00B600C1B333 /* FPMDismissingAnimator.h */,
+				A604AD90194A00B600C1B333 /* FPMDismissingAnimator.m */,
 			);
-			name = PresentingAnimator;
-			sourceTree = "<group>";
-		};
-		A604AD8B194A009C00C1B333 /* DismissingAnimator */ = {
-			isa = PBXGroup;
-			children = (
-				A604AD8F194A00B600C1B333 /* DismissingAnimator.h */,
-				A604AD90194A00B600C1B333 /* DismissingAnimator.m */,
-			);
-			name = DismissingAnimator;
+			name = Modal;
 			sourceTree = "<group>";
 		};
 		A604AD98194A896000C1B333 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				A604AD99194A898800C1B333 /* FPMAuthModalViewController.h */,
-				A604AD9A194A898800C1B333 /* FPMAuthModalViewController.m */,
-				A6847E8E193F60B60034859F /* FPMConfirmTokenViewController.h */,
-				A6847E8F193F60B60034859F /* FPMConfirmTokenViewController.m */,
+				A616D2FE194D4ECB00261B08 /* Auth */,
 				BFE358A71935788C004C2FBD /* FPMDispatchMessageViewController.h */,
 				BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */,
-				A6847E87193EAABC0034859F /* FPMLoginViewController.h */,
-				A6847E88193EAABC0034859F /* FPMLoginViewController.m */,
 				A604AD92194A011F00C1B333 /* FPMModalViewController.h */,
 				A604AD93194A011F00C1B333 /* FPMModalViewController.m */,
 				A6C695471933B3B700CF6F94 /* FPMRecordViewController.h */,
 				A6C695481933B3B700CF6F94 /* FPMRecordViewController.m */,
 			);
 			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		A616D2FD194D4EA100261B08 /* PhoneNumberTextField */ = {
+			isa = PBXGroup;
+			children = (
+				A616D2FF194D4F2600261B08 /* FPMPhoneNumberTextField.h */,
+				A616D300194D4F2600261B08 /* FPMPhoneNumberTextField.m */,
+			);
+			name = PhoneNumberTextField;
+			sourceTree = "<group>";
+		};
+		A616D2FE194D4ECB00261B08 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A604AD99194A898800C1B333 /* FPMAuthModalViewController.h */,
+				A604AD9A194A898800C1B333 /* FPMAuthModalViewController.m */,
+				A6847E8F193F60B60034859F /* FPMConfirmTokenViewController.m */,
+				A6847E8E193F60B60034859F /* FPMConfirmTokenViewController.h */,
+				A6847E87193EAABC0034859F /* FPMLoginViewController.h */,
+				A6847E88193EAABC0034859F /* FPMLoginViewController.m */,
+			);
+			name = Auth;
 			sourceTree = "<group>";
 		};
 		A636537E193ADBE0002F0C22 /* Resources */ = {
@@ -504,14 +517,15 @@
 				A604AD94194A011F00C1B333 /* FPMModalViewController.m in Sources */,
 				A6847E89193EAABC0034859F /* FPMLoginViewController.m in Sources */,
 				A6FB7E9E194798B600990587 /* FPMNetworking.m in Sources */,
-				A604AD881949E5E800C1B333 /* FlatButton.m in Sources */,
+				A604AD881949E5E800C1B333 /* FPMFlatButton.m in Sources */,
 				A604AD9B194A898800C1B333 /* FPMAuthModalViewController.m in Sources */,
 				A6847E90193F60B60034859F /* FPMConfirmTokenViewController.m in Sources */,
 				BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */,
 				A6C695431933B3B700CF6F94 /* FPMAppDelegate.m in Sources */,
-				A604AD91194A00B600C1B333 /* DismissingAnimator.m in Sources */,
+				A604AD91194A00B600C1B333 /* FPMDismissingAnimator.m in Sources */,
 				A6C6953F1933B3B700CF6F94 /* main.m in Sources */,
-				A604AD8E194A00AF00C1B333 /* PresentingAnimator.m in Sources */,
+				A604AD8E194A00AF00C1B333 /* FPMPresentingAnimator.m in Sources */,
+				A616D301194D4F2600261B08 /* FPMPhoneNumberTextField.m in Sources */,
 				A604AD831949E50200C1B333 /* UIColor+CustomColors.m in Sources */,
 				A6C695491933B3B700CF6F94 /* FPMRecordViewController.m in Sources */,
 			);

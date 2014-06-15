@@ -10,7 +10,8 @@
 #import <POP/POP.h>
 
 #import "UIColor+CustomColors.h"
-#import "FlatButton.h"
+#import "FPMFlatButton.h"
+#import "FPMPhoneNumberTextField.h"
 #import "FPMNetworking.h"
 #import "FPMAuthModalViewController.h"
 #import "FPMConfirmTokenViewController.h"
@@ -20,16 +21,16 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-  
-  self.view.layer.cornerRadius = 8.f;
-  self.view.backgroundColor = [UIColor customBlueColor];
-  [self addPhoneNumberTextField];
-  [self addLoginButton];
-  [self addErrorLabel];
+
+	self.view.layer.cornerRadius = 8.f;
+	self.view.backgroundColor = [UIColor customBlueColor];
+	[self addPhoneNumberTextField];
+	[self addLoginButton];
+	[self addErrorLabel];
 }
 
 - (IBAction)logInPressed:(id)sender {
-  [self requestAuthCodeForPhoneNumber:[self.phoneNumberTextField text]];
+	[self requestAuthCodeForPhoneNumber:[self.phoneNumberTextField text]];
 }
 
 // TODO: have this accept an enum failure type and display appropriate message
@@ -42,55 +43,55 @@
 	NSLog(@"Loging in with phone number: %@", phoneNumber);
 
 	[FPMNetworking requestAuthCodeForPhoneNumber:phoneNumber andSuccess: ^(AFHTTPRequestOperation *operation, id responseObject) {
-    NSLog(@"Token request success");
-    [Lockbox setString:phoneNumber forKey:@"phoneNumber"];
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-      FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self presentingViewController];
-      [authModal presentConfirmTokenModal];
-    }];
+	    NSLog(@"Token request success");
+	    [Lockbox setString:phoneNumber forKey:@"phoneNumber"];
+
+	    [self dismissViewControllerAnimated:YES completion: ^{
+	        FPMAuthModalViewController *authModal = (FPMAuthModalViewController *)[self transitioningDelegate];
+	        [authModal presentConfirmTokenModal];
+		}];
 	} andFailure: ^(AFHTTPRequestOperation *operation, NSError *error) {
-    NSLog(@"Log in failure: %@", error);
-    [self showFailure];
+	    NSLog(@"Log in failure: %@", error);
+	    [self showFailure];
 	}];
 }
 
 #pragma mark - Private Instance methods
 
 - (void)addPhoneNumberTextField {
-  self.phoneNumberTextField = [UITextField new];
-  self.phoneNumberTextField.translatesAutoresizingMaskIntoConstraints = NO;
-  self.phoneNumberTextField.textAlignment = NSTextAlignmentCenter;
-//  self.phoneNumberTextField.keyboardType = UIKeyboardTypePhonePad;
-  self.phoneNumberTextField.backgroundColor = [UIColor whiteColor];
-  self.phoneNumberTextField.layer.cornerRadius = 2.f;
-  self.phoneNumberTextField.placeholder = @"+1(123)-4567";
-  
-//  [self.phoneNumberTextField becomeFirstResponder];
-  [self.view addSubview:self.phoneNumberTextField];
-  
-  NSDictionary *views = NSDictionaryOfVariableBindings(_phoneNumberTextField);
-  
-  [self.view addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:@"H:|-[_phoneNumberTextField]-|"
-                             options:0
-                             metrics:nil
-                             views:views]];
-  
-  [self.view addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:@"V:|-(88)-[_phoneNumberTextField(==36)]"
-                             options:0
-                             metrics:nil
-                             views:views]];
+	self.phoneNumberTextField = [FPMPhoneNumberTextField new];
+	self.phoneNumberTextField.translatesAutoresizingMaskIntoConstraints = NO;
+	self.phoneNumberTextField.textAlignment = NSTextAlignmentCenter;
+  self.phoneNumberTextField.keyboardType = UIKeyboardTypePhonePad;
+	self.phoneNumberTextField.backgroundColor = [UIColor whiteColor];
+	self.phoneNumberTextField.layer.cornerRadius = 2.f;
+	self.phoneNumberTextField.placeholder = @"+1(123)-4567";
+
+	[self.view addSubview:self.phoneNumberTextField];
+  [self.phoneNumberTextField becomeFirstResponder];
+
+	NSDictionary *views = NSDictionaryOfVariableBindings(_phoneNumberTextField);
+
+	[self.view addConstraints:[NSLayoutConstraint
+	                           constraintsWithVisualFormat:@"H:|-[_phoneNumberTextField]-|"
+	                                               options:0
+	                                               metrics:nil
+	                                                 views:views]];
+
+	[self.view addConstraints:[NSLayoutConstraint
+	                           constraintsWithVisualFormat:@"V:|-(88)-[_phoneNumberTextField(==36)]"
+	                                               options:0
+	                                               metrics:nil
+	                                                 views:views]];
 }
 
 - (void)addLoginButton {
-	self.logInButton = [FlatButton button];
+	self.logInButton = [FPMFlatButton button];
 	self.logInButton.backgroundColor = [UIColor customYellowColor];
 	self.logInButton.translatesAutoresizingMaskIntoConstraints = NO;
 	[self.logInButton setTitle:@"Log in" forState:UIControlStateNormal];
 	[self.view insertSubview:self.logInButton belowSubview:self.phoneNumberTextField];
-  
+
 	[self.logInButton addTarget:self action:@selector(logInPressed:) forControlEvents:UIControlEventTouchUpInside];
 
 	[self.view addConstraint:[NSLayoutConstraint
@@ -106,7 +107,7 @@
 	                          constraintWithItem:self.logInButton
 	                                   attribute:NSLayoutAttributeCenterY
 	                                   relatedBy:NSLayoutRelationEqual
-                                        toItem:self.phoneNumberTextField
+	                                      toItem:self.phoneNumberTextField
 	                                   attribute:NSLayoutAttributeCenterY
 	                                  multiplier:1
 	                                    constant:self.logInButton.intrinsicContentSize.height]];
@@ -134,7 +135,7 @@
 	                          constraintWithItem:self.errorLabel
 	                                   attribute:NSLayoutAttributeCenterY
 	                                   relatedBy:NSLayoutRelationEqual
-                                        toItem:self.logInButton
+	                                      toItem:self.logInButton
 	                                   attribute:NSLayoutAttributeCenterY
 	                                  multiplier:1
 	                                    constant:0]];
@@ -165,8 +166,8 @@
 	layerPositionAnimation.toValue = @(self.logInButton.layer.position.y + self.logInButton.intrinsicContentSize.height);
 	layerPositionAnimation.springBounciness = 12;
 	[self.errorLabel.layer pop_addAnimation:layerPositionAnimation forKey:@"layerPositionAnimation"];
-  
-  [self performSelector:@selector(hideLabel) withObject:self afterDelay:3.f];
+
+	[self performSelector:@selector(hideLabel) withObject:self afterDelay:3.f];
 }
 
 - (void)hideLabel {

@@ -64,7 +64,8 @@
 
 - (void)showAuthModal {
   FPMAuthModalViewController *authModal = [FPMAuthModalViewController new];
-  [self.window.rootViewController presentViewController:authModal animated:NO completion:^{
+  self.window.rootViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+  [self.window.rootViewController presentViewController:authModal animated:YES completion:^{
     [authModal presentLoginModal];
   }];
 }

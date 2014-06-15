@@ -9,7 +9,7 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "UIColor+CustomColors.h"
-#import "FlatButton.h"
+#import "FPMFlatButton.h"
 #import "FPMRecordViewController.h"
 #import "FPMDispatchMessageViewController.h"
 
@@ -17,7 +17,7 @@
 
 @property (nonatomic) AVAudioRecorder* recorder;
 @property (nonatomic) NSURL* mediaURL;
-@property (nonatomic, weak) IBOutlet FlatButton* recordButton;
+@property (nonatomic, weak) IBOutlet FPMFlatButton* recordButton;
 
 @end
 
@@ -106,7 +106,7 @@
 }
 
 - (void)addRecordButton {
-	self.recordButton = [FlatButton button];
+	self.recordButton = [FPMFlatButton button];
 	self.recordButton.backgroundColor = [UIColor customYellowColor];
 	self.recordButton.translatesAutoresizingMaskIntoConstraints = NO;
 	[self.recordButton setTitle:@"Record" forState:UIControlStateNormal];

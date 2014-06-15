@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 futurephone. All rights reserved.
 //
 
-#import "PresentingAnimator.h"
-#import "DismissingAnimator.h"
+#import "FPMPresentingAnimator.h"
+#import "FPMDismissingAnimator.h"
 #import "FPMLoginViewController.h"
 #import "FPMModalViewController.h"
 
@@ -21,11 +21,11 @@
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
                                                                   presentingController:(UIViewController *)presenting
                                                                       sourceController:(UIViewController *)source {
-  return [PresentingAnimator new];
+  return [FPMPresentingAnimator new];
 }
 
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
-  return [DismissingAnimator new];
+  return [FPMDismissingAnimator new];
 }
 
 - (void)present:(UIViewController*)viewController {

@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "FlatButton.h"
+#import "FPMFlatButton.h"
 
 @interface FPMLoginViewController : UIViewController
 
 @property (strong) UITextField* phoneNumberTextField;
-@property (strong) FlatButton* logInButton;
+@property (strong) FPMFlatButton* logInButton;
 @property (strong) UILabel* errorLabel;
 
 @end
