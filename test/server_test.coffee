@@ -5,6 +5,7 @@ sinon = require 'sinon'
 moment = require 'moment'
 
 webServer = require '../server'
+sessionStore = webServer.sessionStore
 helpers = require '../helpers'
 factory = require './factory'
 Message = require '../models/message'
@@ -12,6 +13,10 @@ User = require '../models/user'
 LoginToken = require '../models/login_token'
 
 request = request(webServer.app)
+
+sessionStore.firstSession = (callback) ->
+  firstSessionId = Object.keys(sessionStore.sessions)[0]
+  sessionStore.get firstSessionId, callback
 
 beforeEach (done) ->
   factory.ensureConnectionAndClearDB done
@@ -126,6 +131,7 @@ TOKEN = '123456'
 describe '/login/validate_token', ->
   context 'POST', ->
     beforeEach (done) ->
+      sessionStore.clear()
       LoginToken.create {
         phone_number: PHONE_NUMBER
         token: TOKEN
@@ -142,6 +148,13 @@ describe '/login/validate_token', ->
       it 'returns 200', (done) ->
         @req.expect(200).end done
 
+      it 'sets the users session state to logged in', (done) ->
+        @req.expect(200).end (err, res) ->
+          sessionStore.firstSession (err, session) ->
+            session.should.have.property('loggedIn')
+            session.loggedIn.should.be.true
+            done()
+
     context 'incorrect token', ->
       beforeEach (done) ->
         @req = request.post '/login/validate_token'
@@ -151,6 +164,12 @@ describe '/login/validate_token', ->
 
       it 'returns 404', (done) ->
         @req.expect(404).end done
+
+      it 'does not log the user in', (done) ->
+        @req.end (err, res) ->
+          sessionStore.firstSession (err, session) ->
+            session.should.not.have.property('loggedIn')
+            done()
 
     context 'expired token', ->
       beforeEach (done) ->

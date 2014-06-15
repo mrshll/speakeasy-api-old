@@ -25,7 +25,10 @@ define [
       @app.use cookieParser()
       @app.use bodyParser()
       # TODO Using in memory session store, change for production
-      @app.use session secret: 'thisismysupersecret'
+      @sessionStore = new session.MemoryStore()
+      @app.use session
+        secret: 'thisismysupersecret'
+        store: @sessionStore
 
       #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
       @app.use multer dest: './uploads/'
