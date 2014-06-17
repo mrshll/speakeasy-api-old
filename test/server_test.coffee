@@ -5,7 +5,6 @@ sinon = require 'sinon'
 moment = require 'moment'
 
 webServer = require '../server'
-sessionStore = webServer.sessionStore
 helpers = require '../helpers'
 factory = require './factory'
 Message = require '../models/message'
@@ -14,6 +13,7 @@ LoginToken = require '../models/login_token'
 
 request = request(webServer.app)
 
+sessionStore = webServer.sessionStore
 sessionStore.firstSession = (callback) ->
   firstSessionId = Object.keys(sessionStore.sessions)[0]
   sessionStore.get firstSessionId, callback
@@ -50,9 +50,13 @@ describe '/twilio/callback', ->
 
 describe '/messages', ->
   context 'POST', ->
+    beforeEach (done) ->
+      webServer.helpers.allowOneUnauthenticatedRequest = true
+      done()
+
     context 'with no file attached', ->
       beforeEach (done) ->
-        @req = request.post '/media'
+        @req = request.post '/messages'
         done()
 
       it 'should respond 422', (done) ->
@@ -184,3 +188,46 @@ describe '/login/validate_token', ->
 
       it 'returns 404', (done) ->
         @req.expect(404).end done
+
+describe 'requireAuthentication middleware', ->
+  context 'unauthorized but with valid params', ->
+    beforeEach (done) ->
+      @req = request.post('/logout')
+      done()
+
+    it 'returns 404', (done) ->
+      @req.expect(404).end done
+
+  context 'unauthorized access to public routes', ->
+    beforeEach (done) ->
+      @req = request.post '/login/phone_number'
+               .field 'phone_number', PHONE_NUMBER
+      @sendMessageStub = sinon.stub().yields()
+      webServer.twilio.sendMessage = @sendMessageStub
+      done()
+
+    it 'allows access', (done) ->
+      @req.expect(200).end done
+
+  context 'allowOneUnauthenticatedRequest', ->
+    it 'only works for one request', (done) ->
+      webServer.helpers.allowOneUnauthenticatedRequest = true
+      request.post('/logout').expect(200).end ->
+        request.post('/logout').expect(404).end done
+
+describe '/logout', ->
+  context 'POST', ->
+    beforeEach (done) ->
+      webServer.helpers.allowOneUnauthenticatedRequest = true
+      @req = request.post('/logout')
+      done()
+
+    it 'returns 200', (done) ->
+      @req.expect(200).end done
+
+    it 'destroys the session', (done) ->
+      @req.end (err, res) ->
+        setSession = _.some res.headers['set-cookie'], (cookie) ->
+          cookie.match /connect\.sid/
+        setSession.should.not.be.true
+        done()
