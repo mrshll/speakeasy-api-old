@@ -13,17 +13,17 @@
 @implementation FPMAuthModalViewController
 
 - (void)viewDidLoad {
-	[super viewDidLoad];
+  [super viewDidLoad];
   self.view.backgroundColor = [UIColor clearColor];
 }
 
 - (void)presentLoginModal {
-  FPMLoginViewController* loginViewController = [FPMLoginViewController new];
+  FPMLoginViewController *loginViewController = [FPMLoginViewController new];
   [self present:loginViewController];
 }
 
 - (void)presentConfirmTokenModal {
-  FPMConfirmTokenViewController* confirmTokenViewController = [FPMConfirmTokenViewController new];
+  FPMConfirmTokenViewController *confirmTokenViewController = [FPMConfirmTokenViewController new];
   [self present:confirmTokenViewController];
 }
 

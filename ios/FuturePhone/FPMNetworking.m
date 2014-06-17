@@ -20,7 +20,7 @@
 @implementation FPMNetworking
 
 + (void)saveCookies {
-	NSArray* cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+  NSArray* cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
   
   NSMutableArray* allCookieParams = [[NSMutableArray alloc] init];
   for (NSHTTPCookie* cookie in cookies) {
@@ -28,11 +28,11 @@
     NSString* cookieString = [[NSString alloc] initWithData:cookieData encoding:NSUTF8StringEncoding];
     [allCookieParams addObject:cookieString];
   }
-	[Lockbox setArray:allCookieParams forKey:@"cookies"];
+  [Lockbox setArray:allCookieParams forKey:@"cookies"];
 }
 
 + (BOOL)loadCookies {
-	NSArray* allCookieParams = [Lockbox arrayForKey:@"cookies"];
+  NSArray* allCookieParams = [Lockbox arrayForKey:@"cookies"];
   
   NSHTTPCookieStorage* sharedCookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
   for (NSString* cookieString in allCookieParams) {
@@ -48,47 +48,47 @@
 + (void)createMessageWithFileAtURL:(NSURL *)fileURL andParams:(NSDictionary*)params
                         andSuccess:(void (^)(AFHTTPRequestOperation*, id))success
                         andFailure:(void (^)(AFHTTPRequestOperation*, NSError*))failure {
-	[self loadCookies];
-	NSMutableURLRequest* request =
-	    [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
-	    [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
-	} error:nil];
+  [self loadCookies];
+  NSMutableURLRequest* request =
+      [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:FPM_MESSAGES_URL_STRING parameters:params constructingBodyWithBlock: ^(id <AFMultipartFormData> formData) {
+      [formData appendPartWithFileURL:fileURL name:@"file" error:nil];
+  } error:nil];
 
-	AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-	[operation setCompletionBlockWithSuccess:success failure:failure];
+  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  operation.responseSerializer = [AFHTTPResponseSerializer serializer];
+  [operation setCompletionBlockWithSuccess:success failure:failure];
 
-	[operation start];
+  [operation start];
 }
 
 + (void)requestAuthCodeForPhoneNumber:(NSString *)phoneNumber
                            andSuccess:(void (^)(AFHTTPRequestOperation *, id))success
                            andFailure:(void (^)(AFHTTPRequestOperation *, NSError *))failure {
-	NSDictionary* params = @{ @"phone_number": phoneNumber };
+  NSDictionary* params = @{ @"phone_number": phoneNumber };
 
-	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_REQUEST_CODE_URL_STRING parameters:params error:nil];
+  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_REQUEST_CODE_URL_STRING parameters:params error:nil];
 
-	AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-	operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-	[operation setCompletionBlockWithSuccess:success failure:failure];
+  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  operation.responseSerializer = [AFHTTPResponseSerializer serializer];
+  operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+  [operation setCompletionBlockWithSuccess:success failure:failure];
 
-	[operation start];
+  [operation start];
 }
 
 + (void)requestTokenConfirmationForPhoneNumber:(NSString*)phoneNumber token:(NSString *)token
                                     andSuccess:(void (^)(AFHTTPRequestOperation*, id))success
                                     andFailure:(void (^)(AFHTTPRequestOperation*, NSError*))failure {
-	NSDictionary* params = @{ @"phone_number": phoneNumber, @"token": token };
+  NSDictionary* params = @{ @"phone_number": phoneNumber, @"token": token };
 
-	NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_CONFIRM_TOKEN_URL_STRING parameters:params error:nil];
+  NSMutableURLRequest* request = [[AFHTTPRequestSerializer serializer] requestWithMethod:@"POST" URLString:FPM_CONFIRM_TOKEN_URL_STRING parameters:params error:nil];
 
-	AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-	operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
-	[operation setCompletionBlockWithSuccess:success failure:failure];
+  AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  operation.responseSerializer = [AFHTTPResponseSerializer serializer];
+  operation.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+  [operation setCompletionBlockWithSuccess:success failure:failure];
 
-	[operation start];
+  [operation start];
 }
 
 @end

@@ -13,25 +13,22 @@
 
 @implementation FPMModalViewController
 
-- (void)viewDidLoad {
-}
-
 #pragma mark - UIViewControllerTransitioningDelegate
 
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
-                                                                  presentingController:(UIViewController *)presenting
-                                                                      sourceController:(UIViewController *)source {
+- (id <UIViewControllerAnimatedTransitioning> )animationControllerForPresentedController:(UIViewController *)presented
+                                                                    presentingController:(UIViewController *)presenting
+                                                                        sourceController:(UIViewController *)source {
   return [FPMPresentingAnimator new];
 }
 
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
+- (id <UIViewControllerAnimatedTransitioning> )animationControllerForDismissedController:(UIViewController *)dismissed {
   return [FPMDismissingAnimator new];
 }
 
-- (void)present:(UIViewController*)viewController {
+- (void)present:(UIViewController *)viewController {
   viewController.transitioningDelegate = self;
   viewController.modalPresentationStyle = UIModalPresentationCustom;
-  
+
   [self presentViewController:viewController animated:YES completion:nil];
 }
 

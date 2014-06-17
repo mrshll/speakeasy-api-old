@@ -106,13 +106,13 @@
 }
 
 - (void)addRecordButton {
-	self.recordButton = [FPMFlatButton button];
-	self.recordButton.backgroundColor = [UIColor customYellowColor];
-	self.recordButton.translatesAutoresizingMaskIntoConstraints = NO;
-	[self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
-	[self.view addSubview:self.recordButton];
+  self.recordButton = [FPMFlatButton button];
+  self.recordButton.backgroundColor = [UIColor customYellowColor];
+  self.recordButton.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.recordButton setTitle:@"Record" forState:UIControlStateNormal];
+  [self.view addSubview:self.recordButton];
   
-	[self.recordButton addTarget:self action:@selector(recordButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+  [self.recordButton addTarget:self action:@selector(recordButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   
   NSDictionary *views = NSDictionaryOfVariableBindings(_recordButton);
   
