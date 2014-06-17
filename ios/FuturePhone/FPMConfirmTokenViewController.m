@@ -35,18 +35,18 @@
 - (void)confirmToken:(NSString *)token {
   NSLog(@"Sending token: %@", token);
 
-  NSString *phoneNumber = [Lockbox stringForKey:@"phoneNumber"];
+  NSString* phoneNumber = [Lockbox stringForKey:@"phoneNumber"];
 
 
-  [FPMNetworking requestTokenConfirmationForPhoneNumber:phoneNumber token:token andSuccess: ^(AFHTTPRequestOperation *operation, id responseObject) {
+  [FPMNetworking requestTokenConfirmationForPhoneNumber:phoneNumber token:token andSuccess: ^(AFHTTPRequestOperation* operation, id responseObject) {
       NSLog(@"Token valid");
 
       [FPMNetworking saveCookies];
 
       [self dismissViewControllerAnimated:YES completion:nil];
-      FPMAuthModalViewController *authModal = (FPMAuthModalViewController *)[self transitioningDelegate];
+      FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self transitioningDelegate];
       [authModal dismiss];
-  } andFailure: ^(AFHTTPRequestOperation *operation, NSError *error) {
+  } andFailure: ^(AFHTTPRequestOperation* operation, NSError* error) {
       NSLog(@"%@", error);
   }];
 
@@ -69,7 +69,7 @@
   [self.tokenTextField becomeFirstResponder];
   [self.view addSubview:self.tokenTextField];
 
-  NSDictionary *views = NSDictionaryOfVariableBindings(_tokenTextField);
+  NSDictionary* views = NSDictionaryOfVariableBindings(_tokenTextField);
 
   [self.view addConstraints:[NSLayoutConstraint
                              constraintsWithVisualFormat:@"H:|-(40)-[_tokenTextField]-(40)-|"

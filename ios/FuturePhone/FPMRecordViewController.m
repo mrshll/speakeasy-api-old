@@ -75,7 +75,7 @@
 
 #pragma mark - UIViewController
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender {
   FPMDispatchMessageViewController* dispatchViewController = [segue destinationViewController];
   [dispatchViewController setMediaURL: self.mediaURL];
 }

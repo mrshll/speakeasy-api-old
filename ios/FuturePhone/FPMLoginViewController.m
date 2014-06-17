@@ -42,15 +42,15 @@
 - (void)requestAuthCodeForPhoneNumber:(NSString *)phoneNumber {
   NSLog(@"Loging in with phone number: %@", phoneNumber);
 
-  [FPMNetworking requestAuthCodeForPhoneNumber:phoneNumber andSuccess: ^(AFHTTPRequestOperation *operation, id responseObject) {
+  [FPMNetworking requestAuthCodeForPhoneNumber:phoneNumber andSuccess: ^(AFHTTPRequestOperation* operation, id responseObject) {
       NSLog(@"Token request success");
       [Lockbox setString:phoneNumber forKey:@"phoneNumber"];
 
       [self dismissViewControllerAnimated:YES completion: ^{
-          FPMAuthModalViewController *authModal = (FPMAuthModalViewController *)[self transitioningDelegate];
+          FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self transitioningDelegate];
           [authModal presentConfirmTokenModal];
     }];
-  } andFailure: ^(AFHTTPRequestOperation *operation, NSError *error) {
+  } andFailure: ^(AFHTTPRequestOperation* operation, NSError* error) {
       NSLog(@"Log in failure: %@", error);
       [self showFailure];
   }];
@@ -146,7 +146,7 @@
 #pragma mark Animations
 
 - (void)shakeButton {
-  POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionX];
+  POPSpringAnimation* positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionX];
   positionAnimation.velocity = @1000;
   positionAnimation.springBounciness = 20;
   [positionAnimation setCompletionBlock: ^(POPAnimation *animation, BOOL finished) {
@@ -157,12 +157,12 @@
 
 - (void)showErrorLabel {
   self.errorLabel.layer.opacity = 1.0;
-  POPSpringAnimation *layerScaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
+  POPSpringAnimation* layerScaleAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
   layerScaleAnimation.springBounciness = 18;
   layerScaleAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.f, 1.f)];
   [self.errorLabel.layer pop_addAnimation:layerScaleAnimation forKey:@"labelScaleAnimation"];
 
-  POPSpringAnimation *layerPositionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+  POPSpringAnimation* layerPositionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
   layerPositionAnimation.toValue = @(self.logInButton.layer.position.y + self.logInButton.intrinsicContentSize.height);
   layerPositionAnimation.springBounciness = 12;
   [self.errorLabel.layer pop_addAnimation:layerPositionAnimation forKey:@"layerPositionAnimation"];
@@ -171,11 +171,11 @@
 }
 
 - (void)hideLabel {
-  POPBasicAnimation *layerScaleAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
+  POPBasicAnimation* layerScaleAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerScaleXY];
   layerScaleAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(0.5f, 0.5f)];
   [self.errorLabel.layer pop_addAnimation:layerScaleAnimation forKey:@"layerScaleAnimation"];
 
-  POPBasicAnimation *layerPositionAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+  POPBasicAnimation* layerPositionAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerPositionY];
   layerPositionAnimation.toValue = @(self.logInButton.layer.position.y);
   [self.errorLabel.layer pop_addAnimation:layerPositionAnimation forKey:@"layerPositionAnimation"];
 }

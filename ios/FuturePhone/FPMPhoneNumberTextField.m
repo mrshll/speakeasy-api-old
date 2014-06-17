@@ -20,7 +20,7 @@
 }
 
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString*)string {
   if (textField == self) {
     int length = [self getLength:textField.text];
 
@@ -45,7 +45,7 @@
   return YES;
 }
 
-- (NSString *)formatNumber:(NSString *)mobileNumber {
+- (NSString *)formatNumber:(NSString*)mobileNumber {
   mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
   mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
   mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -59,7 +59,7 @@
   return mobileNumber;
 }
 
-- (int)getLength:(NSString *)mobileNumber {
+- (int)getLength:(NSString*)mobileNumber {
   mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@"(" withString:@""];
   mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@")" withString:@""];
   mobileNumber = [mobileNumber stringByReplacingOccurrencesOfString:@" " withString:@""];
