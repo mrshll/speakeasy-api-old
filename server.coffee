@@ -25,7 +25,10 @@ define [
       @app.use cookieParser()
       @app.use bodyParser()
       # TODO Using in memory session store, change for production
-      @app.use session secret: 'thisismysupersecret'
+      @sessionStore = new session.MemoryStore()
+      @app.use session
+        secret: 'thisismysupersecret'
+        store: @sessionStore
 
       #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
       @app.use multer dest: './uploads/'
@@ -39,7 +42,7 @@ define [
       @nsq = new NSQClient debug: helpers.DEBUG
 
       @app.use helpers.outputRequestRoute
-      @app.use helpers.hydrateRequestWithUser
+      @app.use helpers.requireAuthentication
 
       ###### TWILIO
       @twilio = Twilio helpers.TWILIO_ACCOUNT_SID, helpers.TWILIO_AUTH_TOKEN
@@ -48,6 +51,8 @@ define [
       mongoose = require './db'
       Message = require './models/message'
       User = require './models/user'
+
+      @helpers = helpers
 
       @registerRoutes()
       @server = @startServer()
@@ -185,5 +190,9 @@ define [
               @nsq.publish helpers.CONVERTER_TOPIC,
                 message: message
               res.send 201
+
+      @app.post '/logout', (req, res) ->
+        req.session.destroy (err) ->
+          res.send 200
 
   module.exports = new WebServer()

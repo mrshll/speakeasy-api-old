@@ -13,6 +13,11 @@ LoginToken = require '../models/login_token'
 
 request = request(webServer.app)
 
+sessionStore = webServer.sessionStore
+sessionStore.firstSession = (callback) ->
+  firstSessionId = Object.keys(sessionStore.sessions)[0]
+  sessionStore.get firstSessionId, callback
+
 beforeEach (done) ->
   factory.ensureConnectionAndClearDB done
 
@@ -45,9 +50,13 @@ describe '/twilio/callback', ->
 
 describe '/messages', ->
   context 'POST', ->
+    beforeEach (done) ->
+      webServer.helpers.allowOneUnauthenticatedRequest = true
+      done()
+
     context 'with no file attached', ->
       beforeEach (done) ->
-        @req = request.post '/media'
+        @req = request.post '/messages'
         done()
 
       it 'should respond 422', (done) ->
@@ -126,6 +135,7 @@ TOKEN = '123456'
 describe '/login/validate_token', ->
   context 'POST', ->
     beforeEach (done) ->
+      sessionStore.clear()
       LoginToken.create {
         phone_number: PHONE_NUMBER
         token: TOKEN
@@ -142,6 +152,13 @@ describe '/login/validate_token', ->
       it 'returns 200', (done) ->
         @req.expect(200).end done
 
+      it 'sets the users session state to logged in', (done) ->
+        @req.expect(200).end (err, res) ->
+          sessionStore.firstSession (err, session) ->
+            session.should.have.property('loggedIn')
+            session.loggedIn.should.be.true
+            done()
+
     context 'incorrect token', ->
       beforeEach (done) ->
         @req = request.post '/login/validate_token'
@@ -151,6 +168,12 @@ describe '/login/validate_token', ->
 
       it 'returns 404', (done) ->
         @req.expect(404).end done
+
+      it 'does not log the user in', (done) ->
+        @req.end (err, res) ->
+          sessionStore.firstSession (err, session) ->
+            session.should.not.have.property('loggedIn')
+            done()
 
     context 'expired token', ->
       beforeEach (done) ->
@@ -165,3 +188,46 @@ describe '/login/validate_token', ->
 
       it 'returns 404', (done) ->
         @req.expect(404).end done
+
+describe 'requireAuthentication middleware', ->
+  context 'unauthorized but with valid params', ->
+    beforeEach (done) ->
+      @req = request.post('/logout')
+      done()
+
+    it 'returns 404', (done) ->
+      @req.expect(404).end done
+
+  context 'unauthorized access to public routes', ->
+    beforeEach (done) ->
+      @req = request.post '/login/phone_number'
+               .field 'phone_number', PHONE_NUMBER
+      @sendMessageStub = sinon.stub().yields()
+      webServer.twilio.sendMessage = @sendMessageStub
+      done()
+
+    it 'allows access', (done) ->
+      @req.expect(200).end done
+
+  context 'allowOneUnauthenticatedRequest', ->
+    it 'only works for one request', (done) ->
+      webServer.helpers.allowOneUnauthenticatedRequest = true
+      request.post('/logout').expect(200).end ->
+        request.post('/logout').expect(404).end done
+
+describe '/logout', ->
+  context 'POST', ->
+    beforeEach (done) ->
+      webServer.helpers.allowOneUnauthenticatedRequest = true
+      @req = request.post('/logout')
+      done()
+
+    it 'returns 200', (done) ->
+      @req.expect(200).end done
+
+    it 'destroys the session', (done) ->
+      @req.end (err, res) ->
+        setSession = _.some res.headers['set-cookie'], (cookie) ->
+          cookie.match /connect\.sid/
+        setSession.should.not.be.true
+        done()

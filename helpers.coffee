@@ -2,8 +2,9 @@ if typeof define isnt 'function' then define = require('amdefine')(module)
 define [
   'crypto'
   'moment'
+  'underscore',
   './models/user'
-], (crypto, moment, User) ->
+], (crypto, moment, _, User) ->
   class Helpers
     #TODO raise error on startup if any required params are not set, or add defaults to all
     PORT: process.env.PORT
@@ -42,20 +43,27 @@ define [
       @debug "#{ req.originalUrl } #{ req.method }"
       next()
 
-    # Custom middleware to hydrate request with current user
-    hydrateRequestWithUser: (req, res, next) ->
-      if req.session and req.session.userID
-        User.findById req.session.userID, (err, user) ->
-          if not err and user
-            req.user = user
-            next()
-          else
-            next new Error("Could not restore User from Session.")
-      else
-        next()
+    # This can be set by tests to allow a single unauth'ed request through
+    allowOneUnauthenticatedRequest: false
 
-    userRequired: (req, res, next) ->
-      # TODO: Authenticate
-      if req.user then next() else next new Error 'Not Logged In'
+    # These whitelisted routes do not require a logged in session
+    publicRoutes: [
+      '/login/phone_number'
+      '/login/validate_token'
+      '/twilio/callback'
+    ]
+
+    # Authentication middleware
+    requireAuthentication: (req, res, next) =>
+      if _.contains @publicRoutes, req._parsedUrl.pathname
+        next()
+      else if req.session and req.session.loggedIn
+        next()
+        return
+      else if @allowOneUnauthenticatedRequest
+        @allowOneUnauthenticatedRequest = false
+        next()
+      else
+        res.send 404, "Must be logged in to access #{ req.url }"
 
   module.exports = new Helpers
