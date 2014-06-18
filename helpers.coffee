@@ -8,7 +8,7 @@ define [
   class Helpers
     #TODO raise error on startup if any required params are not set, or add defaults to all
     PORT: process.env.PORT
-    ROOT_URL: process.env.ROOT_URL || "http://localhost:#{ @PORT }"
+    CALLBACK_ROOT_URL: process.env.CALLBACK_ROOT_URL || "http://localhost"
     DEBUG: process.env.APP_ENV is 'debug'
 
     # Queue topics

@@ -34,7 +34,7 @@ define [
       call =
         to: user.phone_number
         from: "+16159135926"
-        url: "#{ helpers.ROOT_URL }/twilio/callback?#{ params }"
+        url: "#{ helpers.CALLBACK_ROOT_URL }/twilio/callback?#{ params }"
 
       @twilio.makeCall call, (err, data) ->
         if err
