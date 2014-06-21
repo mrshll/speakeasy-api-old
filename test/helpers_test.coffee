@@ -5,16 +5,14 @@ moment = require 'moment'
 
 describe 'helpers', ->
   describe '#calculateFutureDelivery', ->
-    it 'should return a date in the future', (done) ->
+    it 'should return a date in the future', ->
       now = moment()
       future_date = helpers.calculateFutureDelivery 'days', 6
       future_date.isAfter(now).should.equal true
-      done()
 
   describe '#randomSixDigitToken', ->
-    beforeEach (done) ->
+    beforeEach ->
       @code = helpers.randomSixDigitToken()
-      done()
 
     it 'should be a string', ->
       type = typeof @code

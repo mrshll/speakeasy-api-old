@@ -51,7 +51,7 @@ describe '/twilio/callback', ->
       it 'should mark the message as completed', (done) ->
         @req.end (err, res) =>
           Message.findById @message._id, (err, message) ->
-            message.state.should.equal 'completed'
+            message.state.should.equal helpers.MSG_STATE_COMPLETED
             moment(message.completed_at).isBefore(moment()).should.equal true
             done()
 
@@ -87,7 +87,7 @@ describe '/messages', ->
           Message.find {}, (err, messages) =>
             messages.length.should.equal 1
             message = messages[0]
-            message.state.should.equal 'created'
+            message.state.should.equal helpers.MSG_STATE_CREATED
             message.should.have.property '_user'
             message.should.have.property 'deliver_at'
             message.should.have.property 'original_media_path'

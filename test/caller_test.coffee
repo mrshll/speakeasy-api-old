@@ -2,18 +2,20 @@ should = require 'should'
 sinon = require 'sinon'
 fs = require 'fs'
 
+helpers = require '../helpers'
 factory = require './factory'
 caller = require '../caller'
 
 describe 'caller', ->
   describe 'markMessageAsInProgress', ->
     beforeEach (done) ->
-      factory.createMessage { state: 'enqueued' }, (err, @message) => done()
+      messageParams = state: helpers.MSG_STATE_ENQUEUED
+      factory.createMessage messageParams, (err, @message) => done()
 
     it 'should update message state to "calling"', (done) ->
-      @message.state.should.equal 'enqueued'
+      @message.state.should.equal helpers.MSG_STATE_ENQUEUED
       caller.markMessageAsInProgress @message, (err, updatedMessage) ->
-        updatedMessage.state.should.equal 'calling'
+        updatedMessage.state.should.equal helpers.MSG_STATE_CALLING
         done()
 
   describe 'call', ->
@@ -41,5 +43,5 @@ describe 'caller', ->
         # This is so so so cool
         makeCallSpy.yield('Example Error', {})
 
-        @message.state.should.equal 'converted'
+        @message.state.should.equal helpers.MSG_STATE_CONVERTED
         done()

@@ -77,7 +77,7 @@ define [
             resp.play message.media_uri
 
             message.completed_at = moment()._d
-            message.state = 'completed'
+            message.state = helpers.MSG_STATE_COMPLETED
 
             message.save (err, message) ->
               res.header('Content-Type','text/xml').send resp.toString()
@@ -177,7 +177,7 @@ define [
             deliver_at: deliver_at._d
             original_media_path: file.path
             _user: user._id
-            state: 'created'
+            state: helpers.MSG_STATE_CREATED
 
           message = new Message messageParams
           message.save (err, message) =>

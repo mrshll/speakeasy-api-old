@@ -21,7 +21,7 @@ define [
         deliver_at:
           $lte: moment()._d
         completed_at: null
-        state: 'converted'
+        state: helpers.MSG_STATE_CONVERTED
         media_uri:
           $ne: null
 
@@ -33,7 +33,7 @@ define [
             @enqueueMessage message
             messageIds.push message._id
           updateQuery = { _id: { $in: messageIds } }
-          Message.update updateQuery, { state: 'enqueued' }, ->
+          Message.update updateQuery, { state: helpers.MSG_STATE_ENQUEUED }, ->
             done messages.length if done
         else
           console.log 'No messages to enqueue'

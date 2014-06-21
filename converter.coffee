@@ -40,7 +40,7 @@ define [
       messageUpdate =
         $set:
           media_uri: media_uri
-          state: 'converted'
+          state: helpers.MSG_STATE_CONVERTED
       Message.findByIdAndUpdate message._id, messageUpdate, (err, updatedMessage) ->
         handleError err if err
         callback(err, updatedMessage)

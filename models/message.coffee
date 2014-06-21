@@ -1,3 +1,4 @@
+helpers = require '../helpers'
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
@@ -12,7 +13,7 @@ messageSchema = mongoose.Schema
   # state can be one of 'created', 'converted', 'enqueued', 'calling', 'completed'
   state:
     type: String
-    default: 'created'
+    default: helpers.MSG_STATE_CREATED
   original_media_path: String
   media_uri:
     type: String

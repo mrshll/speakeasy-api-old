@@ -27,7 +27,7 @@ describe 'dispatcher', ->
       beforeEach (done) ->
         messageParams =
           deliver_at: moment().subtract('minute', 1)
-          state: 'converted'
+          state: helpers.MSG_STATE_CONVERTED
         factory.createMessage(messageParams, done)
 
       it 'should publish a message', (done) ->
@@ -43,7 +43,7 @@ describe 'dispatcher', ->
 
       it "should update the messages' state to enqueued", (done) ->
         dispatcher.enqueueReadyMessages =>
-          Message.find { state: 'enqueued' }, (err, messages) ->
+          Message.find { state: helpers.MSG_STATE_ENQUEUED }, (err, messages) ->
             messages.length.should.equal 1
             done()
 
@@ -51,7 +51,7 @@ describe 'dispatcher', ->
       it 'should not publish a message', (done) ->
         messageParams =
           deliver_at: moment().add('minute', 1)
-          state: 'converted'
+          state: helpers.MSG_STATE_CONVERTED
         factory.createMessage messageParams, =>
           dispatcher.enqueueReadyMessages =>
             @publishStub.called.should.be.false
@@ -61,7 +61,7 @@ describe 'dispatcher', ->
       it 'should not publish a message', (done) ->
         messageParams =
           deliver_at: moment().subtract('day', 1)
-          state: 'converted'
+          state: helpers.MSG_STATE_CONVERTED
           media_uri: null
         factory.createMessage messageParams, =>
           dispatcher.enqueueReadyMessages =>
@@ -72,7 +72,7 @@ describe 'dispatcher', ->
       beforeEach (done) ->
         messageParams =
           deliver_at: moment().subtract('day', 1)
-          state: 'converted'
+          state: helpers.MSG_STATE_CONVERTED
         factory.createMessage messageParams, ->
           factory.createMessage messageParams, done
 
