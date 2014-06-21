@@ -37,7 +37,11 @@ define [
 
     updateMessageWithConvertedFile: (message, path, callback) ->
       media_uri = "#{ helpers.CALLBACK_ROOT_URL }/#{ path }"
-      Message.findByIdAndUpdate message._id, { $set: { media_uri: media_uri }}, (err, updatedMessage) ->
+      messageUpdate =
+        $set:
+          media_uri: media_uri
+          state: helpers.MSG_STATE_CONVERTED
+      Message.findByIdAndUpdate message._id, messageUpdate, (err, updatedMessage) ->
         handleError err if err
         callback(err, updatedMessage)
 

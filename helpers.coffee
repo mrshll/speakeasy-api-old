@@ -17,6 +17,14 @@ define [
     NSQ_CHANNEL: 'me.futurephone'
     NSQ_DEBUG: false
 
+    # Message States. Used to track messages as they move through the pipeline.
+    MSG_STATE_CREATED: 'created'
+    MSG_STATE_CONVERTED: 'converted'
+    MSG_STATE_ENQUEUED: 'enqueued'
+    MSG_STATE_CALLING: 'calling'
+    MSG_STATE_COMPLETED: 'completed'
+
+
     # Twilio
     TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID || 'AC95819529a22e43ee87a169c2cbbfcd47'
     TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || '607d3d66b03e03d6b07a2fa26e729277'
