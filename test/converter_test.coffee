@@ -30,4 +30,5 @@ describe 'converter', ->
     it 'should update the message with the converted file', (done) ->
       converter.updateMessageWithConvertedFile @message, 'youareeye.mp3', (err, updatedMessage) ->
         updatedMessage.media_uri.should.equal "http://localhost/youareeye.mp3"
+        updatedMessage.state.should.equal 'converted'
       done()

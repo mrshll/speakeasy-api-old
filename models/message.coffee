@@ -9,9 +9,10 @@ messageSchema = mongoose.Schema
   completed_at:
     type: Date
     default: null
-  in_progress:
-    type: Boolean
-    default: false
+  # state can be one of 'created', 'converted', 'enqueued', 'calling', 'completed'
+  state:
+    type: String
+    default: 'created'
   original_media_path: String
   media_uri:
     type: String

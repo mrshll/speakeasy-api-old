@@ -18,20 +18,25 @@ define [
     # If provided, calls done with the number of dispatched messages
     enqueueReadyMessages: (done) =>
       query = Message.find
-        'deliver_at':
-          '$lte': moment()._d
-        'completed_at': null
-        'in_progress': false
-        'media_uri':
-          '$ne': null
+        deliver_at:
+          $lte: moment()._d
+        completed_at: null
+        state: 'converted'
+        media_uri:
+          $ne: null
 
       query.populate('_user').exec (err, messages) =>
         if messages.length
+          messageIds = []
           console.log "Dispatching #{ messages.length } messages"
           _.each messages, (message) =>
-            @enqueueMessage(message)
+            @enqueueMessage message
+            messageIds.push message._id
+          updateQuery = { _id: { $in: messageIds } }
+          Message.update updateQuery, { state: 'enqueued' }, ->
+            done messages.length if done
         else
           console.log 'No messages to enqueue'
-        done(messages.length) if done
+          done 0 if done
 
   module.exports = new Dispatcher

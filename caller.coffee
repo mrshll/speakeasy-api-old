@@ -26,7 +26,7 @@ define [
     # callback takes error and an updated message
     markMessageAsInProgress: (message, done) ->
       Message.findByIdAndUpdate message._id,
-        { $set: { in_progress: true } }, done
+        { $set: { state: 'calling' } }, done
 
     call: (user, message, done) ->
       console.log "initiating call to #{ user.phone_number }"
@@ -39,7 +39,7 @@ define [
       @twilio.makeCall call, (err, data) ->
         if err
           console.log err
-          message.in_progress = false
+          message.state = 'converted' # send message back to dispatcher
           message.save()
         else
           console.log data

@@ -77,7 +77,7 @@ define [
             resp.play message.media_uri
 
             message.completed_at = moment()._d
-            message.in_progress = false
+            message.state = 'completed'
 
             message.save (err, message) ->
               res.header('Content-Type','text/xml').send resp.toString()
@@ -157,7 +157,6 @@ define [
           else
             res.send 404
 
-      #TODO: authenticate & validate user
       @app.post '/messages', (req, res) =>
         params = req.body
         return res.send 422 unless params.delivery_unit and
@@ -172,13 +171,13 @@ define [
           for key, file of req.files
             # we just want the first file, so we immediately return
             helpers.debug "File uploaded to #{ file.path }"
-            #TODO enqueu the media into a topic for conversion
 
           deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
           messageParams =
             deliver_at: deliver_at._d
             original_media_path: file.path
             _user: user._id
+            state: 'created'
 
           message = new Message messageParams
           message.save (err, message) =>

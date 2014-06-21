@@ -26,7 +26,7 @@ define [
           original_media_path: 'youareeye.m4a'
           _user: user._id
           deliver_at: moment()
-          in_progress: false
+          state: 'created'
           completed_at: null
 
         new Message(params).save callback

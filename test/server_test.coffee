@@ -39,12 +39,19 @@ describe '/twilio/callback', ->
           @req = request.post("/twilio/callback?message_id=#{ message._id }")
           done()
 
+      it 'should return 200', (done) ->
+        @req.expect(200).end done
+
       it 'should return valid TwiML', (done) ->
         @req.expect('Content-Type', /xml/).end (err, res) =>
           throw err if err
           res.text.match(/xml.*Play.*\.mp3/).should.have.lengthOf 1
+          done()
 
+      it 'should mark the message as completed', (done) ->
+        @req.end (err, res) =>
           Message.findById @message._id, (err, message) ->
+            message.state.should.equal 'completed'
             moment(message.completed_at).isBefore(moment()).should.equal true
             done()
 
@@ -80,17 +87,17 @@ describe '/messages', ->
           Message.find {}, (err, messages) =>
             messages.length.should.equal 1
             message = messages[0]
-            message.should.have.property('_user')
-            message.should.have.property('in_progress')
-            message.should.have.property('deliver_at')
-            message.should.have.property('original_media_path')
+            message.state.should.equal 'created'
+            message.should.have.property '_user'
+            message.should.have.property 'deliver_at'
+            message.should.have.property 'original_media_path'
 
             # Check user relation
             message.should.have.property('_user')
             message._user.toString().should.equal @user._id.toString()
 
             moment(message.deliver_at).isAfter(moment()).should.equal true
-          done()
+            done()
 
 PHONE_NUMBER = '1111111111'
 describe '/login/phone_number', ->
