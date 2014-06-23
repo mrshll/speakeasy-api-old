@@ -157,6 +157,10 @@ define [
           else
             res.send 404
 
+      # Returns 200 if the user is logged in, else 404
+      @app.get '/logged_in', (req, res) ->
+        res.send 200
+
       @app.post '/messages', (req, res) =>
         params = req.body
         return res.send 422 unless params.delivery_unit and

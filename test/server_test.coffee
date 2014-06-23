@@ -238,3 +238,14 @@ describe '/logout', ->
           cookie.match /connect\.sid/
         setSession.should.not.be.true
         done()
+
+describe '/logged_in', ->
+  context 'GET', ->
+    context 'user is logged in', ->
+      it 'returns 200', (done) ->
+        webServer.helpers.allowOneUnauthenticatedRequest = true
+        request.get('/logged_in').expect(200).end done
+
+    context 'user is not logged in', ->
+      it 'returns 200', (done) ->
+        request.get('/logged_in').expect(404).end done
