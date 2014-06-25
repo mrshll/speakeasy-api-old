@@ -157,7 +157,8 @@ define [
           else
             res.send 404
 
-      # Returns 200 if the user is logged in, else 404
+      # Returns 200 if the user is logged in, else 404. Relies on
+      # authentication middleware to reject unauthenticated requests.
       @app.get '/logged_in', (req, res) ->
         res.send 200
 

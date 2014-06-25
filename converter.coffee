@@ -12,8 +12,7 @@ define [
 
     messageHandler: (message, done) ->
       @convertM4AToMP3 message.original_media_path, (destination) ->
-        @updateMessageWithConvertedFile message, destination
-        done()
+        @updateMessageWithConvertedFile message, destination, done
 
     # given a path to an m4a file, it returns the path to the new converted mp3
     convertM4AToMP3: (m4aPath, callback) ->
