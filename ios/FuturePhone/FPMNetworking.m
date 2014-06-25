@@ -9,7 +9,7 @@
 #import <Lockbox/Lockbox.h>
 #import "FPMNetworking.h"
 
-#define FPM_BASE_URL_STRING (@"http://7cdd5781.ngrok.com")
+#define FPM_BASE_URL_STRING (@"http://3ecb8805.ngrok.com")
 
 #define FPM_MESSAGES_URL_STRING ([NSString stringWithFormat:@"%@/messages", FPM_BASE_URL_STRING])
 

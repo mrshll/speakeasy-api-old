@@ -10,19 +10,27 @@
 #import <Lockbox/Lockbox.h>
 
 #import "FPMNetworking.h"
+#import "FPMDispatchCell.h"
 #import "FPMDispatchMessageViewController.h"
 
-@interface FPMDispatchMessageViewController ()
+#define DISPATCH_BUTTON_WIDTH 140
+#define DISPATCH_BUTTON_HEIGHT 40
+
+@interface FPMDispatchMessageViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
+
+@property UILabel* dispatchLabel;
+@property UICollectionView* dispatchActionCollectionView;
+@property NSDictionary* dispatchActionMagnitudes;
+@property NSArray* dispatchActionButtonTitles;
 
 @end
 
 @implementation FPMDispatchMessageViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)init {
+  self = [super init];
   if (self) {
-    // Custom initialization
+    [self.view setBackgroundColor:[UIColor whiteColor]];
   }
   return self;
 }
@@ -30,13 +38,66 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  // Do any additional setup after loading the view.
+  self.dispatchActionButtonTitles = @[ @"Minutes", @"Hours", @"Days", @"Weeks", @"Months", @"Years" ];
+  
+  self.dispatchActionMagnitudes = @{
+    @"Minutes": @{ @"from": @2, @"to": @30 },
+    @"Hours": @{ @"from": @1, @"to": @12 },
+    @"Days": @{ @"from": @1, @"to": @4 },
+    @"Weeks": @{ @"from": @1, @"to": @5  },
+    @"Months": @{ @"from": @1, @"to": @12 },
+    @"Years": @{ @"from": @1, @"to": @2 }
+  };
+  
+  [self addCollectionView];
+  [self addDispatchLabel];
+}
+
+- (void)addCollectionView {
+  UICollectionViewFlowLayout *aFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+  [aFlowLayout setItemSize:CGSizeMake(DISPATCH_BUTTON_WIDTH, DISPATCH_BUTTON_HEIGHT)];
+  [aFlowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+  
+  CGRect frame = CGRectMake(0, 100, self.view.frame.size.width, self.view.frame.size.height);
+  self.dispatchActionCollectionView = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:aFlowLayout];
+  
+  [self.dispatchActionCollectionView setBackgroundColor:[UIColor whiteColor]];
+  [self.dispatchActionCollectionView setDelegate:self];
+  [self.dispatchActionCollectionView setDataSource:self];
+  [self.dispatchActionCollectionView registerClass:[FPMDispatchCell class] forCellWithReuseIdentifier:@"DispatchCell"];
+  
+  [self.view addSubview:self.dispatchActionCollectionView];
+}
+
+- (void)addDispatchLabel {
+  self.dispatchLabel = [UILabel new];
+  self.dispatchLabel.font = [UIFont fontWithName:@"Avenir-Light" size:18];
+  self.dispatchLabel.text = @"Call me in a few...";
+  [self.dispatchLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+  
+  [self.view insertSubview:self.dispatchLabel aboveSubview:self.dispatchActionCollectionView];
+  [self.view addConstraint:[NSLayoutConstraint
+                            constraintWithItem:self.dispatchLabel
+                                     attribute:NSLayoutAttributeCenterX
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.dispatchActionCollectionView
+                                     attribute:NSLayoutAttributeCenterX
+                                    multiplier:1.f
+                                      constant:0.f]];
+
+  [self.view addConstraint:[NSLayoutConstraint
+                            constraintWithItem:self.dispatchLabel
+                                     attribute:NSLayoutAttributeBottom
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:self.dispatchActionCollectionView
+                                     attribute:NSLayoutAttributeTop
+                                    multiplier:1.f
+                                      constant:-10.f]];
 }
 
 - (void)didReceiveMemoryWarning
 {
   [super didReceiveMemoryWarning];
-  // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Create Message
@@ -62,41 +123,51 @@
 
 #pragma mark - Dispatch Time Button Actions
 
-- (IBAction)minutesButtonPressed:(id)sender {
-  NSNumber* magnitude = [self randomNumberFrom:2 to:30];
-  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:@"minutes" magnitude:magnitude];
-}
-
-- (IBAction)hoursButtonPressed:(id)sender {
-  NSNumber* magnitude = [self randomNumberFrom:1 to:12];
-  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:@"hours" magnitude:magnitude];
-}
-
-- (IBAction)daysButtonPressed:(id)sender {
-  NSNumber* magnitude = [self randomNumberFrom:1 to:6];
-  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:@"days" magnitude:magnitude];
-}
-
-- (IBAction)weeksButtonPressed:(id)sender {
-  NSNumber* magnitude = [self randomNumberFrom:1 to:4];
-  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:@"weeks" magnitude:magnitude];
-}
-
-- (IBAction)monthsButtonPressed:(id)sender {
-  NSNumber* magnitude = [self randomNumberFrom:1 to:5];
-  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:@"months" magnitude:magnitude];
-}
-
-- (IBAction)yearsButtonPressed:(id)sender {
-  NSNumber* magnitude = [self randomNumberFrom:1 to:2];
-  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:@"years" magnitude:magnitude];
+- (IBAction)dispatchButtonPressed:(UIButton*)button {
+  NSString* timeUnit = button.titleLabel.text;
+  
+  NSInteger magnitudeRangeFrom = [self.dispatchActionMagnitudes[timeUnit][@"from"] intValue];
+  NSInteger magnitudeRangeTo = [self.dispatchActionMagnitudes[timeUnit][@"to"] intValue];
+  
+  NSNumber* magnitude = [self randomNumberFrom:magnitudeRangeFrom to:magnitudeRangeTo];
+  [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:timeUnit magnitude:magnitude];
 }
 
 #pragma mark - Helpers
 
 - (NSNumber*)randomNumberFrom:(NSInteger)min to:(NSInteger)max {
-  NSInteger delta = max - min;
+  uint32_t delta = (uint32_t)(max - min);
   NSUInteger rand = arc4random_uniform(delta + 1);
   return [NSNumber numberWithInteger:min + rand];
 }
+
+#pragma mark - UICollectionViewDelegate
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+  return 1;
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+  return [self.dispatchActionMagnitudes count];
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+  static NSString *dispatchCellIdentifier=@"DispatchCell";
+  FPMDispatchCell* dispatchCell = [self.dispatchActionCollectionView dequeueReusableCellWithReuseIdentifier:dispatchCellIdentifier forIndexPath:indexPath];
+  NSString* timeUnit = [self.dispatchActionButtonTitles objectAtIndex:indexPath.item];
+  [dispatchCell.button setTitle:timeUnit forState:UIControlStateNormal];
+  
+  [dispatchCell.button addTarget:self action:@selector(dispatchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+
+  return dispatchCell;
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+  
+  NSInteger numberOfCells = self.view.frame.size.width / DISPATCH_BUTTON_WIDTH;
+  NSInteger edgeInsets = (self.view.frame.size.width - (numberOfCells * DISPATCH_BUTTON_WIDTH)) / (numberOfCells + 1);
+  
+  return UIEdgeInsetsMake(0, edgeInsets, 0, edgeInsets);
+}
+
 @end

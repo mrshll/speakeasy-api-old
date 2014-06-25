@@ -79,7 +79,7 @@
                                                    views:views]];
 
   [self.view addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:@"V:|-(88)-[_phoneNumberTextField(==36)]"
+                             constraintsWithVisualFormat:@"V:|-(48)-[_phoneNumberTextField(==40)]"
                                                  options:0
                                                  metrics:nil
                                                    views:views]];
@@ -100,17 +100,17 @@
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:self.phoneNumberTextField
                                      attribute:NSLayoutAttributeCenterX
-                                    multiplier:1
+                                    multiplier:1.f
                                       constant:0.f]];
 
   [self.view addConstraint:[NSLayoutConstraint
                             constraintWithItem:self.logInButton
-                                     attribute:NSLayoutAttributeCenterY
+                                     attribute:NSLayoutAttributeTop
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:self.phoneNumberTextField
-                                     attribute:NSLayoutAttributeCenterY
-                                    multiplier:1
-                                      constant:self.logInButton.intrinsicContentSize.height]];
+                                     attribute:NSLayoutAttributeBottom
+                                    multiplier:1.f
+                                      constant:15.f]];
 }
 
 - (void)addErrorLabel {
@@ -128,7 +128,7 @@
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:self.logInButton
                                      attribute:NSLayoutAttributeCenterX
-                                    multiplier:1
+                                    multiplier:1.f
                                       constant:0.f]];
 
   [self.view addConstraint:[NSLayoutConstraint
@@ -137,8 +137,8 @@
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:self.logInButton
                                      attribute:NSLayoutAttributeCenterY
-                                    multiplier:1
-                                      constant:0]];
+                                    multiplier:1.f
+                                      constant:0.f]];
 
   self.errorLabel.layer.transform = CATransform3DMakeScale(0.5f, 0.5f, 1.f);
 }

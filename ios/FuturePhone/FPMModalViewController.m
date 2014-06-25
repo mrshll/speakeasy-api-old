@@ -33,7 +33,9 @@
 }
 
 - (void)dismiss {
-  [self dismissViewControllerAnimated:YES completion:nil];
+  [self dismissViewControllerAnimated:YES completion:^{
+    [self.presentingViewController dismissViewControllerAnimated:NO completion:nil];
+  }];
 }
 
 @end

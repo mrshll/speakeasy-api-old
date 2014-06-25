@@ -17,7 +17,8 @@
 
 @property (nonatomic) AVAudioRecorder* recorder;
 @property (nonatomic) NSURL* mediaURL;
-@property (nonatomic, weak) IBOutlet FPMFlatButton* recordButton;
+@property FPMFlatButton* recordButton;
+@property UIImageView* logoImageView;
 
 @end
 
@@ -28,6 +29,7 @@
   [super viewDidLoad];
   
   [self addRecordButton];
+  [self addLogoImageView];
   
   self.recorder = [self createAudioRecorder];
 }
@@ -50,7 +52,6 @@
     // Start recording
     [self.recorder record];
     [self.recordButton setTitle:@"Done" forState:UIControlStateNormal];
-    
   } else {
     
     // Pause recording
@@ -67,7 +68,10 @@
   if (success) {
     NSLog(@"recorded file: %@", recorder.url);
     self.mediaURL = recorder.url;
-    [self performSegueWithIdentifier:@"RecordToDispatchPushSegue" sender:self];
+    
+    FPMDispatchMessageViewController* dispatchMessageViewController = [FPMDispatchMessageViewController new];
+    dispatchMessageViewController.mediaURL = self.mediaURL;
+    [self presentViewController:dispatchMessageViewController animated:YES completion:nil];
   } else {
     NSLog(@"recording audio failed");
   }
@@ -101,7 +105,7 @@
   AVAudioRecorder* recorder = [[AVAudioRecorder alloc] initWithURL:outputFileURL settings:recordSettings error:NULL];
   recorder.delegate = self;
   recorder.meteringEnabled = YES;
-  [recorder prepareToRecord];
+//  [recorder prepareToRecord];
   return recorder;
 }
 
@@ -114,19 +118,39 @@
   
   [self.recordButton addTarget:self action:@selector(recordButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
   
-  NSDictionary *views = NSDictionaryOfVariableBindings(_recordButton);
+  [self.view addConstraint: [NSLayoutConstraint constraintWithItem:self.recordButton
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.view
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.f constant:0.f]];
   
-  [self.view addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:@"H:|-[_recordButton]-|"
-                             options:0
-                             metrics:nil
-                             views:views]];
+  [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.recordButton
+                                                        attribute:NSLayoutAttributeCenterY
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:self.view
+                                                        attribute:NSLayoutAttributeCenterY
+                                                       multiplier:1.f constant:0.f]];
+}
+
+- (void)addLogoImageView {
+  self.logoImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Icon"]];
+  self.logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+  [self.view insertSubview:self.logoImageView belowSubview:self.recordButton];
   
-  [self.view addConstraints:[NSLayoutConstraint
-                             constraintsWithVisualFormat:@"V:|-[_recordButton]-|"
-                             options:0
-                             metrics:nil
-                             views:views]];
+  [self.view addConstraint: [NSLayoutConstraint constraintWithItem:self.logoImageView
+                                                         attribute:NSLayoutAttributeCenterX
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.view
+                                                         attribute:NSLayoutAttributeCenterX
+                                                        multiplier:1.f constant:0.f]];
+  
+  [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
+                                                        attribute:NSLayoutAttributeBottom
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:self.recordButton
+                                                        attribute:NSLayoutAttributeTop
+                                                       multiplier:1.f constant:-15.f]];
 }
 
 @end
