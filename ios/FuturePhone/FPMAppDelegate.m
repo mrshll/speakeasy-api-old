@@ -11,6 +11,8 @@
 #import "FPMNetworking.h"
 #import "FPMRecordViewController.h"
 #import "FPMAuthModalViewController.h"
+#import "FPMDispatchMessageViewController.h"
+#import "FPMLoaderView.h"
 #import "FPMAppDelegate.h"
 
 @implementation FPMAppDelegate
@@ -20,16 +22,16 @@
   BOOL hasCookies = [FPMNetworking loadCookies];
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-  
   FPMRecordViewController* recordViewController = [FPMRecordViewController new];
+  
   [self.window setRootViewController:recordViewController];
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.tintColor = [UIColor customBlueColor];
   [self.window makeKeyAndVisible];
   
-  if (YES || !hasCookies){
+//  if (!hasCookies){
     [self performSelector:@selector(showAuthModal) withObject:nil afterDelay:1.f];
-  }
+//  }
   
   [[UINavigationBar appearance] setTitleTextAttributes:
    @{

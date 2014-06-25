@@ -137,7 +137,7 @@ define [
               res.send 400
             else
               # TODO: maybe don't log, doing for dev purposes
-              helpers.debug "#{ phone } - #{ token }"
+              helpers.debug "successuly logged in #{ phone }"
               res.send 200
 
       # Login Step 2: Takes a login_token and phone_number and responds
@@ -166,33 +166,28 @@ define [
         return res.send 422 unless params.delivery_unit and
           params.delivery_magnitude and
           params.phone_number and
-          params.session_key and
           Object.keys(req.files).length is 1
 
-        findUser = User.findOne
-          phone_number: params.phone_number
-        findUser.exec().then (user, err) =>
-          for key, file of req.files
-            # we just want the first file, so we immediately return
-            helpers.debug "File uploaded to #{ file.path }"
+        for key, file of req.files
+          # we just want the first file, so we immediately return
+          helpers.debug "File uploaded to #{ file.path }"
 
-          deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
-          messageParams =
-            deliver_at: deliver_at._d
-            original_media_path: file.path
-            _user: user._id
-            state: helpers.MSG_STATE_CREATED
+        deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
+        messageParams =
+          deliver_at: deliver_at._d
+          original_media_path: file.path
+          state: helpers.MSG_STATE_CREATED
 
-          message = new Message messageParams
-          message.save (err, message) =>
-            if err
-              console.error err
-              res.send 500
-            else
-              helpers.debug 'created: ' + message
-              @nsq.publish helpers.CONVERTER_TOPIC,
-                message: message
-              res.send 201
+        message = new Message messageParams
+        message.save (err, message) =>
+          if err
+            console.error err
+            res.send 500
+          else
+            helpers.debug 'created: ' + message
+            @nsq.publish helpers.CONVERTER_TOPIC,
+              message: message
+            res.send 201
 
       @app.post '/logout', (req, res) ->
         req.session.destroy (err) ->

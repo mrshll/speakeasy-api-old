@@ -25,7 +25,6 @@ define [
         console.log "Subscribing to #{ @subTopic } / #{ @channel }"
         subscriber = @nsq.subscribe @subTopic, @channel, ephemeral: true
 
-      if @subTopic
         subscriber.on "message", (message) ->
           @messageHandler message, ->
             item.finish()

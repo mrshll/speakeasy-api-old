@@ -20,6 +20,7 @@
 - (void)viewDidLoad {
   [super viewDidLoad];
 
+  self.view.layer.cornerRadius = 8.f;
   self.view.backgroundColor = [UIColor customBlueColor];
   [self addTokenTextField];
 }
@@ -37,20 +38,18 @@
 
   NSString* phoneNumber = [Lockbox stringForKey:@"phoneNumber"];
 
-
   [FPMNetworking requestTokenConfirmationForPhoneNumber:phoneNumber token:token andSuccess: ^(AFHTTPRequestOperation* operation, id responseObject) {
       NSLog(@"Token valid");
 
       [FPMNetworking saveCookies];
 
-      [self dismissViewControllerAnimated:YES completion:nil];
       FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self transitioningDelegate];
       [authModal dismiss];
   } andFailure: ^(AFHTTPRequestOperation* operation, NSError* error) {
       NSLog(@"%@", error);
+      FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self transitioningDelegate];
+      [authModal dismiss];
   }];
-
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addTokenTextField {
