@@ -9,6 +9,9 @@ define [
   './models/message'
   './models/user'
 ], (_, NSQClient, Util, OS, helpers, mongoose, Message, User) ->
+
+  # subclasses must implement a 'messageHandler' method that takes a message
+  # and a done callback
   class WorkerBase
     channel: helpers.NSQ_CHANNEL
 
@@ -25,14 +28,9 @@ define [
         console.log "Subscribing to #{ @subTopic } / #{ @channel }"
         subscriber = @nsq.subscribe @subTopic, @channel, ephemeral: true
 
-        subscriber.on "message", (message) =>
-          @messageHandler message, item.finish
+        subscriber.on "message", @messageHandler.bind(@)
 
       @registerExitCallback()
-
-    messageHandler: (message, done) ->
-      console.log message
-      done()
 
     enqueueMessage: (message) ->
       @nsq.publish @pubTopic, message: message

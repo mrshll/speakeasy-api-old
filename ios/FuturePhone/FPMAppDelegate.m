@@ -29,9 +29,9 @@
   self.window.tintColor = [UIColor customBlueColor];
   [self.window makeKeyAndVisible];
   
-  if (!hasCookies){
+//  if (!hasCookies){
     [self performSelector:@selector(showAuthModal) withObject:nil afterDelay:1.f];
-  }
+//  }
   
   [[UINavigationBar appearance] setTitleTextAttributes:
    @{

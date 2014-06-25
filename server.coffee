@@ -121,11 +121,12 @@ define [
         # went you hit this route you are logged out of any previous session
         req.session.loggedIn = false
         phone = req.body.phone_number
-        token = helpers.randomSixDigitToken()
+        token = helpers.randomToken()
         persistToken = LoginToken.create
                          phone_number: phone
                          token: token
                          expires: moment().add 'minutes', 10
+
         persistToken.then (loginToken, err) =>
           @twilio.sendMessage {
             from: helpers.TWILIO_FROM_PHONE
@@ -137,7 +138,7 @@ define [
               res.send 400
             else
               # TODO: maybe don't log, doing for dev purposes
-              helpers.debug "successuly logged in #{ phone }"
+              helpers.debug "successfully logged in #{ phone }"
               res.send 200
 
       # Login Step 2: Takes a login_token and phone_number and responds

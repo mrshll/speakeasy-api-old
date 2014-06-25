@@ -33,8 +33,8 @@ define [
     calculateFutureDelivery: (unit, magnitude) ->
       moment().add unit, parseInt(magnitude)
 
-    randomSixDigitToken: ->
-      length = 6
+    randomToken: ->
+      length = 4
       randomBytes = crypto.randomBytes(length)
       code = []
       for i in [0...length]

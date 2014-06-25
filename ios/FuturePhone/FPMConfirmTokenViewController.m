@@ -15,7 +15,7 @@
 
 @implementation FPMConfirmTokenViewController
 
-#define TOKEN_LENGTH 6
+#define TOKEN_LENGTH 4
 
 - (void)viewDidLoad {
   [super viewDidLoad];
@@ -57,7 +57,7 @@
   self.tokenTextField.keyboardType = UIKeyboardTypeNumberPad;
   self.tokenTextField.backgroundColor = [UIColor whiteColor];
   self.tokenTextField.layer.cornerRadius = 2.f;
-  self.tokenTextField.placeholder = @"123456";
+  self.tokenTextField.placeholder = @"1234";
 
   [self.tokenTextField addTarget:self
                           action:@selector(textEntered:)
