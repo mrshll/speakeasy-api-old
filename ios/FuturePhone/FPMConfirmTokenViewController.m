@@ -47,8 +47,6 @@
       [authModal dismiss];
   } andFailure: ^(AFHTTPRequestOperation* operation, NSError* error) {
       NSLog(@"%@", error);
-      FPMAuthModalViewController* authModal = (FPMAuthModalViewController*)[self transitioningDelegate];
-      [authModal dismiss];
   }];
 }
 

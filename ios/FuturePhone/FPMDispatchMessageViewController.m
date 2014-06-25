@@ -20,7 +20,8 @@
 
 @property UILabel* dispatchLabel;
 @property UICollectionView* dispatchActionCollectionView;
-@property NSDictionary* dispatchActionButtons;
+@property NSDictionary* dispatchActionMagnitudes;
+@property NSArray* dispatchActionButtonTitles;
 
 @end
 
@@ -37,7 +38,9 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  self.dispatchActionButtons = @{
+  self.dispatchActionButtonTitles = @[ @"Minutes", @"Hours", @"Days", @"Weeks", @"Months", @"Years" ];
+  
+  self.dispatchActionMagnitudes = @{
     @"Minutes": @{ @"from": @2, @"to": @30 },
     @"Hours": @{ @"from": @1, @"to": @12 },
     @"Days": @{ @"from": @1, @"to": @4 },
@@ -123,8 +126,8 @@
 - (IBAction)dispatchButtonPressed:(UIButton*)button {
   NSString* timeUnit = button.titleLabel.text;
   
-  NSInteger magnitudeRangeFrom = [self.dispatchActionButtons[timeUnit][@"from"] intValue];
-  NSInteger magnitudeRangeTo = [self.dispatchActionButtons[timeUnit][@"to"] intValue];
+  NSInteger magnitudeRangeFrom = [self.dispatchActionMagnitudes[timeUnit][@"from"] intValue];
+  NSInteger magnitudeRangeTo = [self.dispatchActionMagnitudes[timeUnit][@"to"] intValue];
   
   NSNumber* magnitude = [self randomNumberFrom:magnitudeRangeFrom to:magnitudeRangeTo];
   [self createMessageWithMediaAtURL:self.mediaURL withTimeUnit:timeUnit magnitude:magnitude];
@@ -144,14 +147,13 @@
 }
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-  return [self.dispatchActionButtons count];
+  return [self.dispatchActionMagnitudes count];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
   static NSString *dispatchCellIdentifier=@"DispatchCell";
   FPMDispatchCell* dispatchCell = [self.dispatchActionCollectionView dequeueReusableCellWithReuseIdentifier:dispatchCellIdentifier forIndexPath:indexPath];
-  NSArray* buttonNames = self.dispatchActionButtons.allKeys;
-  NSString* timeUnit = [buttonNames objectAtIndex:indexPath.item];
+  NSString* timeUnit = [self.dispatchActionButtonTitles objectAtIndex:indexPath.item];
   [dispatchCell.button setTitle:timeUnit forState:UIControlStateNormal];
   
   [dispatchCell.button addTarget:self action:@selector(dispatchButtonPressed:) forControlEvents:UIControlEventTouchUpInside];

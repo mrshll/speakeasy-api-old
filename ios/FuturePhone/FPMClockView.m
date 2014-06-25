@@ -9,8 +9,7 @@
 #import "UIColor+CustomColors.h"
 #import "FPMClockView.h"
 
-@interface FPMClockView () {
-}
+@interface FPMClockView()
 
 @property NSNumber* position;
 @property NSTimer* updateTimer;

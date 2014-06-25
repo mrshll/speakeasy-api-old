@@ -11,7 +11,6 @@ define [
     subTopic: helpers.CONVERTER_TOPIC
 
     messageHandler: (message, done) ->
-      console.log message
       @convertM4AToMP3 message.original_media_path, (destination) ->
         @updateMessageWithConvertedFile message, destination
         done()
