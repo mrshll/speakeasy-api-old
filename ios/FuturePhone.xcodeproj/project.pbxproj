@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		70F6A17801914CC5AA00E202 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9822ED19A84EE3BD1D678A /* libPods.a */; };
 		A604AD831949E50200C1B333 /* UIColor+CustomColors.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD821949E50200C1B333 /* UIColor+CustomColors.m */; };
-		A604AD881949E5E800C1B333 /* FPMFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD871949E5E800C1B333 /* FPMFlatButton.m */; };
-		A604AD8E194A00AF00C1B333 /* FPMPresentingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD8D194A00AF00C1B333 /* FPMPresentingAnimator.m */; };
-		A604AD91194A00B600C1B333 /* FPMDismissingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD90194A00B600C1B333 /* FPMDismissingAnimator.m */; };
 		A604AD94194A011F00C1B333 /* FPMModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD93194A011F00C1B333 /* FPMModalViewController.m */; };
 		A604AD9B194A898800C1B333 /* FPMAuthModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD9A194A898800C1B333 /* FPMAuthModalViewController.m */; };
 		A616D301194D4F2600261B08 /* FPMPhoneNumberTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A616D300194D4F2600261B08 /* FPMPhoneNumberTextField.m */; };
@@ -32,6 +29,9 @@
 		A6365398193ADBE0002F0C22 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A636538A193ADBE0002F0C22 /* Icon.png */; };
 		A6365399193ADBE0002F0C22 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A636538B193ADBE0002F0C22 /* Icon@2x.png */; };
 		A636539A193ADBE0002F0C22 /* original.png in Resources */ = {isa = PBXBuildFile; fileRef = A636538C193ADBE0002F0C22 /* original.png */; };
+		A66E34D71960499E001FDEE0 /* FPMDismissingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A66E34D61960499E001FDEE0 /* FPMDismissingAnimator.m */; };
+		A66E34DA196049A6001FDEE0 /* FPMPresentingAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = A66E34D9196049A6001FDEE0 /* FPMPresentingAnimator.m */; };
+		A66E34DD196049AF001FDEE0 /* FPMFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A66E34DC196049AF001FDEE0 /* FPMFlatButton.m */; };
 		A6847E89193EAABC0034859F /* FPMLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6847E88193EAABC0034859F /* FPMLoginViewController.m */; };
 		A6847E8C193EB0380034859F /* onboarding.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8A193EB0380034859F /* onboarding.png */; };
 		A6847E8D193EB0380034859F /* onboarding@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6847E8B193EB0380034859F /* onboarding@2x.png */; };
@@ -71,12 +71,6 @@
 		7C9822ED19A84EE3BD1D678A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A604AD811949E50200C1B333 /* UIColor+CustomColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+CustomColors.h"; sourceTree = "<group>"; };
 		A604AD821949E50200C1B333 /* UIColor+CustomColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CustomColors.m"; sourceTree = "<group>"; };
-		A604AD861949E5E800C1B333 /* FPMFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FPMFlatButton.h; path = ../../../popping/Popping/FPMFlatButton.h; sourceTree = "<group>"; };
-		A604AD871949E5E800C1B333 /* FPMFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPMFlatButton.m; path = ../../../popping/Popping/FPMFlatButton.m; sourceTree = "<group>"; };
-		A604AD8C194A00AF00C1B333 /* FPMPresentingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FPMPresentingAnimator.h; path = ../../../popping/Popping/FPMPresentingAnimator.h; sourceTree = "<group>"; };
-		A604AD8D194A00AF00C1B333 /* FPMPresentingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPMPresentingAnimator.m; path = ../../../popping/Popping/FPMPresentingAnimator.m; sourceTree = "<group>"; };
-		A604AD8F194A00B600C1B333 /* FPMDismissingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FPMDismissingAnimator.h; path = ../../../popping/Popping/FPMDismissingAnimator.h; sourceTree = "<group>"; };
-		A604AD90194A00B600C1B333 /* FPMDismissingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FPMDismissingAnimator.m; path = ../../../popping/Popping/FPMDismissingAnimator.m; sourceTree = "<group>"; };
 		A604AD92194A011F00C1B333 /* FPMModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMModalViewController.h; sourceTree = "<group>"; };
 		A604AD93194A011F00C1B333 /* FPMModalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMModalViewController.m; sourceTree = "<group>"; };
 		A604AD99194A898800C1B333 /* FPMAuthModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMAuthModalViewController.h; sourceTree = "<group>"; };
@@ -102,6 +96,12 @@
 		A636538A193ADBE0002F0C22 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		A636538B193ADBE0002F0C22 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		A636538C193ADBE0002F0C22 /* original.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = original.png; sourceTree = "<group>"; };
+		A66E34D51960499E001FDEE0 /* FPMDismissingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMDismissingAnimator.h; sourceTree = "<group>"; };
+		A66E34D61960499E001FDEE0 /* FPMDismissingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDismissingAnimator.m; sourceTree = "<group>"; };
+		A66E34D8196049A6001FDEE0 /* FPMPresentingAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMPresentingAnimator.h; sourceTree = "<group>"; };
+		A66E34D9196049A6001FDEE0 /* FPMPresentingAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMPresentingAnimator.m; sourceTree = "<group>"; };
+		A66E34DB196049AF001FDEE0 /* FPMFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMFlatButton.h; sourceTree = "<group>"; };
+		A66E34DC196049AF001FDEE0 /* FPMFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMFlatButton.m; sourceTree = "<group>"; };
 		A6847E87193EAABC0034859F /* FPMLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMLoginViewController.h; sourceTree = "<group>"; };
 		A6847E88193EAABC0034859F /* FPMLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMLoginViewController.m; sourceTree = "<group>"; };
 		A6847E8A193EB0380034859F /* onboarding.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = onboarding.png; sourceTree = "<group>"; };
@@ -193,8 +193,8 @@
 		A604AD851949E5E100C1B333 /* FlatButton */ = {
 			isa = PBXGroup;
 			children = (
-				A604AD861949E5E800C1B333 /* FPMFlatButton.h */,
-				A604AD871949E5E800C1B333 /* FPMFlatButton.m */,
+				A66E34DB196049AF001FDEE0 /* FPMFlatButton.h */,
+				A66E34DC196049AF001FDEE0 /* FPMFlatButton.m */,
 			);
 			name = FlatButton;
 			sourceTree = "<group>";
@@ -210,10 +210,10 @@
 		A604AD8B194A009C00C1B333 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				A604AD8F194A00B600C1B333 /* FPMDismissingAnimator.h */,
-				A604AD90194A00B600C1B333 /* FPMDismissingAnimator.m */,
-				A604AD8C194A00AF00C1B333 /* FPMPresentingAnimator.h */,
-				A604AD8D194A00AF00C1B333 /* FPMPresentingAnimator.m */,
+				A66E34D51960499E001FDEE0 /* FPMDismissingAnimator.h */,
+				A66E34D61960499E001FDEE0 /* FPMDismissingAnimator.m */,
+				A66E34D8196049A6001FDEE0 /* FPMPresentingAnimator.h */,
+				A66E34D9196049A6001FDEE0 /* FPMPresentingAnimator.m */,
 			);
 			name = Modal;
 			sourceTree = "<group>";
@@ -540,20 +540,20 @@
 				A604AD94194A011F00C1B333 /* FPMModalViewController.m in Sources */,
 				A6847E89193EAABC0034859F /* FPMLoginViewController.m in Sources */,
 				A6FB7E9E194798B600990587 /* FPMNetworking.m in Sources */,
-				A604AD881949E5E800C1B333 /* FPMFlatButton.m in Sources */,
 				A604AD9B194A898800C1B333 /* FPMAuthModalViewController.m in Sources */,
 				A6847E90193F60B60034859F /* FPMConfirmTokenViewController.m in Sources */,
 				BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */,
 				A6C695431933B3B700CF6F94 /* FPMAppDelegate.m in Sources */,
-				A604AD91194A00B600C1B333 /* FPMDismissingAnimator.m in Sources */,
+				A66E34DD196049AF001FDEE0 /* FPMFlatButton.m in Sources */,
 				A6C6953F1933B3B700CF6F94 /* main.m in Sources */,
-				A604AD8E194A00AF00C1B333 /* FPMPresentingAnimator.m in Sources */,
 				A616D301194D4F2600261B08 /* FPMPhoneNumberTextField.m in Sources */,
 				A604AD831949E50200C1B333 /* UIColor+CustomColors.m in Sources */,
 				A616D305194FDE6900261B08 /* FPMClockView.m in Sources */,
 				A6C695491933B3B700CF6F94 /* FPMRecordViewController.m in Sources */,
 				A6C8EBE7195515A60087C647 /* FPMDispatchCell.m in Sources */,
+				A66E34D71960499E001FDEE0 /* FPMDismissingAnimator.m in Sources */,
 				A616D308194FEE1D00261B08 /* FPMLoaderView.m in Sources */,
+				A66E34DA196049A6001FDEE0 /* FPMPresentingAnimator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
