@@ -17,7 +17,7 @@ define [
 
     messageHandler: (item, done) ->
       message = item.data.message
-      @markMessageAsInProgress message, (err, updatedMessage) ->
+      @markMessageAsInProgress message, (err, updatedMessage) =>
         handleError err if err
         user = updatedMessage._user
         @call(user, updatedMessage)
@@ -29,10 +29,10 @@ define [
         { $set: { state: helpers.MSG_STATE_CALLING } }, done
 
     call: (user, message, done) ->
-      console.log "initiating call to #{ user.phone_number }"
+      # console.log "initiating call to #{ user.phone_number }"
       params = "message_id=#{ message._id }"
       call =
-        to: user.phone_number
+        to: '+12069638669' # user.phone_number
         from: "+16159135926"
         url: "#{ helpers.CALLBACK_ROOT_URL }/twilio/callback?#{ params }"
 
