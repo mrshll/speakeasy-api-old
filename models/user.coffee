@@ -6,6 +6,5 @@ userSchema = mongoose.Schema
     type: Date
     default: Date.now
   phone_number: String
-  password: String
 
 module.exports = mongoose.model 'User', userSchema

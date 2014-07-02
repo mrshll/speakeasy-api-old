@@ -125,7 +125,7 @@ define [
         persistToken = LoginToken.create
                          phone_number: phone
                          token: token
-                         expires: moment().add 'minutes', 10
+                         expires: moment().add 'minutes', 2
 
         persistToken.then (loginToken, err) =>
           @twilio.sendMessage {
@@ -137,8 +137,6 @@ define [
               helpers.debug err
               res.send 400
             else
-              # TODO: maybe don't log, doing for dev purposes
-              helpers.debug "successfully logged in #{ phone }"
               res.send 200
 
       # Login Step 2: Takes a login_token and phone_number and responds
@@ -154,7 +152,10 @@ define [
         findToken.exec().then (token, err) ->
           if token
             req.session.loggedIn = true
-            res.send 200
+            user = { phone_number: phoneNumber }
+            User.create user, user, { upsert: true }, (err, numUpdated, rawResponse) ->
+              helpers.debug "successfully logged in #{ phoneNumber }"
+              res.send 200
           else
             res.send 404
 
