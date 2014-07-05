@@ -42,6 +42,6 @@ define [
           message.state = helpers.MSG_STATE_CONVERTED # send message back to dispatcher
           message.save()
         else
-          console.log data
+          console.log "called #{ data.to_formatted }"
 
   module.exports = new Caller
