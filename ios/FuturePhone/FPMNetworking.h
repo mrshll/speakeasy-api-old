@@ -15,6 +15,8 @@
 
 + (BOOL)loadCookies;
 
++ (void)isLoggedInWithCompletion:(void (^)(BOOL loggedIn))completion;
+
 + (void)createMessageWithFileAtURL:(NSURL*)fileURL andParams:(NSDictionary*)params
                         andSuccess:(void (^)(AFHTTPRequestOperation*, id))success
                         andFailure:(void (^)(AFHTTPRequestOperation*, NSError*))failure;

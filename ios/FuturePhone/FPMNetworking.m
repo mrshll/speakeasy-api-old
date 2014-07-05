@@ -9,7 +9,9 @@
 #import <Lockbox/Lockbox.h>
 #import "FPMNetworking.h"
 
-#define FPM_BASE_URL_STRING (@"http://3ecb8805.ngrok.com")
+#define FPM_BASE_URL_STRING (@"http://52a8c6ef.ngrok.com")
+
+#define FPM_LOGGED_IN_URL_STRING ([NSString stringWithFormat:@"%@/logged_in", FPM_BASE_URL_STRING])
 
 #define FPM_MESSAGES_URL_STRING ([NSString stringWithFormat:@"%@/messages", FPM_BASE_URL_STRING])
 
@@ -43,6 +45,23 @@
   }
   
   return [allCookieParams count];
+}
+
++ (void)isLoggedInWithCompletion:(void (^)(BOOL loggedIn))completion {
+  if([self loadCookies]){
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/plain"];
+    [manager GET:FPM_LOGGED_IN_URL_STRING parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+      NSLog(@"User is logged in");
+      completion(YES);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+      NSLog(@"User is NOT logged in with error: %@", error);
+      completion(NO);
+    }];
+  } else {
+    completion(NO);
+  }
 }
 
 + (void)createMessageWithFileAtURL:(NSURL *)fileURL andParams:(NSDictionary*)params

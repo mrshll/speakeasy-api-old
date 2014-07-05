@@ -19,7 +19,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   [Crashlytics startWithAPIKey:@"1a41139c46f6ca7cad9edd61ce5f62ba8d4516b5"];
-  BOOL hasCookies = [FPMNetworking loadCookies];
+  [FPMNetworking isLoggedInWithCompletion:^(BOOL loggedIn) {
+    if (!loggedIn) {
+      [self showAuthModal];
+    }
+  }];
   
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   FPMRecordViewController* recordViewController = [FPMRecordViewController new];
@@ -28,10 +32,6 @@
   self.window.backgroundColor = [UIColor whiteColor];
   self.window.tintColor = [UIColor customBlueColor];
   [self.window makeKeyAndVisible];
-  
-//  if (!hasCookies){
-    [self performSelector:@selector(showAuthModal) withObject:nil afterDelay:1.f];
-//  }
   
   [[UINavigationBar appearance] setTitleTextAttributes:
    @{

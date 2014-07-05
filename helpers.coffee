@@ -63,9 +63,12 @@ define [
 
     # Authentication middleware
     requireAuthentication: (req, res, next) =>
+      @debug req.session
+      @debug req.cookies
       if _.contains @publicRoutes, req._parsedUrl.pathname
         next()
       else if req.session and req.session.loggedIn
+	@debug 'logged in'
         next()
         return
       else if @allowOneUnauthenticatedRequest
