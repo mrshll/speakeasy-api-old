@@ -9,7 +9,7 @@
 #import <Lockbox/Lockbox.h>
 #import "FPMNetworking.h"
 
-#define FPM_BASE_URL_STRING (@"http://52a8c6ef.ngrok.com")
+#define FPM_BASE_URL_STRING (@"http://31e2e89.ngrok.com")
 
 #define FPM_LOGGED_IN_URL_STRING ([NSString stringWithFormat:@"%@/logged_in", FPM_BASE_URL_STRING])
 

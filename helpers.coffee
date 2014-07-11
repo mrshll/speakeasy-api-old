@@ -68,7 +68,7 @@ define [
       if _.contains @publicRoutes, req._parsedUrl.pathname
         next()
       else if req.session and req.session.loggedIn
-	@debug 'logged in'
+        @debug 'logged in'
         next()
         return
       else if @allowOneUnauthenticatedRequest

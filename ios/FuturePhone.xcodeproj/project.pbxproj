@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		70F6A17801914CC5AA00E202 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9822ED19A84EE3BD1D678A /* libPods.a */; };
+		A600B896196F75AB0034EB6D /* FPMAddToContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A600B895196F75AB0034EB6D /* FPMAddToContactViewController.m */; };
 		A604AD831949E50200C1B333 /* UIColor+CustomColors.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD821949E50200C1B333 /* UIColor+CustomColors.m */; };
 		A604AD94194A011F00C1B333 /* FPMModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD93194A011F00C1B333 /* FPMModalViewController.m */; };
 		A604AD9B194A898800C1B333 /* FPMAuthModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A604AD9A194A898800C1B333 /* FPMAuthModalViewController.m */; };
@@ -70,6 +71,8 @@
 /* Begin PBXFileReference section */
 		36B9C2F389B84E2687E6597E /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7C9822ED19A84EE3BD1D678A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A600B894196F75AB0034EB6D /* FPMAddToContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMAddToContactViewController.h; sourceTree = "<group>"; };
+		A600B895196F75AB0034EB6D /* FPMAddToContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMAddToContactViewController.m; sourceTree = "<group>"; };
 		A604AD811949E50200C1B333 /* UIColor+CustomColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+CustomColors.h"; sourceTree = "<group>"; };
 		A604AD821949E50200C1B333 /* UIColor+CustomColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+CustomColors.m"; sourceTree = "<group>"; };
 		A604AD92194A011F00C1B333 /* FPMModalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMModalViewController.h; sourceTree = "<group>"; };
@@ -226,6 +229,8 @@
 			children = (
 				A616D2FE194D4ECB00261B08 /* Auth */,
 				BFE358A71935788C004C2FBD /* FPMDispatchMessageViewController.h */,
+				A600B894196F75AB0034EB6D /* FPMAddToContactViewController.h */,
+				A600B895196F75AB0034EB6D /* FPMAddToContactViewController.m */,
 				BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */,
 				A604AD92194A011F00C1B333 /* FPMModalViewController.h */,
 				A604AD93194A011F00C1B333 /* FPMModalViewController.m */,
@@ -543,6 +548,7 @@
 			files = (
 				A604AD94194A011F00C1B333 /* FPMModalViewController.m in Sources */,
 				A6847E89193EAABC0034859F /* FPMLoginViewController.m in Sources */,
+				A600B896196F75AB0034EB6D /* FPMAddToContactViewController.m in Sources */,
 				A6FB7E9E194798B600990587 /* FPMNetworking.m in Sources */,
 				A604AD9B194A898800C1B333 /* FPMAuthModalViewController.m in Sources */,
 				A6847E90193F60B60034859F /* FPMConfirmTokenViewController.m in Sources */,
