@@ -8,10 +8,12 @@
 
 #import <AFNetworking/AFNetworking.h>
 #import <Lockbox/Lockbox.h>
+#import <AddressBook/AddressBook.h>
 
 #import "FPMNetworking.h"
 #import "FPMDispatchCell.h"
 #import "FPMDispatchMessageViewController.h"
+#import "FPMAddToContactViewController.h"
 
 #define DISPATCH_BUTTON_WIDTH 140
 #define DISPATCH_BUTTON_HEIGHT 40
@@ -114,11 +116,17 @@
   
   [FPMNetworking createMessageWithFileAtURL:fileURL andParams:params andSuccess:^(AFHTTPRequestOperation* operation, id responseData) {
     NSLog(@"Create message success");
+    if (ABAddressBookGetAuthorizationStatus() == kABAuthorizationStatusNotDetermined) {
+      FPMAddToContactViewController* addToContactViewController = [FPMAddToContactViewController new];
+      [self presentViewController:addToContactViewController animated:YES completion:nil];
+    } else {
+      [self dismissViewControllerAnimated:YES completion:nil];
+    }
   } andFailure:^(AFHTTPRequestOperation* operation, NSError* error) {
     NSLog(@"Create message failed with error: %@", error);
+    [self dismissViewControllerAnimated:YES completion:nil];
   }];
 
-  [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Dispatch Time Button Actions
