@@ -52,6 +52,7 @@
 		A6C6AD8A1938145400E217EE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6C6AD891938145400E217EE /* Crashlytics.framework */; };
 		A6C8EBE7195515A60087C647 /* FPMDispatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C8EBE6195515A60087C647 /* FPMDispatchCell.m */; };
 		A6FB7E9E194798B600990587 /* FPMNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A6FB7E9D194798B600990587 /* FPMNetworking.m */; };
+		BFD69043196A598C00E9DC68 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD69042196A598C00E9DC68 /* AddressBook.framework */; };
 		BFE358A91935788C004C2FBD /* FPMDispatchMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */; };
 		BFE358AB1938160E004C2FBD /* FPMDispatchViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE358AA1938160E004C2FBD /* FPMDispatchViewControllerTests.m */; };
 /* End PBXBuildFile section */
@@ -131,6 +132,7 @@
 		A6C8EBE6195515A60087C647 /* FPMDispatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchCell.m; sourceTree = "<group>"; };
 		A6FB7E9C194798B600990587 /* FPMNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMNetworking.h; sourceTree = "<group>"; };
 		A6FB7E9D194798B600990587 /* FPMNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMNetworking.m; sourceTree = "<group>"; };
+		BFD69042196A598C00E9DC68 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		BFE358A71935788C004C2FBD /* FPMDispatchMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FPMDispatchMessageViewController.h; sourceTree = "<group>"; };
 		BFE358A81935788C004C2FBD /* FPMDispatchMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchMessageViewController.m; sourceTree = "<group>"; };
 		BFE358AA1938160E004C2FBD /* FPMDispatchViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FPMDispatchViewControllerTests.m; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD69043196A598C00E9DC68 /* AddressBook.framework in Frameworks */,
 				A6192DA71933B6A30053974D /* AVFoundation.framework in Frameworks */,
 				A6C695351933B3B700CF6F94 /* CoreGraphics.framework in Frameworks */,
 				A6C695371933B3B700CF6F94 /* UIKit.framework in Frameworks */,
@@ -312,6 +315,7 @@
 		A6C695311933B3B700CF6F94 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFD69042196A598C00E9DC68 /* AddressBook.framework */,
 				A6C6AD891938145400E217EE /* Crashlytics.framework */,
 				A6192DA61933B6A30053974D /* AVFoundation.framework */,
 				A6C695321933B3B700CF6F94 /* Foundation.framework */,

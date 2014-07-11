@@ -7,6 +7,7 @@
 //
 
 #import <AFNetworking/AFNetworking.h>
+#import <AddressBook/AddressBook.h>
 
 #import "UIColor+CustomColors.h"
 #import "FPMFlatButton.h"
@@ -32,6 +33,38 @@
   [self addLogoImageView];
   
   self.recorder = [self createAudioRecorder];
+
+//  ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, NULL);
+//  if (!addressBook) {
+//    return;
+//  }
+//
+//  // Only prompt for access and add contact if user hasn't allowed us to already or said no.
+//  if (ABAddressBookGetAuthorizationStatus() != kABAuthorizationStatusNotDetermined) {
+//    return;
+//  }
+//
+//  ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+//    if (granted) {
+//      NSLog(@"granted address book access");
+//      CFErrorRef error = NULL;
+//      ABRecordRef contactRecord = ABPersonCreate();
+//      BOOL success = ABRecordSetValue(contactRecord, kABPersonFirstNameProperty, CFSTR("Your Past Self2"), NULL);
+//      ABMutableMultiValueRef phoneNumberMultiValue = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+//      success = success && ABMultiValueAddValueAndLabel(phoneNumberMultiValue, @"5555555555", kABPersonPhoneMainLabel, NULL);
+//      success = success && ABRecordSetValue(contactRecord, kABPersonPhoneProperty, phoneNumberMultiValue, NULL);
+//      success = success && ABAddressBookAddRecord(addressBook, contactRecord, NULL);
+//      success = success && ABAddressBookSave(addressBook, &error);
+//
+//      if (!success) {
+//        NSLog(@"Couldn't update address book");
+//      }
+//
+//      CFRelease(phoneNumberMultiValue);
+//      CFRelease(contactRecord);
+//    }
+//    CFRelease(addressBook);
+//  });
 }
 
 - (void)didReceiveMemoryWarning
