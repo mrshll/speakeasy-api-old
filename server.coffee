@@ -23,12 +23,15 @@ define [
 
       @app.use require("connect-assets")()
       @app.use cookieParser()
-      @app.use bodyParser()
+      @app.use(bodyParser.urlencoded({ extended: true }))
+      @app.use(bodyParser.json())
       # TODO Using in memory session store, change for production
       @sessionStore = new session.MemoryStore()
       @app.use session
         secret: 'thisismysupersecret'
         store: @sessionStore
+        resave: true
+        saveUninitialized: true
 
       #TODO maybe use limits and rename options (https://github.com/expressjs/multer)
       @app.use multer dest: './uploads/'
