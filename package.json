@@ -1,8 +1,12 @@
 {
-  "name": "thedeathof",
-  "description": "hello world test app",
+  "name": "futurephone.me",
+  "description": "Call yourself in the future",
   "version": "0.0.1",
   "private": true,
+  "engines": {
+    "node": "0.10.x",
+    "npm": "1.4.x"
+  },
   "dependencies": {
     "amd-loader": "0.0.5",
     "amdefine": "^0.1.0",
