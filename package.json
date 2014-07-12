@@ -17,7 +17,6 @@
     "cookie-parser": "^1.1.0",
     "express": "^4.3.1",
     "express-session": "^1.2.1",
-    "express.io": "^1.1.13",
     "fluent-ffmpeg": "^1.7.1",
     "mocha-mongoose": "^1.0.1",
     "moment": "^2.6.0",
