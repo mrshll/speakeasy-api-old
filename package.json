@@ -24,7 +24,6 @@
     "mongodb": "^1.4.5",
     "mongoose": "^3.8.11",
     "multer": "0.0.7",
-    "nsq": "0.0.2",
     "nsq-client": "^1.0.0",
     "request": "^2.36.0",
     "request-mocha": "^0.2.0",
