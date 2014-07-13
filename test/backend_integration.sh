@@ -6,7 +6,7 @@ set -e
 
 PHONE_NUMBER=2069638669
 COOKIE_ARGS="-b cookiejar -c cookiejar"
-ROOT_URL="http://107.170.122.204"
+ROOT_URL="http://api.futurephone.me"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 login () {
