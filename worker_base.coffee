@@ -16,7 +16,9 @@ define [
     channel: helpers.NSQ_CHANNEL
 
     constructor: ->
-      @nsq = new NSQClient debug: helpers.NSQ_DEBUG
+      @nsq = new NSQClient
+        hostname: helpers.NSQ_HOSTNAME
+        debug: helpers.DEBUG
       @nsq.on "error", (err) ->
         console.log "ERROR " + Util.inspect(err)
 

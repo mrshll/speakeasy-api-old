@@ -14,6 +14,7 @@ define [
     # Queue topics
     CONVERTER_TOPIC: process.env.NSQ_CONVERTER_TOPIC || 'mp4_converter_topic'
     CALLER_TOPIC: process.env.NSQ_CALLER_TOPIC || 'caller_topic'
+    NSQ_HOSTNAME: process.env.NSQ_HOSTNAME || 'localhost'
     NSQ_CHANNEL: 'me.futurephone'
     NSQ_DEBUG: false
 
