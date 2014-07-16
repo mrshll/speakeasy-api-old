@@ -42,7 +42,9 @@ define [
       helpers.debug 'debug mode enabled'
 
       # NSQ setup
-      @nsq = new NSQClient debug: helpers.DEBUG
+      @nsq = new NSQClient
+        hostname: helpers.NSQ_HOSTNAME
+        debug: helpers.DEBUG
 
       @app.use helpers.outputRequestRoute
       @app.use helpers.requireAuthentication
