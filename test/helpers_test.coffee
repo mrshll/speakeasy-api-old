@@ -10,16 +10,16 @@ describe 'helpers', ->
       future_date = helpers.calculateFutureDelivery 'days', 6
       future_date.isAfter(now).should.equal true
 
-  describe '#randomSixDigitToken', ->
+  describe '#randomToken', ->
     beforeEach ->
-      @code = helpers.randomSixDigitToken()
+      @code = helpers.randomToken()
 
     it 'should be a string', ->
       type = typeof @code
       type.should.equal "string"
 
     it 'should be 6 digits long', ->
-      @code.length.should.equal 6
+      @code.length.should.equal 4
 
     it 'should parse as an integer', ->
       parseInt(@code).should.not.equal NaN

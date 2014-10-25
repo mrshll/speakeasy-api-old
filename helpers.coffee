@@ -27,9 +27,9 @@ define [
 
 
     # Twilio
-    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID || 'AC95819529a22e43ee87a169c2cbbfcd47'
-    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || '607d3d66b03e03d6b07a2fa26e729277'
-    TWILIO_FROM_PHONE: process.env.TWILIO_FROM_PHONE || '3608136598'
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID || 'AC720cf7ff8b4aa4baaba673153d0defdd'
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || '9be29c48b8ba6cd3a28549e174f13844'
+    TWILIO_FROM_PHONE: process.env.TWILIO_FROM_PHONE || '+16154900724'
 
     calculateFutureDelivery: (unit, magnitude) ->
       moment().add unit, parseInt(magnitude)

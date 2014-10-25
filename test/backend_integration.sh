@@ -4,9 +4,9 @@
 #   backend_integration.sh upload_message # uploads a message, using existing session
 set -e
 
-PHONE_NUMBER=2069638669
+PHONE_NUMBER=6155197142
 COOKIE_ARGS="-b cookiejar -c cookiejar"
-ROOT_URL="http://api.futurephone.me"
+ROOT_URL="http://4b4d0da3.ngrok.com"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 login () {

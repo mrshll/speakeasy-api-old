@@ -32,8 +32,8 @@ define [
       # console.log "initiating call to #{ user.phone_number }"
       params = "message_id=#{ message._id }"
       call =
-        to: '+12069638669' # user.phone_number
-        from: "+16159135926"
+        to: "+16155197142" # user.phone_number
+        from: "+16154900724"
         url: "#{ helpers.CALLBACK_ROOT_URL }/twilio/callback?#{ params }"
 
       @twilio.makeCall call, (err, data) ->

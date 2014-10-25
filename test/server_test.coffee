@@ -78,7 +78,7 @@ describe '/messages', ->
             .field('delivery_magnitude', 6)
             .field('phone_number', @user.phone_number)
             .field('session_key', 'abc123')
-            .attach('media', 'assets/fixtures/first_call.mp3')
+            .attach('media', 'assets/fixtures/test.m4a')
           done()
 
       it 'should create a message', (done) ->

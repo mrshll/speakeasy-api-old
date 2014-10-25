@@ -181,21 +181,26 @@ define [
           helpers.debug "File uploaded to #{ file.path }"
 
         deliver_at = helpers.calculateFutureDelivery params.delivery_unit, params.delivery_magnitude
-        messageParams =
-          deliver_at: deliver_at._d
-          original_media_path: file.path
-          state: helpers.MSG_STATE_CREATED
+        findUser = User.findOne phone_number: params.phone_number
+        findUser.exec().then (user, err) =>
+          return res.send 401 unless user
 
-        message = new Message messageParams
-        message.save (err, message) =>
-          if err
-            console.error err
-            res.send 500
-          else
-            helpers.debug 'created: ' + message
-            @nsq.publish helpers.CONVERTER_TOPIC,
-              message: message
-            res.send 201
+          messageParams =
+            deliver_at: deliver_at._d
+            original_media_path: file.path
+            state: helpers.MSG_STATE_CREATED
+            _user: user
+
+          message = new Message messageParams
+          message.save (err, message) =>
+            if err
+              console.error err
+              res.send 500
+            else
+              helpers.debug 'created: ' + message
+              @nsq.publish helpers.CONVERTER_TOPIC,
+                message: message
+              res.send 201
 
       @app.post '/logout', (req, res) ->
         req.session.destroy (err) ->
