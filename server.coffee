@@ -5,7 +5,7 @@ expressSession  = require 'express-session'
 bodyParser      = require 'body-parser'
 helpers         = require './helpers'
 async           = require 'async'
-
+Message         = require './models/message'
 class WebServer
   constructor: ->
     @app = express()
