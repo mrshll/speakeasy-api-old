@@ -18,7 +18,19 @@ users = [{
   },
   {
     email: 'mmoutenot@gmail.com',
-    name:'Marhsall Moutenot'
+    name:'Marshall Moutenot'
+  },
+  {
+    email: 'ryandawidjan@gmail.com'
+    name: 'Ryan Dawidjan'
+  },
+  {
+    email: 'jackrmcdermott@gmail.com'
+    name: 'Jack McDermott'
+  },
+  {
+    email: 'me@hem.al'
+    name: 'Hemal Shah'
   }
 ]
 
