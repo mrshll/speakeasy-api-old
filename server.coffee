@@ -27,6 +27,7 @@ class WebServer
 
   registerRoutes: ->
     @app.post '/responses', (req, res) ->
+      console.log req.body
       return res.send 200
 
     #   Message.findById messageId, (err, message) ->
