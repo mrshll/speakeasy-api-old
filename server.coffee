@@ -6,6 +6,8 @@ bodyParser      = require 'body-parser'
 helpers         = require './helpers'
 async           = require 'async'
 Message         = require './models/message'
+xregexp         = require 'xregexp'
+
 class WebServer
   constructor: ->
     @app = express()
