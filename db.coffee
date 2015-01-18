@@ -1,5 +1,5 @@
 ###### Mongo
-mongoHostname = process.env.MONGO_URL || 'mongodb://localhost/test'
+mongoHostname = process.env.MONGOLAB_URI || 'mongodb://localhost/test'
 mongoose = require 'mongoose'
 console.log "Connecting to MongoDB: #{mongoHostname}"
 

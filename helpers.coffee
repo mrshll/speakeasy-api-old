@@ -11,37 +11,6 @@ define [
     CALLBACK_ROOT_URL: process.env.CALLBACK_ROOT_URL || "http://localhost"
     DEBUG: process.env.APP_ENV is 'debug'
 
-    # Queue topics
-    CONVERTER_TOPIC: process.env.NSQ_CONVERTER_TOPIC || 'mp4_converter_topic'
-    CALLER_TOPIC: process.env.NSQ_CALLER_TOPIC || 'caller_topic'
-    NSQ_HOSTNAME: process.env.NSQ_HOSTNAME || 'localhost'
-    NSQ_CHANNEL: 'me.futurephone'
-    NSQ_DEBUG: false
-
-    # Message States. Used to track messages as they move through the pipeline.
-    MSG_STATE_CREATED: 'created'
-    MSG_STATE_CONVERTED: 'converted'
-    MSG_STATE_ENQUEUED: 'enqueued'
-    MSG_STATE_CALLING: 'calling'
-    MSG_STATE_COMPLETED: 'completed'
-
-
-    # Twilio
-    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID || 'AC720cf7ff8b4aa4baaba673153d0defdd'
-    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN || '9be29c48b8ba6cd3a28549e174f13844'
-    TWILIO_FROM_PHONE: process.env.TWILIO_FROM_PHONE || '+16154900724'
-
-    calculateFutureDelivery: (unit, magnitude) ->
-      moment().add unit, parseInt(magnitude)
-
-    randomToken: ->
-      length = 4
-      randomBytes = crypto.randomBytes(length)
-      code = []
-      for i in [0...length]
-        code[i] = randomBytes[i] % 10
-      code.join ''
-
     debug: (msg) ->
       console.log msg if process.env.APP_ENV is 'debug'
 
