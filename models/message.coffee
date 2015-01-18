@@ -6,20 +6,12 @@ messageSchema = mongoose.Schema
   created_at:
     type: Date
     default: Date.now
-  deliver_at: Date
-  completed_at:
+  sent_at:
     type: Date
-    default: null
-  # state can be one of 'created', 'converted', 'enqueued', 'calling', 'completed'
-  state:
+  from:
     type: String
-    default: helpers.MSG_STATE_CREATED
-  original_media_path: String
-  media_uri:
+  text:
     type: String
-    default: null
-  _user:
-    type: Schema.Types.ObjectId
-    ref: 'User'
+
 
 module.exports = mongoose.model 'Message', messageSchema

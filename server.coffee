@@ -4,6 +4,8 @@ cookieParser    = require 'cookie-parser'
 expressSession  = require 'express-session'
 bodyParser      = require 'body-parser'
 helpers         = require './helpers'
+async           = require 'async'
+
 class WebServer
   constructor: ->
     @app = express()
@@ -27,8 +29,52 @@ class WebServer
 
   registerRoutes: ->
     @app.post '/responses', (req, res) ->
-      console.log req.body
-      return res.send 200
+      replies = JSON.parse(req.body.mandrill_events)
+
+      process = (reply, callback) ->
+        # according to mandrill's docs, incoming emails will have the event of 'inbound'
+        if reply.event is "inbound"
+          processReply reply, callback # we'll explain what to do here below
+        else
+          callback()
+
+      processCompleted = (err) ->
+        if(err)
+          console.log(err)
+        res.send 200
+
+      async.each replies, process, processCompleted
+
+processReply = (reply, cb) ->
+  message = new Message
+    text: removeQuotedText(reply.msg.text)
+    from: reply.msg.from_email
+
+  console.log("Received new Messages: #{messsage}")
+  message.save cb
+
+removeQuotedText = (text) ->
+  delimeter = "daily@meldly.com"
+
+  # escaping the dot in .com, so it doesn't affect our regex pattern below
+  delimeter.replace ".", "\\."
+
+  # this matches from the beginning of the email, multiple lines, until the line
+  # the has the delimeter, lines under the delimeter (including the delimeter line) won't match
+  pattern = ".*(?=^.*" + delimeter + ".*$)"
+
+  trimNewLines = (text)->
+    text.replace(/^\s+|\s+$/g, '')
+
+  # we are using XRegExp
+  regex = xregexp(pattern, "ims")
+  delimeterFound = xregexp.test(text, regex)
+  if delimeterFound
+    match = xregexp.exec(text, regex)
+    trimNewLines match[0]
+  else
+    trimNewLines text
+
 
     #   Message.findById messageId, (err, message) ->
     #     if err
