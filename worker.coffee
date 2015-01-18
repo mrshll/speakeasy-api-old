@@ -2,6 +2,7 @@ helpers   = require './helpers'
 db        = require  './db'
 mandrill  = require('mandrill-api/mandrill');
 Message   = require './models/message'
+moment    = require 'moment'
 _         = require 'lodash'
 async     = require 'async'
 mandrill_client = new mandrill.Mandrill('Zlt_XieBtJWJdSmMNbCImQ')
@@ -22,9 +23,15 @@ users = [{
 ]
 
 processResults = (err, messages) ->
+  messageIds = _.pluck messages, '_id'
+
+  if messages.length == 0
+    console.log "No unset messasges. Not sending"
+    return ""
   console.log("Called with #{err} #{messages}")
   summaryText = _.reduce messages, ((acc, message) ->
     "#{acc} \n #{message.text} from: #{message.from}"), ""
+
 
   sendDigest = (user, cb)->
     message =
@@ -36,9 +43,15 @@ processResults = (err, messages) ->
       headers:
         "Reply-To": "daily-summary@meldly.com"
 
+
     mandrill_client.messages.send { message: message}, (result) ->
       console.log result
-      cb()
+      Message.update(
+        {_id: {$in: messageIds } },
+        {sent_at: new Date()},
+        {multi: true},
+        cb
+      )
 
   async.map(users, sendDigest, dropTheBass)
 
