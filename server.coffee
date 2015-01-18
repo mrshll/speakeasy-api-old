@@ -52,7 +52,7 @@ processReply = (reply, cb) ->
     text: removeQuotedText(reply.msg.text)
     from: reply.msg.from_email
 
-  console.log("Received new Messages: #{messsage}")
+  console.log("Received new Messages: #{message}")
   message.save cb
 
 removeQuotedText = (text) ->
