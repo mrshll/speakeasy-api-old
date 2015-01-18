@@ -36,7 +36,7 @@ processResults = (err, messages) ->
   sendDigest = (user, cb)->
     message =
       text: "Here's what your crew did today \n #{summaryText}"
-      subject: "Daily Cortado"
+      subject: "Daily Cortado for #{moment().format('MMM Do YY')}"
       from_email: "daily@meldly.com"
       from_name: "The Cortado"
       to: [user]
@@ -60,7 +60,7 @@ processResults = (err, messages) ->
 sendReminder = (user, cb)->
   message =
     text: "Hey! What did you do today?"
-    subject: "Your friends want to know what you did today"
+    subject: "Your friends want to know what you did Today"
     from_email: "daily@meldly.com"
     from_name: "The Cortado"
     to: [user]
