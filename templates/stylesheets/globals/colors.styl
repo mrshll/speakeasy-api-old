@@ -1,0 +1,18 @@
+$color-blue = #227FBB
+$color-blue-light = #2C97DE
+$color-gray = #ECF0F1
+$color-red = #E74C3C
+$color-black = #000000
+$color-white = #FFFFFF
+
+$colors = color-blue $color-blue,
+  color-blue-light $color-blue-light,
+  color-gray $color-gray,
+  color-red $color-red,
+  color-black $color-black,
+  color-white $color-white
+
+for color in $colors
+  .{color[0]}
+    color color[1]
+

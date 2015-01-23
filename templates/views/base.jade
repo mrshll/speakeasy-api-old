@@ -1,0 +1,33 @@
+mixin cta(text, activity)
+  .cta-container
+    a.button(href="{{urlFor activity}}")= text
+
+mixin preview-img(text)
+  img(alt=text src='https://s3.amazonaws.com/driftt-email-assets/spacer.gif')
+
+html
+  head
+    link(rel="stylesheet" href="../styles/main.css")
+  body
+    #email-container
+      .content
+        block content
+
+
+      .footer
+        .mission Keep in touch with Speakeasy.
+        br
+        .unsubscribe
+          | Are these emails too distracting? Can't keep up?&nbsp;
+          a(href="") Unsubscribe now.
+        .address SpeakEasy 2015
+
+
+    <!-- @if ENV='development' -->
+    if locals.livereload
+      script.
+        lr_host = 'http://' + (location.host || 'localhost').split(':')[0]
+        lr_port = #{ locals.livereload.port }
+        document.write('<script src="' + lr_host + ':' + lr_port + '/livereload.js?snipver=1"></' + 'script>')
+    <!-- @endif -->
+

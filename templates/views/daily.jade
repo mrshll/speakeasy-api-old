@@ -1,0 +1,16 @@
+extends base
+
+block content
+  .header.centered
+    h1.collosal.color-blue SpeakEasy
+    h2.light.color-light-blue Here is what happened yesterday
+
+  each message in messages
+    .card
+      table
+        tr
+          td.user.top.small-pad
+            img.avatar(src="#{message.avatarUrl}")
+          td.content.top
+            .body= message.text
+

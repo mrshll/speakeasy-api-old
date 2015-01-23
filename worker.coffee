@@ -5,33 +5,38 @@ Message   = require './models/message'
 moment    = require 'moment'
 _         = require 'lodash'
 async     = require 'async'
-mandrill_client = new mandrill.Mandrill('Zlt_XieBtJWJdSmMNbCImQ')
+gravatar  = require 'gravatar'
 
+path = require('path')
+mandrill_client = new mandrill.Mandrill('Zlt_XieBtJWJdSmMNbCImQ')
+templatesDir = path.join(__dirname, 'templates')
+emailTemplates = require('email-templates')
 
 dropTheBass = (err, results)->
   console.log "Dropping all of the bass"
   process.exit()
 
-users = [{
-    email: "wcdolphin@gmail.com"
-    name: "Cory Dolphin"
-  },
+users = [
+  # {
+  #   email: "wcdolphin@gmail.com"
+  #   name: "Cory Dolphin"
+  # },
   {
     email: 'mmoutenot@gmail.com',
     name:'Marshall Moutenot'
-  },
-  {
-    email: 'ryandawidjan@gmail.com'
-    name: 'Ryan Dawidjan'
-  },
-  {
-    email: 'jackrmcdermott@gmail.com'
-    name: 'Jack McDermott'
-  },
-  {
-    email: 'me@hem.al'
-    name: 'Hemal Shah'
   }
+  # {
+  #   email: 'ryandawidjan@gmail.com'
+  #   name: 'Ryan Dawidjan'
+  # },
+  # {
+  #   email: 'jackrmcdermott@gmail.com'
+  #   name: 'Jack McDermott'
+  # },
+  # {
+  #   email: 'me@hem.al'
+  #   name: 'Hemal Shah'
+  # }
 ]
 
 processResults = (err, messages) ->
@@ -40,33 +45,42 @@ processResults = (err, messages) ->
   if messages.length == 0
     console.log "No unset messasges. Not sending"
     return ""
+
   console.log("Called with #{err} #{messages}")
-  summaryText = _.reduce messages, ((acc, message) ->
-    "#{acc} \n #{message.text} from: #{message.from}"), ""
+
+  _.each messages, (message) ->
+    message.avatarUrl = gravatar.url(message.from, {s:'100', r: 'x', d: 'retro'}, true)
+
+    userIndex = _.findIndex users, (user) ->
+      user.email is message.from
+
+  locals = messages: messages
+  emailTemplates templatesDir, (err, template) ->
+    template 'daily', locals, (err, html, text) ->
+      sendDigest = (user, cb)->
+        message =
+          html: html
+          subject: "Daily Cortado for #{moment().format('MMM Do YY')}"
+          from_email: "daily@meldly.com"
+          from_name: "The Cortado"
+          to: [user]
+          headers:
+            "Reply-To": "daily-summary@meldly.com"
 
 
-  sendDigest = (user, cb)->
-    message =
-      text: "Here's what your crew did today \n #{summaryText}"
-      subject: "Daily Cortado for #{moment().format('MMM Do YY')}"
-      from_email: "daily@meldly.com"
-      from_name: "The Cortado"
-      to: [user]
-      headers:
-        "Reply-To": "daily-summary@meldly.com"
+        mandrill_client.messages.send { message: message}, (result) ->
+          console.log result
+          cb()
 
-
-    mandrill_client.messages.send { message: message}, (result) ->
-      console.log result
+      console.log "marking messages as read"
       Message.update(
         {_id: {$in: messageIds } },
         {sent_at: new Date()},
         {multi: true},
-        cb
+        cb()
       )
 
-  async.map(users, sendDigest, dropTheBass)
-
+      async.map(users, sendDigest, dropTheBass)
 
 
 sendReminder = (user, cb)->
