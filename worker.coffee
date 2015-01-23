@@ -72,13 +72,12 @@ processResults = (err, messages) ->
           console.log result
           cb()
 
-      console.log "marking messages as read"
-      Message.update(
-        {_id: {$in: messageIds } },
-        {sent_at: new Date()},
-        {multi: true},
-        cb()
-      )
+      # console.log "marking messages as read"
+      # Message.update(
+      #   {_id: {$in: messageIds } },
+      #   {sent_at: new Date()},
+      #   {multi: true},
+      # )
 
       async.map(users, sendDigest, dropTheBass)
 
