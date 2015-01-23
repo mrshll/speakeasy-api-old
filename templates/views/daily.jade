@@ -3,7 +3,7 @@ extends base
 block content
   .header.centered
     h1.collosal.color-blue SpeakEasy
-    h2.light.color-light-blue Here is what happened yesterday
+    h2.light.color-blue-light Here is what happened yesterday
 
   each message in messages
     .card
@@ -13,4 +13,5 @@ block content
             img.avatar(src="#{message.avatarUrl}")
           td.content.top
             .body= message.text
+            .color-blue-light= '- ' + message.from
 

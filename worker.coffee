@@ -17,26 +17,26 @@ dropTheBass = (err, results)->
   process.exit()
 
 users = [
-  # {
-  #   email: "wcdolphin@gmail.com"
-  #   name: "Cory Dolphin"
-  # },
+  {
+    email: "wcdolphin@gmail.com"
+    name: "Cory Dolphin"
+  },
   {
     email: 'mmoutenot@gmail.com',
     name:'Marshall Moutenot'
+  },
+  {
+    email: 'ryandawidjan@gmail.com'
+    name: 'Ryan Dawidjan'
+  },
+  {
+    email: 'jackrmcdermott@gmail.com'
+    name: 'Jack McDermott'
+  },
+  {
+    email: 'me@hem.al'
+    name: 'Hemal Shah'
   }
-  # {
-  #   email: 'ryandawidjan@gmail.com'
-  #   name: 'Ryan Dawidjan'
-  # },
-  # {
-  #   email: 'jackrmcdermott@gmail.com'
-  #   name: 'Jack McDermott'
-  # },
-  # {
-  #   email: 'me@hem.al'
-  #   name: 'Hemal Shah'
-  # }
 ]
 
 processResults = (err, messages) ->
@@ -72,12 +72,12 @@ processResults = (err, messages) ->
           console.log result
           cb()
 
-      # console.log "marking messages as read"
-      # Message.update(
-      #   {_id: {$in: messageIds } },
-      #   {sent_at: new Date()},
-      #   {multi: true},
-      # )
+      console.log "marking messages as read"
+      Message.update(
+        {_id: {$in: messageIds } },
+        {sent_at: new Date()},
+        {multi: true},
+      )
 
       async.map(users, sendDigest, dropTheBass)
 
