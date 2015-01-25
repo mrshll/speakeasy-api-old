@@ -17,26 +17,26 @@ dropTheBass = (err, results)->
   process.exit()
 
 users = [
-  # {
-  #   email: "wcdolphin@gmail.com"
-  #   name: "Cory Dolphin"
-  # # },
+  {
+    email: 'wcdolphin@gmail.com'
+    name: 'Cory'
+  },
   {
     email: 'mmoutenot@gmail.com',
     name:'Marshall'
+  },
+  {
+    email: 'ryandawidjan@gmail.com'
+    name: 'Ryan'
+  },
+  {
+    email: 'jackrmcdermott@gmail.com'
+    name: 'Jack'
+  },
+  {
+    email: 'me@hem.al'
+    name: 'Hemal'
   }
-  # {
-  #   email: 'ryandawidjan@gmail.com'
-  #   name: 'Ryan Dawidjan'
-  # },
-  # {
-  #   email: 'jackrmcdermott@gmail.com'
-  #   name: 'Jack McDermott'
-  # },
-  # {
-  #   email: 'me@hem.al'
-  #   name: 'Hemal Shah'
-  # }
 ]
 
 processResults = (err, messages) ->
@@ -76,11 +76,10 @@ processResults = (err, messages) ->
 
       async.map users, sendDigest, ->
         console.log "marking messages as read"
-        dropTheBass()
-        # Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
-        #   console.log messages
-        #   console.log "successfully marked as read"
-        #   dropTheBass()
+        Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
+          console.log messages
+          console.log "successfully marked as read"
+          dropTheBass()
 
 sendReminder = (user, cb)->
   message =
