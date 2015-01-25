@@ -1,0 +1,12 @@
+{
+  "activity": {
+    "id": 1,
+    "user": {
+      "firstName": "Alden",
+      "avatarUrl": "https://lh3.googleusercontent.com/-W_391QW5HTA/AAAAAAAAAAI/AAAAAAAAAAw/jhW9LUiHTko/photo.jpg"
+    },
+    "body": {
+      "filename": "My Doc.txt"
+    }
+  }
+}

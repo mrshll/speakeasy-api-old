@@ -1,0 +1,6 @@
+{
+  "root": "email_dev_server",
+  "main": "email_dev_server/main.coffee",
+  "port": 3001,
+  "factoryDataDir": "email_dev_server/factoryData/"
+}

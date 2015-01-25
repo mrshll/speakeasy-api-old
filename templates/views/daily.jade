@@ -1,17 +1,29 @@
 extends base
 
 block content
-  .header.centered
-    h1.collosal.color-blue SpeakEasy
-    h2.light.color-blue-light Here is what happened yesterday
+  .header
+    table.margin-auto
+      tr
+        td
+          img(src='/logo@2x.png' height='80px' width='80px')
+        td
+          h1.extra-massive.light.short.color-green SpeakEasy
+          h2.light.color-green-light Here is what happened yesterday
 
   each message in messages
     .card
-      table
+      table(width="100%")
         tr
-          td.user.top.small-pad
-            img.avatar(src="#{message.avatarUrl}")
-          td.content.top
+          td.content
             .body= message.text
-            .color-blue-light= '- ' + message.from
+
+        tr
+          td.user.align-right
+            table(width='100%')
+              tr
+                td(width='100%')
+                td
+                  img.avatar(src='#{message.avatarUrl}')
+                td
+                  b.name.large.color-green-light= message.user.name
 

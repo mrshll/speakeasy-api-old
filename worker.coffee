@@ -17,34 +17,34 @@ dropTheBass = (err, results)->
   process.exit()
 
 users = [
-  {
-    email: "wcdolphin@gmail.com"
-    name: "Cory Dolphin"
-  },
+  # {
+  #   email: "wcdolphin@gmail.com"
+  #   name: "Cory Dolphin"
+  # # },
   {
     email: 'mmoutenot@gmail.com',
-    name:'Marshall Moutenot'
-  },
-  {
-    email: 'ryandawidjan@gmail.com'
-    name: 'Ryan Dawidjan'
-  },
-  {
-    email: 'jackrmcdermott@gmail.com'
-    name: 'Jack McDermott'
-  },
-  {
-    email: 'me@hem.al'
-    name: 'Hemal Shah'
+    name:'Marshall'
   }
+  # {
+  #   email: 'ryandawidjan@gmail.com'
+  #   name: 'Ryan Dawidjan'
+  # },
+  # {
+  #   email: 'jackrmcdermott@gmail.com'
+  #   name: 'Jack McDermott'
+  # },
+  # {
+  #   email: 'me@hem.al'
+  #   name: 'Hemal Shah'
+  # }
 ]
 
 processResults = (err, messages) ->
   messageIds = _.pluck messages, '_id'
 
   if messages.length == 0
-    console.log "No unset messasges. Not sending"
-    return ""
+    console.log "No unset messages. Not sending"
+    dropTheBass()
 
   console.log("Called with #{err} #{messages}")
 
@@ -54,9 +54,12 @@ processResults = (err, messages) ->
     userIndex = _.findIndex users, (user) ->
       user.email is message.from
 
+    message.user = users[userIndex]
+
   locals = messages: messages
   emailTemplates templatesDir, (err, template) ->
     template 'daily', locals, (err, html, text) ->
+      console.log "Error: #{ err }"
       sendDigest = (user, cb)->
         message =
           html: html
@@ -69,18 +72,15 @@ processResults = (err, messages) ->
 
 
         mandrill_client.messages.send { message: message}, (result) ->
-          console.log result
           cb()
 
-      console.log "marking messages as read"
-      Message.update(
-        {_id: {$in: messageIds } },
-        {sent_at: new Date()},
-        {multi: true},
-      )
-
-      async.map(users, sendDigest, dropTheBass)
-
+      async.map users, sendDigest, ->
+        console.log "marking messages as read"
+        dropTheBass()
+        # Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
+        #   console.log messages
+        #   console.log "successfully marked as read"
+        #   dropTheBass()
 
 sendReminder = (user, cb)->
   message =

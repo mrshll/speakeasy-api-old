@@ -1,0 +1,33 @@
+{
+  "root": "templates",
+  "src": {
+    "root": "templates/",
+    "stylesheets": "templates/stylesheets",
+    "public": "templates/public",
+    "images": "templates/images",
+    "views": "templates/views",
+    "vendor": "vendor"
+  },
+  "scripts": {
+    "map": false
+  },
+  "build": {
+    "root": "templates/dev",
+    "views": "templates/dev/views",
+    "styles": "templates/dev/styles",
+    "assets": "templates/dev/assets",
+    "emails": "templates/dev/emails"
+  },
+  "deploy": {
+    "awsKey": "AKIAJYFBO3PJ3MDEGVJA",
+    "awsSecret": "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",
+    "awsBucket": "driftt-email-assets",
+    "awsRegion": "us-standard",
+    "awsDistributionId": "E25J7BJHZ6WL6G",
+    "awsOrginAccessIdentity": "origin-access-identity/cloudfront/E25J7BJHZ6WL6G"
+  },
+  "environments": {
+    "development": {
+    }
+  }
+}

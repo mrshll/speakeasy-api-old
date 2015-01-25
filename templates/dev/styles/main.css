@@ -1,0 +1,185 @@
+.avatar {
+  height: 3.75em;
+  width: 3.75em;
+  border-radius: 50%;
+}
+.color-blue {
+  color: #227fbb;
+}
+.color-blue-light {
+  color: #2c97de;
+}
+.color-gray {
+  color: #ecf0f1;
+}
+.color-red {
+  color: #e74c3c;
+}
+.color-black {
+  color: #000;
+}
+.color-white {
+  color: #fff;
+}
+.card {
+  padding: 1em 1em;
+  margin: 2em 1em;
+  border: 1px solid #227fbb;
+  border-radius: 3px;
+  background-color: #fff;
+}
+.color-blue {
+  color: #227fbb;
+}
+.color-blue-light {
+  color: #2c97de;
+}
+.color-gray {
+  color: #ecf0f1;
+}
+.color-red {
+  color: #e74c3c;
+}
+.color-black {
+  color: #000;
+}
+.color-white {
+  color: #fff;
+}
+.footer {
+  font-weight: 400;
+  padding: 1em;
+  margin: 2em;
+  color: #000;
+}
+.footer * {
+  font-size: 13px;
+}
+.footer .address {
+  color: #333;
+}
+.footer .unsubscribe a {
+  text-decoration: none;
+}
+.color-blue {
+  color: #227fbb;
+}
+.color-blue-light {
+  color: #2c97de;
+}
+.color-gray {
+  color: #ecf0f1;
+}
+.color-red {
+  color: #e74c3c;
+}
+.color-black {
+  color: #000;
+}
+.color-white {
+  color: #fff;
+}
+.ultralight {
+  font-weight: 100;
+}
+.light {
+  font-weight: 300;
+}
+.medium {
+  font-weight: 500;
+}
+.heavy {
+  font-weight: 700;
+}
+h1,
+h2,
+h3 {
+  margin: 0.5em;
+}
+.header {
+  margin: 1em;
+}
+.pull-left {
+  position: absolute;
+  float: left;
+}
+.pull-right {
+  position: absolute;
+  float: right;
+}
+.tiny {
+  font-size: 55%;
+}
+.small {
+  font-size: 75%;
+}
+.large {
+  font-size: 125%;
+}
+.huge {
+  font-size: 150%;
+}
+.massive {
+  font-size: 200%;
+}
+.collosal {
+  font-size: 300%;
+}
+td.top {
+  vertical-align: top;
+}
+td.small-pad {
+  padding-right: 0.5em;
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.icon-spaced :first-child {
+  margin-right: 0.5em;
+}
+.centered {
+  text-align: center;
+}
+.left-aligned {
+  text-align: left;
+}
+html {
+  height: 100%;
+  background-color: #ecf0f1;
+}
+#email-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  color: #000;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Geneva", Helvetica, Arial, sans-serif;
+  color: #227fbb;
+}
+p,
+div,
+span {
+  font-family: "Geneva", Helvetica, Arial, sans-serif;
+  color: #000;
+  font-size: 14px;
+}
+html,
+body {
+  overflow-x: hidden;
+}
+a {
+  color: #227fbb;
+  text-decoration: none;
+}
+a:hover {
+  color: #2690d3;
+  text-decoration: none;
+}

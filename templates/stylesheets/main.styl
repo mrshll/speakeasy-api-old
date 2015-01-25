@@ -1,19 +1,28 @@
 html
   height 100%
-  background-color $color-gray
+
+body
+  margin 0 auto
 
 #email-container
+  background-color $color-green-light
+  padding 1em 0
   width 100%
-  max-width 600px
-  margin 0 auto
+
+#content
+  margin auto
+  background-color $color-gray
   color $color-black
+  padding .5em 0
+  max-width 600px
+  border-radius 5px
 
 h1, h2, h3, h4, h5, h6
   font-family "Geneva", Helvetica, Arial, sans-serif
-  color $color-blue
+  color $color-green
 
 p, div, span
-  font-family "Geneva", Helvetica, Arial, sans-serif
+  font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
   color $color-black
   font-size 14px
 
@@ -21,7 +30,7 @@ html, body
   overflow-x hidden
 
 a
-  color $color-blue
+  color $color-green
   text-decoration none
 
   &:hover
