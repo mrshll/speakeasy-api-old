@@ -18,7 +18,7 @@ dropTheBass = (err, results)->
 
 users = [
   {
-    email: 'wcdolphin@gmail.com'
+    email: 'cory.dolphin@gmail.com'
     name: 'Cory'
   },
   {
