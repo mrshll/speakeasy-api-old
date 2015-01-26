@@ -79,7 +79,7 @@ processResults = (err, messages) ->
         Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
           console.log messages
           console.log "successfully marked as read"
-        dropTheBass()
+          dropTheBass()
 
 sendReminder = (user, cb)->
   message =
@@ -100,7 +100,7 @@ sendReminder = (user, cb)->
 if process.argv.length == 3
   if process.argv[2] == 'digest'
     console.log "Sending Digest"
-    Message.find().where('sent_at': { $gt: new Date((new Date()).getTime() - 1000 * 60*20) }).exec(processResults)
+    Message.find().where('sent_at', null).exec(processResults)
   else if process.argv[2] == 'reminder'
     console.log "Sending reminder!"
     async.map(users, sendReminder, dropTheBass)
