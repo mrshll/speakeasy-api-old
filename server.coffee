@@ -53,7 +53,7 @@ processReply = (reply, cb) ->
   groupName = reply.msg.email.replace('@meldly.com','').replace('daily.','')
   console.log groupName
   Group.findOne({ name:new RegExp(groupName, 'i') }).exec (err, group) ->
-    User.findOne({ email: new RegExp(reply.message.from_email, 'i') }).exec (err, user) ->
+    User.findOne({ email: new RegExp(reply.msg.from_email, 'i') }).exec (err, user) ->
       console.log "message received from #{ user.email } for group #{ group.name }"
       message = new Message
         text: removeQuotedText(reply.msg.text)
