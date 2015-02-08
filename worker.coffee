@@ -37,8 +37,6 @@ getSendToUserFn = (messages) ->
       console.log "No unset messages. Not sending"
       dropTheBass()
 
-    console.log("Called with #{err} #{messages}")
-
     _.each messages, (message) ->
       message.avatarUrl = gravatar.url(message.user.email, {s:'100', r: 'x', d: 'retro'}, true)
 
