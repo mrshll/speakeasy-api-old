@@ -13,6 +13,8 @@ messageSchema = mongoose.Schema
     type: String
   text:
     type: String
+  group:
+    type: Schema.ObjectId, ref: 'Group'
 
 
 module.exports = mongoose.model 'Message', messageSchema

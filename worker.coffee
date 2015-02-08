@@ -91,11 +91,11 @@ sendReminder = (group, cb)->
     message =
       text: "Reply with a few sentences that #{group.name} should know about."
       subject: "Tell #{group.name} about your day"
-      from_email: "daily@meldly.com"
+      from_email: "daily.#{group.name}@meldly.com"
       from_name: group.name
       to: [user]
       headers:
-        "Reply-To": "daily@meldly.com"
+        "Reply-To": "daily.#{group.name}@meldly.com"
 
     console.log message
     mandrill_client.messages.send {

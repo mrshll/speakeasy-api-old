@@ -48,12 +48,15 @@ class WebServer
       async.each replies, process, processCompleted
 
 processReply = (reply, cb) ->
-  message = new Message
-    text: removeQuotedText(reply.msg.text)
-    from: reply.msg.from_email
+  groupName = reply.msg.email.replace('@meldly.com','').replace('daily.','')
 
-  console.log("Received new Messages: #{message}")
-  message.save cb
+  Group.findOne({name:groupName}).exec (err, group) ->
+    message = new Message
+      text: removeQuotedText(reply.msg.text)
+      from: reply.msg.from_email
+      group: group._id
+    console.log("Received new Messages: #{message}")
+    message.save cb
 
 removeQuotedText = (text) ->
   delimeter = "daily@meldly.com"
