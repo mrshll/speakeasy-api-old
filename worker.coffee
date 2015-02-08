@@ -93,7 +93,7 @@ if process.argv.length == 3
 
   else if process.argv[2] == 'reminder'
     console.log "Sending reminder!"
-    Group.find().populate('users').exec (err, groups) ->
+    Group.find(name:'test').populate('users').exec (err, groups) ->
       async.map(groups, sendReminder, dropTheBass)
 else
   console.log "Gimmme a cmd darnmit!"
