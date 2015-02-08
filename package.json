@@ -27,6 +27,7 @@
     "moment": "^2.6.0",
     "mongodb": "^1.4.5",
     "mongoose": "^3.8.11",
+    "mongoose-findorcreate": "^0.1.2",
     "multer": "0.0.7",
     "nsq-client": "^1.0.0",
     "request": "^2.36.0",

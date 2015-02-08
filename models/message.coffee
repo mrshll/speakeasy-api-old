@@ -1,4 +1,5 @@
 helpers = require '../helpers'
+helpers = require '../db'
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 

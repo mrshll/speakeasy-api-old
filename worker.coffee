@@ -2,6 +2,7 @@ helpers   = require './helpers'
 db        = require  './db'
 mandrill  = require('mandrill-api/mandrill');
 Message   = require './models/message'
+Group     = require './models/group'
 moment    = require 'moment'
 _         = require 'lodash'
 async     = require 'async'
@@ -66,7 +67,7 @@ processResults = (err, messages) ->
           subject: "Daily Cortado for #{moment().format('MMM Do YY')}"
           from_email: "daily@meldly.com"
           from_name: "The Cortado"
-          to: [user]
+          to: [user.email]
           headers:
             "Reply-To": "daily-summary@meldly.com"
 
@@ -81,21 +82,31 @@ processResults = (err, messages) ->
           console.log "successfully marked as read"
           dropTheBass()
 
-sendReminder = (user, cb)->
-  message =
-    text: "Hey! What did you do today?"
-    subject: "Your friends want to know what you did Today"
-    from_email: "daily@meldly.com"
-    from_name: "The Cortado"
-    to: [user]
-    headers:
-      "Reply-To": "daily@meldly.com"
 
-  mandrill_client.messages.send {
-      message: message
-    }, (result) ->
-    console.log result
-    cb()
+
+
+sendReminder = (group, cb)->
+  console.log group
+  sendUserReminder = (user, _cb) ->
+    message =
+      text: "Reply with a few sentences that #{group.name} should know about."
+      subject: "Tell #{group.name} about your day"
+      from_email: "daily@meldly.com"
+      from_name: group.name
+      to: [user]
+      headers:
+        "Reply-To": "daily@meldly.com"
+
+    console.log message
+    mandrill_client.messages.send {
+        message: message
+      }, (result) ->
+      console.log result
+      _cb()
+
+  async.map(group.users, sendUserReminder, cb)
+
+#      Group.findOne('Cortado').populate('users').exec (err, res) ->
 
 if process.argv.length == 3
   if process.argv[2] == 'digest'
@@ -103,6 +114,7 @@ if process.argv.length == 3
     Message.find().where('sent_at', null).exec(processResults)
   else if process.argv[2] == 'reminder'
     console.log "Sending reminder!"
-    async.map(users, sendReminder, dropTheBass)
+    Group.find().populate('users').exec (err, groups) ->
+      async.map(groups, sendReminder, dropTheBass)
 else
   console.log "Gimmme a cmd darnmit!"
