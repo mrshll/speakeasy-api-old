@@ -3,6 +3,7 @@ db        = require  './db'
 mandrill  = require('mandrill-api/mandrill');
 Message   = require './models/message'
 Group     = require './models/group'
+User      = require './models/user'
 moment    = require 'moment'
 _         = require 'lodash'
 async     = require 'async'
