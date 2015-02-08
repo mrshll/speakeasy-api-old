@@ -51,7 +51,7 @@ class WebServer
 processReply = (reply, cb) ->
   groupName = reply.msg.email.replace('@meldly.com','').replace('daily.','')
   console.log groupName
-  Group.findOne({name:groupName}).exec (err, group) ->
+  Group.findOne({name:new RegExp(groupName, "i")}).exec (err, group) ->
     console.log err
     console.log group
     message = new Message

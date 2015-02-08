@@ -83,8 +83,6 @@ processResults = (err, messages) ->
           dropTheBass()
 
 
-
-
 sendReminder = (group, cb)->
   console.log group
   sendUserReminder = (user, _cb) ->
