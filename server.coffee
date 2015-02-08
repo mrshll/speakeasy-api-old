@@ -50,8 +50,10 @@ class WebServer
 
 processReply = (reply, cb) ->
   groupName = reply.msg.email.replace('@meldly.com','').replace('daily.','')
-
+  console.log groupName
   Group.findOne({name:groupName}).exec (err, group) ->
+    console.log err
+    console.log group
     message = new Message
       text: removeQuotedText(reply.msg.text)
       from: reply.msg.from_email
