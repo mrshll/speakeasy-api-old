@@ -21,8 +21,12 @@ sendDigestForGroup = (group, cb) ->
   Message.find().where({ 'sent_at': null, 'group': group.id })
     .populate('user')
     .exec (err, messages) ->
-      fn = getSendToUserFn(messages)
-      async.map(group.users, fn, cb)
+      if err
+        console.log err
+      else
+        console.log "sending #{ messages.length } messages"
+        fn = getSendToUserFn(messages)
+        async.map(group.users, fn, cb)
 
 getSendToUserFn = (messages) ->
   (user, cb) ->
