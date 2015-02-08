@@ -7,6 +7,7 @@ helpers         = require './helpers'
 async           = require 'async'
 Message         = require './models/message'
 Group           = require './models/group'
+User            = require './models/user'
 xregexp         = require('xregexp').XRegExp
 
 class WebServer
