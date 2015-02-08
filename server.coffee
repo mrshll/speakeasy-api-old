@@ -6,6 +6,7 @@ bodyParser      = require 'body-parser'
 helpers         = require './helpers'
 async           = require 'async'
 Message         = require './models/message'
+Group           = require './models/group'
 xregexp         = require('xregexp').XRegExp
 
 class WebServer
