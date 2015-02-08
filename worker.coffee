@@ -17,71 +17,50 @@ dropTheBass = (err, results)->
   console.log "Dropping all of the bass"
   process.exit()
 
-users = [
-  {
-    email: 'cory.dolphin@gmail.com'
-    name: 'Cory'
-  },
-  {
-    email: 'mmoutenot@gmail.com',
-    name:'Marshall'
-  },
-  {
-    email: 'ryandawidjan@gmail.com'
-    name: 'Ryan'
-  },
-  {
-    email: 'jackrmcdermott@gmail.com'
-    name: 'Jack'
-  },
-  {
-    email: 'me@hem.al'
-    name: 'Hemal'
-  }
-]
+sendDigestForGroup = (group, cb) ->
+  Message.find().where({ 'sent_at': null, 'group': group.id })
+    .populate('user')
+    .exec (err, messages) ->
+      fn = getSendToUserFn(messages)
+      async.map(group.users, fn, cb)
 
-processResults = (err, messages) ->
-  messageIds = _.pluck messages, '_id'
+getSendToUserFn = (messages) ->
+  (user, cb) ->
+    messageIds = _.pluck messages, '_id'
 
-  if messages.length == 0
-    console.log "No unset messages. Not sending"
-    dropTheBass()
+    if messages.length == 0
+      console.log "No unset messages. Not sending"
+      dropTheBass()
 
-  console.log("Called with #{err} #{messages}")
+    console.log("Called with #{err} #{messages}")
 
-  _.each messages, (message) ->
-    message.avatarUrl = gravatar.url(message.from, {s:'100', r: 'x', d: 'retro'}, true)
+    _.each messages, (message) ->
+      message.avatarUrl = gravatar.url(message.user.email, {s:'100', r: 'x', d: 'retro'}, true)
 
-    userIndex = _.findIndex users, (user) ->
-      user.email is message.from
-
-    message.user = users[userIndex]
-
-  locals = messages: messages
-  emailTemplates templatesDir, (err, template) ->
-    template 'daily', locals, (err, html, text) ->
-      console.log "Error: #{ err }"
-      sendDigest = (user, cb)->
-        message =
-          html: html
-          subject: "Daily Cortado for #{moment().format('MMM Do YY')}"
-          from_email: "daily@meldly.com"
-          from_name: "The Cortado"
-          to: [user.email]
-          headers:
-            "Reply-To": "daily-summary@meldly.com"
+    locals = messages: messages
+    emailTemplates templatesDir, (err, template) ->
+      template 'daily', locals, (err, html, text) ->
+        console.log "Error: #{ err }"
+        sendDigest = (user, cb)->
+          message =
+            html: html
+            subject: "Daily Cortado for #{moment().format('MMM Do YY')}"
+            from_email: "daily@meldly.com"
+            from_name: "The Cortado"
+            to: [user.email]
+            headers:
+              "Reply-To": "daily-summary@meldly.com"
 
 
-        mandrill_client.messages.send { message: message}, (result) ->
-          cb()
+          mandrill_client.messages.send { message: message }, (result) ->
+            cb()
 
-      async.map users, sendDigest, ->
-        console.log "marking messages as read"
-        Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
-          console.log messages
-          console.log "successfully marked as read"
-          dropTheBass()
-
+        async.map users, sendDigest, ->
+          console.log "marking messages as read"
+          Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
+            console.log messages
+            console.log "successfully marked as read"
+            dropTheBass()
 
 sendReminder = (group, cb)->
   console.log group
@@ -109,7 +88,9 @@ sendReminder = (group, cb)->
 if process.argv.length == 3
   if process.argv[2] == 'digest'
     console.log "Sending Digest"
-    Message.find().where('sent_at', null).exec(processResults)
+    Group.find().populate('users').exec (err, groups) ->
+      async.map(groups, sendDigestForGroup, dropTheBass)
+
   else if process.argv[2] == 'reminder'
     console.log "Sending reminder!"
     Group.find().populate('users').exec (err, groups) ->

@@ -51,15 +51,17 @@ class WebServer
 processReply = (reply, cb) ->
   groupName = reply.msg.email.replace('@meldly.com','').replace('daily.','')
   console.log groupName
-  Group.findOne({name:new RegExp(groupName, "i")}).exec (err, group) ->
-    console.log err
-    console.log group
-    message = new Message
-      text: removeQuotedText(reply.msg.text)
-      from: reply.msg.from_email
-      group: group._id
-    console.log("Received new Messages: #{message}")
-    message.save cb
+  Group.findOne({ name:new RegExp(groupName, 'i') }).exec (err, group) ->
+    User.findOne({ email: new RegExp(reply.message.from_email, 'i') }).exec (err, user) ->
+      console.log "message received from #{ user.email } for group #{ group.name }"
+      message = new Message
+        text: removeQuotedText(reply.msg.text)
+        from: reply.msg.from_email
+        group: group._id
+        user: user._id
+
+      console.log("Received new Messages: #{message}")
+      message.save cb
 
 removeQuotedText = (text) ->
   delimeter = "daily@meldly.com"

@@ -13,6 +13,8 @@ messageSchema = mongoose.Schema
     type: String
   text:
     type: String
+  user:
+    type: Schema.ObjectId, ref: 'User'
   group:
     type: Schema.ObjectId, ref: 'Group'
 
