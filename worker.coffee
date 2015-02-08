@@ -19,6 +19,14 @@ dropTheBass = (err, results)->
   process.exit()
 
 sendDigestForGroup = (group, cb) ->
+  wrappedCb = ->
+    async.map users, sendDigest, ->
+      console.log "marking messages as read"
+      Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
+        console.log messages
+        console.log "successfully marked as read"
+        cb()
+
   Message.find().where({ 'sent_at': null, 'group': group.id })
     .populate('user')
     .exec (err, messages) ->
@@ -27,7 +35,7 @@ sendDigestForGroup = (group, cb) ->
       else
         console.log "sending #{ messages.length } messages"
         fn = getSendToUserFn(messages)
-        async.map(group.users, fn, cb)
+        async.map(group.users, fn, wrappedCb)
 
 getSendToUserFn = (messages) ->
   (user, cb) ->
@@ -58,12 +66,7 @@ getSendToUserFn = (messages) ->
           mandrill_client.messages.send { message: message }, (result) ->
             cb()
 
-        async.map users, sendDigest, ->
-          console.log "marking messages as read"
-          Message.update {_id: {$in: messageIds } }, { sent_at: new Date() }, { multi: true }, (messages) ->
-            console.log messages
-            console.log "successfully marked as read"
-            dropTheBass()
+
 
 sendReminder = (group, cb)->
   console.log group
