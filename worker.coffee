@@ -88,7 +88,7 @@ sendReminder = (group, cb)->
 if process.argv.length == 3
   if process.argv[2] == 'digest'
     console.log "Sending Digest"
-    Group.find().populate('users').exec (err, groups) ->
+    Group.find(name:'test').populate('users').exec (err, groups) ->
       async.map(groups, sendDigestForGroup, dropTheBass)
 
   else if process.argv[2] == 'reminder'
